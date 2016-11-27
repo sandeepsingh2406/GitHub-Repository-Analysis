@@ -1,0 +1,11 @@
+.idea/misc.xml
+.idea/modules.xml
+.idea/modules/abhijaysandeepfinalprojectcs441.iml
+.idea/sbt.xml
+.idea/vcs.xml
+.idea/workspace.xml
+target/resolution-cache/
+target/streams/runtime/managedClasspath/$global/streams/export
+project/target/streams/
+target/streams/
+project/target/resolution-cache/
