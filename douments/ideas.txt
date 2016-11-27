@@ -1,0 +1,6 @@
+number of lines of code per commit
+number of days required during commits, average loc per day/per commit
+
+
+number of files in a project, average number of different languages used in a project
+different licenses for projects, which are very popular licensing schemes
