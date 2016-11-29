@@ -26,3 +26,5 @@ they follow or contribute to?
 languages?
 
 https://www.igvita.com/slides/2012/bigquery-github-strata.pdf
+
+https://developer.github.com/v3/search/#rate-limit
