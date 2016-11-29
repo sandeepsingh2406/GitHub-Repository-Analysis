@@ -8,3 +8,15 @@ average duration of project, average contributions per month
 
 average number of contributors
 highly rated/reviewed projects
+
+What were the hot new projects today?
+○ In Ruby land...
+○ In JavaScript land...
+○ Globally?
+● Did anyone commit something interesting or
+controversial?
+● For the people I follow, which projects did
+they follow or contribute to?
+● What are the emerging projects, or
+languages?
+
