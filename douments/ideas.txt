@@ -8,7 +8,9 @@ average duration of project, average contributions per month
 
 average number of contributors
 highly rated/reviewed projects
-graph of total number of languages used in all the projects (language on x axis, and number of files in that language on y-axis
+graph of total number of languages used in all the projects (language on x axis, and number of files in that language on y-axis)
+find all followers of a given users, find followers' followers and build some ranking system using HITS or page ranking
+give recommendation to show similar repositories based on subscription
 
 
 
