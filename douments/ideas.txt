@@ -8,6 +8,11 @@ average duration of project, average contributions per month
 
 average number of contributors
 highly rated/reviewed projects
+graph of total number of languages used in all the projects (language on x axis, and number of files in that language on y-axis
+
+
+
+------------------------------------------------
 
 What were the hot new projects today?
 ○ In Ruby land...
