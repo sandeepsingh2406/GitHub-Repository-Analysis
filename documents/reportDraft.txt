@@ -1,6 +1,11 @@
 
-
+Introduction:
 Initial study of Cassandra vs MongoDB vs Neo4J
+This was very different from other projects where we did not have specified goal (given some requirements and expected outcome),
+so we had to first brainstorm about what are possible ways to do analysis, do machine learning. We also had to study GitHub api
+ and see what is the different information we were able to collect. Thanks to Cody for suggesting GitHub. Had he not mentioned about this
+ we would have spent hours of research on finding useful information from BlackDuck (as we did in HW3)
 
+Progress:
 List of analysis, todos from ideas.txt and mention how much did we accomplish, mention that this is very
 interesting topic and further research can be continued
