@@ -1,3 +1,6 @@
 
 
 Initial study of Cassandra vs MongoDB vs Neo4J
+
+List of analysis, todos from ideas.txt and mention how much did we accomplish, mention that this is very
+interesting topic and further research can be continued
