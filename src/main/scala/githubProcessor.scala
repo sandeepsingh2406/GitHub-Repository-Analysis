@@ -75,7 +75,8 @@ class myClass() {
           {
             println("taking a rest")
 
-            while((System.currentTimeMillis / 1000)<(start_time+65))
+            start_time=(System.currentTimeMillis / 1000)
+            while((System.currentTimeMillis / 1000)<(start_time+61))
             {
             }
             start_time=(System.currentTimeMillis / 1000)
@@ -109,7 +110,8 @@ class myClass() {
             {
               println("taking a rest")
 
-              while((System.currentTimeMillis / 1000)<(start_time+65))
+              start_time=(System.currentTimeMillis / 1000)
+              while((System.currentTimeMillis / 1000)<(start_time+61))
               {
               }
               start_time=(System.currentTimeMillis / 1000)
