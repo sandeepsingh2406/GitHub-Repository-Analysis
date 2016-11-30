@@ -39,7 +39,7 @@ class myClass() {
     try {
       for (language <- languages) {
         //        println(i)
-        var url = "https://api.github.com/search/repositories?q=language:" + "java" + "+created:>2016-01-01+size:>10000&per_page=100"
+        var url = ""
         val dir:File = new File("downloadedfiles/"+language);
         dir.mkdir()
 
@@ -58,8 +58,8 @@ class myClass() {
           var pagenum:Int=1
 
 
-          url = "https://api.github.com/search/repositories?q=language:" + language + "+"+"created:2016-01-"+
-            tempdatestring+"..2016-01-"+nextdatestring+"+size:%3E10000"
+          url = "https://api.github.com/search/repositories?q=language:" + language + "+"+"created:2016-06-"+
+            tempdatestring+"..2016-06-"+nextdatestring+"+size:%3E10000"
           //            println(url)
           val connection = new URL(url).openConnection
           connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
@@ -88,8 +88,8 @@ class myClass() {
           while((pagenum<11) && (pagenum<=((total_hits/100).toInt)+1))
           {
 
-            url = "https://api.github.com/search/repositories?q=language:" + language + "+"+"created:2016-11-"+
-              tempdatestring+"..2016-11-"+nextdatestring+"+size:%3E10000"+"&per_page=100&page="+pagenum
+            url = "https://api.github.com/search/repositories?q=language:" + language + "+"+"created:2016-06-"+
+              tempdatestring+"..2016-06-"+nextdatestring+"+size:%3E10000"+"&per_page=100&page="+pagenum
 
             val connection = new URL(url).openConnection
             connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
@@ -99,8 +99,8 @@ class myClass() {
             iteration=iteration+1
 
 
-            val file = new File("downloadedfiles/"+language+"/"+language+"_"+"2016-11-"+
-              tempdatestring+"_2016-11-"+nextdatestring+"_page"+pagenum+".json")
+            val file = new File("downloadedfiles/"+language+"/"+language+"_"+"2016-06-"+
+              tempdatestring+"_2016-06-"+nextdatestring+"_page"+pagenum+".json")
             val bw = new BufferedWriter(new FileWriter(file))
             bw.write(response)
             bw.close()
