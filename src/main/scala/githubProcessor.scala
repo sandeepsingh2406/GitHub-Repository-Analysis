@@ -30,8 +30,8 @@ object githubProcessor {
 class initializerClass(){
   def method(args: Array[String]): Unit = {
 
-//    val dir: File = new File("../repoFiles");
-//    dir.mkdir()
+    val dir: File = new File("../userJsons");
+    dir.mkdir()
     val system = ActorSystem("ActorSystem")
     val mongoDbConnector = system.actorOf(Props[mongoDbConnector], name = "mongoDbConnector")
     val jsonParser = system.actorOf(Props(new jsonParser(mongoDbConnector)), name = "jsonParser")
@@ -171,7 +171,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
     //this belwo case gets bypassed if we call "downloadrepo" directly
     case "fileRepoProcessor" => {
       println("In fileRepoProcessor")
-      val files = recursiveListFiles(new File("../downloadedfiles1/"))
+      val files = recursiveListFiles(new File("../downloadedfiles1"))
 
       //            val file=files(0)
       for (file <- files) {
@@ -190,7 +190,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
 
         if (!downloadedUsers.contains(user)) {
-          println("user: " + user + ", user.size: " + users.size)
+//          println("user: " + user + ", user.size: " + users.size)
 
           downloadedUsers = downloadedUsers + user
 
@@ -200,7 +200,11 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
           connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
           var response = Source.fromInputStream(connection.getInputStream).mkString
 
-          println(response)
+          //          println(response)
+          val file = new File("../userJsons/" + user+".json")
+          val bw = new BufferedWriter(new FileWriter(file))
+          bw.write(response)
+          bw.close()
           mongoDbConnector ! userUploader(response,user)
 
           count = count + 1
@@ -229,24 +233,24 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
 
   var count = 0
   var users: Set[String] = Set()
- def incrementAndPrint { count += 1; }//println(count) }
+  def incrementAndPrint { count += 1; }//println(count) }
   def addUser(user: String){
     users=users+user
-    }
+  }
   def receive = {
     case parseRepoJson(file) =>{
 
       //in this case i can get one item json and directly call another case of another actor that writes the json to mongodb
 
-//      println(file.getAbsolutePath)
+      //      println(file.getAbsolutePath)
       val json_response = Json.parse(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath))))
       val language=file.getName.split("_")(0)
-//      val dir: File = new File("../repoFiles/" + language);
-//      dir.mkdir()
+      //      val dir: File = new File("../repoFiles/" + language);
+      //      dir.mkdir()
 
-//      println((json_response\ "items").as[List[JsObject]].size)
+      //      println((json_response\ "items").as[List[JsObject]].size)
       for(i <- 0 until (json_response\ "items").as[List[JsObject]].size) {
-      val str:String=((json_response \ "items")(i)).toString()
+        val str:String=((json_response \ "items")(i)).toString()
 
 
         if(language.equals("java"))
@@ -259,20 +263,20 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
         mongoDbConnector ! repoUploader(str,language,id)
 
 
-//        val id:String=((json_response \ "items")(i) \ "id").toString()
-//        val file = new File("../repoFiles/" + language + "/" + language + "_" +id+".json")
-//        val bw = new BufferedWriter(new FileWriter(file))
-//        bw.write(str)
-//        bw.close()
+        //        val id:String=((json_response \ "items")(i) \ "id").toString()
+        //        val file = new File("../repoFiles/" + language + "/" + language + "_" +id+".json")
+        //        val bw = new BufferedWriter(new FileWriter(file))
+        //        bw.write(str)
+        //        bw.close()
       }
     }
 
 
-  case "getUsersFromJson" =>{
-    println("Set size= "+users.size)
-    sender ! downloadUserJson(users)
+    case "getUsersFromJson" =>{
+      println("Set size= "+users.size)
+      sender ! downloadUserJson(users)
 
-  }
+    }
   }
 }
 
@@ -288,7 +292,7 @@ class mongoDbConnector  extends Actor {
     }
 
     case userUploader(jsonUser: String,user: String) => {
-     usercount=usercount+1
+      usercount=usercount+1
       if((usercount%50)==0)println("user upload count: "+usercount)
 
       DBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
