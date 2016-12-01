@@ -33,3 +33,13 @@ languages?
 https://www.igvita.com/slides/2012/bigquery-github-strata.pdf
 
 https://developer.github.com/v3/search/#rate-limit
+
+
+
+https://api.github.com/search/repositories?q=language:go+created:%3E2016-01-01+size:%3E10000&per_page=100&page=19
+{
+  "message": "Only the first 1000 search results are available",
+  "documentation_url": "https://developer.github.com/v3/search/"
+}
+
+breaking down search to search only for a limited period can be done
