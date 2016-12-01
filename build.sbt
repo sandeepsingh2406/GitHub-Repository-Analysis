@@ -12,9 +12,13 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" % "akka-actor_2.11" % "2.4.12",
   "com.typesafe.akka" % "akka-http-experimental_2.11" % "2.4.11",
   "org.scalatest"  %% "scalatest"   % "2.2.4" % Test, //note 2.2.2 works too
+  "org.mongodb" %% "casbah" % "3.1.1",
+  "org.mongodb.scala" %% "mongo-scala-driver" % "1.2.1",
   "commons-io" % "commons-io" % "2.5"
 )
 
 libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
 
+
+scalacOptions += "-deprecation"
