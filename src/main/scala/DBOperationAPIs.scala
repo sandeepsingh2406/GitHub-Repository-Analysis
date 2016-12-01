@@ -1,7 +1,6 @@
 import com.mongodb.DBObject
-import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.{MongoClient, MongoClientURI}
-import com.mongodb.util.JSON;
+import com.mongodb.util.JSON
 
 import scala.io.Source
 
@@ -22,8 +21,8 @@ object DBOperationAPIs {
 
   def main(args: Array[String]): Unit = {
     val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-    println("parsed json string: " + jsonRecordString);
-//    insertDBObject(collectionName, createDBObject(jsonRecordString));
+//    println("parsed json string: " + jsonRecordString);
+    insertDBObject(collectionName, createDBObject(jsonRecordString));
     findAll(collectionName);
 
   }
