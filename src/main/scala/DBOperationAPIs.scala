@@ -21,10 +21,15 @@ object DBOperationAPIs {
 
   def main(args: Array[String]): Unit = {
     val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-//    println("parsed json string: " + jsonRecordString);
-    insertDBObject(collectionName, createDBObject(jsonRecordString));
-    findAll(collectionName);
+    println("parsed json string: " + jsonRecordString);
+//    insertDBObject(collectionName, createDBObject(jsonRecordString));
+//    findAll(ParameterConstants.defaultCollectionName);
+//    println(getCollectionCount(ParameterConstants.cCollectionName));
+  }
 
+  // returns total number of documents in given collection
+  def getCollectionCount(collectonName: String): Int = {
+    return db(collectionName).count();
   }
 
   // insert jsonfile directly to given collection
@@ -32,16 +37,23 @@ object DBOperationAPIs {
     insertStringJSON(collectionName, readFirstLineOfFile(jsonFileName));
   }
 
+  def insertStringJSONByID(): Unit = {
+
+  }
   // insert string into given collection
   def insertStringJSON(collectionName:String, jsonRecordString:String): Unit ={
     insertDBObject(collectionName, createDBObject(jsonRecordString));
   }
 
-  /* insert given object in given collection
-  * */
+  // insert given object in given collection
   def insertDBObject(collectionName:String, dbObject: DBObject): Unit ={
-    val collectionObject = db(collectionName);
-    collectionObject.insert(dbObject);
+    db(collectionName).insert(dbObject);
+  }
+
+  // save object by specifying unique id
+  def saveDBObjectByID(id:String, collectionName:String, dBObject: DBObject): Unit = {
+//    db.movie.save({_id:"sdSd", "name":"test"});
+//    db(collectionName).save({"_id":});
   }
 
   // take json string as input and return dbObject which can be inserted directly into MongoDB
@@ -71,6 +83,7 @@ object DBOperationAPIs {
 
     for(x <- collectionObject){
       println("value: " + x);
+      println(x.getClass)
     }
   }
 }
