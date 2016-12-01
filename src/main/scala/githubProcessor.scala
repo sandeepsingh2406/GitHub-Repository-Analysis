@@ -13,7 +13,8 @@ import scala.io.Source
 
 case class parseRepoJson(file: File)
 case class downloadUserJson(user:Set[String])
-
+case class repoUploader(jsonResponse: String,  language: String,id: String)
+case class userUploader(jsonUser: String,user: String)
 
 
 //Object which creates instance of class contain the main code
@@ -29,11 +30,12 @@ object githubProcessor {
 class initializerClass(){
   def method(args: Array[String]): Unit = {
 
-    val dir: File = new File("../repoFiles");
-    dir.mkdir()
+//    val dir: File = new File("../repoFiles");
+//    dir.mkdir()
     val system = ActorSystem("ActorSystem")
-    val jsonParser = system.actorOf(Props[jsonParser], name = "jsonParser")
-    val downloaderActor = system.actorOf(Props(new downloaderActor(jsonParser)), name = "downloaderActor")
+    val mongoDbConnector = system.actorOf(Props[mongoDbConnector], name = "mongoDbConnector")
+    val jsonParser = system.actorOf(Props(new jsonParser(mongoDbConnector)), name = "jsonParser")
+    val downloaderActor = system.actorOf(Props(new downloaderActor(jsonParser,mongoDbConnector)), name = "downloaderActor")
 
     //        downloaderActor ! "downloadRepo"
 
@@ -41,7 +43,7 @@ class initializerClass(){
   }
 }
 
-class downloaderActor(jsonParser: ActorRef)  extends Actor {
+class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends Actor {
   var downloadedUsers: Set[String] = Set()
 
 
@@ -171,7 +173,7 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor {
       println("In fileRepoProcessor")
       val files = recursiveListFiles(new File("../downloadedfiles1/"))
 
-      //      val file=files(0)
+      //            val file=files(0)
       for (file <- files) {
         jsonParser ! parseRepoJson(file)
       }
@@ -183,12 +185,12 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor {
     case downloadUserJson(users: Set[String]) => {
 
       var count = 0
+      //      val user=users.head
       for (user <- users) {
 
 
-
         if (!downloadedUsers.contains(user)) {
-
+          println("user: " + user + ", user.size: " + users.size)
 
           downloadedUsers = downloadedUsers + user
 
@@ -199,10 +201,11 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor {
           var response = Source.fromInputStream(connection.getInputStream).mkString
 
           println(response)
-          //write to mongo db here
+          mongoDbConnector ! userUploader(response,user)
 
           count = count + 1
-          if (count >= 4990) {
+          if (count >= 4990)
+          {
             println("taking a rest from downloading user json")
 
             var start_time = (System.currentTimeMillis / 1000)
@@ -221,7 +224,8 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor {
 }
 
 
-class jsonParser extends Actor {
+
+class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
 
   var count = 0
   var users: Set[String] = Set()
@@ -237,8 +241,8 @@ class jsonParser extends Actor {
 //      println(file.getAbsolutePath)
       val json_response = Json.parse(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath))))
       val language=file.getName.split("_")(0)
-      val dir: File = new File("../repoFiles/" + language);
-      dir.mkdir()
+//      val dir: File = new File("../repoFiles/" + language);
+//      dir.mkdir()
 
 //      println((json_response\ "items").as[List[JsObject]].size)
       for(i <- 0 until (json_response\ "items").as[List[JsObject]].size) {
@@ -250,6 +254,9 @@ class jsonParser extends Actor {
           val user: String=((json_response \ "items")(i) \ "owner" \ "login").toString()
           addUser(user.replaceAll("\"",""))
         }
+        val id:String=((json_response \ "items")(i) \ "id").toString()
+
+        mongoDbConnector ! repoUploader(str,language,id)
 
 
 //        val id:String=((json_response \ "items")(i) \ "id").toString()
@@ -269,7 +276,26 @@ class jsonParser extends Actor {
   }
 }
 
+class mongoDbConnector  extends Actor {
+  var usercount = 0
+  var repocount = 0
+  def receive = {
 
+    case repoUploader(jsonRepo: String, language: String, id: String) => {
+      repocount=repocount+1
+      if((repocount%50)==0)println("repo upload count: "+repocount)
+      DBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
+    }
+
+    case userUploader(jsonUser: String,user: String) => {
+     usercount=usercount+1
+      if((usercount%50)==0)println("user upload count: "+usercount)
+
+      DBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
+
+    }
+  }
+}
 
 //class myClass() {
 //
