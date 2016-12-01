@@ -17,6 +17,7 @@ object ParameterConstants {
   // useageDB is the actual db bding used for stiring the
   val usageDBName = "cs441project";
   // collection names being used in the database
+  val collectionNameSuffix = "Collection";
   val defaultCollectionName = "movie";
   val usersCollectionName = "usersCollection";
   val cCollectionName = "cCollection";
