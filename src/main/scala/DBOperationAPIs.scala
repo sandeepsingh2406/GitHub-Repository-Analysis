@@ -10,23 +10,30 @@ import scala.io.Source
   */
 object DBOperationAPIs {
 
-  val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
+//  val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
+  val mongoURI = MongoClientURI(ParameterConstants.mongoPrefix + "://" + ParameterConstants.userName + ":"
+  + ParameterConstants.password + "@" + ParameterConstants.hostIPAddress + ":" + ParameterConstants.dbPortNumber +  "/"
+  + ParameterConstants.connectionDBName);
   val mongoClient = MongoClient(mongoURI);
-  val db = mongoClient("cs441project");
-  val collectionName = "movie";
-  val sampleJSONPath = "./documents/example.json";
+  val db = mongoClient(ParameterConstants.usageDBName);
+  val collectionName = ParameterConstants.defaultCollectionName;
+  val sampleJSONPath = ParameterConstants.sampleUserJSONPath;
+//  val sampleJSONPath = ParameterConstants.sampleRepoJSONPath;
 
   def main(args: Array[String]): Unit = {
     val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-    insertDBObject(collectionName, createDBObject(jsonRecordString));
+    println("parsed json string: " + jsonRecordString);
+//    insertDBObject(collectionName, createDBObject(jsonRecordString));
     findAll(collectionName);
 
   }
 
+  // insert jsonfile directly to given collection
   def insertFileJSON(collectionName:String, jsonFileName:String): Unit ={
     insertStringJSON(collectionName, readFirstLineOfFile(jsonFileName));
   }
 
+  // insert string into given collection
   def insertStringJSON(collectionName:String, jsonRecordString:String): Unit ={
     insertDBObject(collectionName, createDBObject(jsonRecordString));
   }
