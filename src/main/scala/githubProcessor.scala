@@ -12,7 +12,9 @@ import scala.io.Source
   */
 
 case class parseRepoJson(file: File)
-
+case class downloadUserJson(user:Set[String])
+case class repoUploader(jsonResponse: String,  language: String,id: String)
+case class userUploader(jsonUser: String,user: String)
 
 
 //Object which creates instance of class contain the main code
@@ -28,11 +30,12 @@ object githubProcessor {
 class initializerClass(){
   def method(args: Array[String]): Unit = {
 
-    val dir: File = new File("../repoFiles");
-    dir.mkdir()
+//    val dir: File = new File("../repoFiles");
+//    dir.mkdir()
     val system = ActorSystem("ActorSystem")
-    val jsonParser = system.actorOf(Props[jsonParser], name = "jsonParser")
-    val downloaderActor = system.actorOf(Props(new downloaderActor(jsonParser)), name = "downloaderActor")
+    val mongoDbConnector = system.actorOf(Props[mongoDbConnector], name = "mongoDbConnector")
+    val jsonParser = system.actorOf(Props(new jsonParser(mongoDbConnector)), name = "jsonParser")
+    val downloaderActor = system.actorOf(Props(new downloaderActor(jsonParser,mongoDbConnector)), name = "downloaderActor")
 
     //        downloaderActor ! "downloadRepo"
 
@@ -40,7 +43,9 @@ class initializerClass(){
   }
 }
 
-class downloaderActor(jsonParser: ActorRef)  extends Actor{
+class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends Actor {
+  var downloadedUsers: Set[String] = Set()
+
 
   /* this function is use to iterate through all folder and fetch files with the extensions */
   def recursiveListFiles(f: File): Array[File] = {
@@ -163,47 +168,95 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor{
         }
       }
     }
-      //this belwo case gets bypassed if we call "downloadrepo" directly
-    case "fileRepoProcessor" =>{
+    //this belwo case gets bypassed if we call "downloadrepo" directly
+    case "fileRepoProcessor" => {
       println("In fileRepoProcessor")
-      val files = recursiveListFiles(new File("../downloadedfiles1/java/"))
+      val files = recursiveListFiles(new File("../downloadedfiles1/"))
 
-//      val file=files(0)
-            for(file<-files)
-            {
-      jsonParser ! parseRepoJson(file)
+      //            val file=files(0)
+      for (file <- files) {
+        jsonParser ! parseRepoJson(file)
+      }
+      jsonParser ! "getUsersFromJson"
+
+
+    }
+
+    case downloadUserJson(users: Set[String]) => {
+
+      var count = 0
+      //      val user=users.head
+      for (user <- users) {
+
+
+        if (!downloadedUsers.contains(user)) {
+          println("user: " + user + ", user.size: " + users.size)
+
+          downloadedUsers = downloadedUsers + user
+
+          val url = "https://api.github.com/users/" + user
+
+          val connection = new URL(url).openConnection
+          connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
+          var response = Source.fromInputStream(connection.getInputStream).mkString
+
+          println(response)
+          mongoDbConnector ! userUploader(response,user)
+
+          count = count + 1
+          if (count >= 4990)
+          {
+            println("taking a rest from downloading user json")
+
+            var start_time = (System.currentTimeMillis / 1000)
+            while ((System.currentTimeMillis / 1000) < (start_time + 1800)) {
             }
-      jsonParser ! "getUsers"
+            start_time = (System.currentTimeMillis / 1000)
+            count = 0
 
 
+          }
 
+        }
+      }
     }
   }
 }
 
 
-class jsonParser extends Actor {
+
+class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
 
   var count = 0
-  val lst : java.util.Collection[String] = new java.util.ArrayList
+  var users: Set[String] = Set()
  def incrementAndPrint { count += 1; }//println(count) }
-  def addUser(user: String){lst add(user)}
+  def addUser(user: String){
+    users=users+user
+    }
   def receive = {
     case parseRepoJson(file) =>{
 
       //in this case i can get one item json and directly call another case of another actor that writes the json to mongodb
-      incrementAndPrint
+
 //      println(file.getAbsolutePath)
       val json_response = Json.parse(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath))))
       val language=file.getName.split("_")(0)
-      val dir: File = new File("../repoFiles/" + language);
-      dir.mkdir()
+//      val dir: File = new File("../repoFiles/" + language);
+//      dir.mkdir()
 
 //      println((json_response\ "items").as[List[JsObject]].size)
       for(i <- 0 until (json_response\ "items").as[List[JsObject]].size) {
       val str:String=((json_response \ "items")(i)).toString()
-        val user: String=((json_response \ "items")(i) \ "owner" \ "login").toString()
-        addUser(user)
+
+
+        if(language.equals("java"))
+        {
+          val user: String=((json_response \ "items")(i) \ "owner" \ "login").toString()
+          addUser(user.replaceAll("\"",""))
+        }
+        val id:String=((json_response \ "items")(i) \ "id").toString()
+
+        mongoDbConnector ! repoUploader(str,language,id)
 
 
 //        val id:String=((json_response \ "items")(i) \ "id").toString()
@@ -215,17 +268,34 @@ class jsonParser extends Actor {
     }
 
 
-  case "getUsers" =>{
-    println("lst.size= "+lst.size())
-    println("Set size= "+Set(lst.toArray : _*).size)
-
-
+  case "getUsersFromJson" =>{
+    println("Set size= "+users.size)
+    sender ! downloadUserJson(users)
 
   }
   }
 }
 
+class mongoDbConnector  extends Actor {
+  var usercount = 0
+  var repocount = 0
+  def receive = {
 
+    case repoUploader(jsonRepo: String, language: String, id: String) => {
+      repocount=repocount+1
+      if((repocount%50)==0)println("repo upload count: "+repocount)
+      DBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
+    }
+
+    case userUploader(jsonUser: String,user: String) => {
+     usercount=usercount+1
+      if((usercount%50)==0)println("user upload count: "+usercount)
+
+      DBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
+
+    }
+  }
+}
 
 //class myClass() {
 //
