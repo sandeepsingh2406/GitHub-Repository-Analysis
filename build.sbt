@@ -14,3 +14,7 @@ libraryDependencies ++= Seq(
   "org.scalatest"  %% "scalatest"   % "2.2.4" % Test, //note 2.2.2 works too
   "commons-io" % "commons-io" % "2.5"
 )
+
+libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
+libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
+
