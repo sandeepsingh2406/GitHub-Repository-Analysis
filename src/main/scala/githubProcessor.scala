@@ -171,7 +171,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
     //this belwo case gets bypassed if we call "downloadrepo" directly
     case "fileRepoProcessor" => {
       println("In fileRepoProcessor")
-      val files = recursiveListFiles(new File("../downloadedfiles1"))
+      val files = recursiveListFiles(new File("../downloadedfiles1/java"))
 
       //            val file=files(0)
       for (file <- files) {
@@ -184,36 +184,56 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
     case downloadUserJson(users: Set[String]) => {
 
-      var count = 0
+      var count=0
+
+      println("In downloadUserJson")
+      var start_time = (System.currentTimeMillis / 1000)
+
       //      val user=users.head
+
+      val already_downloadedJSON=recursiveListFiles(new File("../userJsons"))
+      println("already_downloadedJSON: "+already_downloadedJSON(0))
+      println("..\\userJsons\\"+"0-elip"+".json")
       for (user <- users) {
 
 
-        if (!downloadedUsers.contains(user)) {
+
+        if (!downloadedUsers.contains(user) &&
+          !already_downloadedJSON.contains(new File("..\\userJsons\\"+user+".json"))) {
+//          println("TRUE: "+user)
 //          println("user: " + user + ", user.size: " + users.size)
 
           downloadedUsers = downloadedUsers + user
-
+//
           val url = "https://api.github.com/users/" + user
-
+//
           val connection = new URL(url).openConnection
           connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
-          var response = Source.fromInputStream(connection.getInputStream).mkString
+          var response=""
+          try {
+            response = Source.fromInputStream(connection.getInputStream).mkString
+          }
+          catch{case e: Exception =>
 
-          //          println(response)
+            //add exception handling for user not found type exception and seperate for limit reached exception
+            response="";
+          println("Exception: "+user)}
+
+//
+//          //          println(response)
           val file = new File("../userJsons/" + user+".json")
           val bw = new BufferedWriter(new FileWriter(file))
           bw.write(response)
           bw.close()
-          mongoDbConnector ! userUploader(response,user)
-
+////          mongoDbConnector ! userUploader(response,user)
+//
           count = count + 1
           if (count >= 4990)
           {
             println("taking a rest from downloading user json")
 
             var start_time = (System.currentTimeMillis / 1000)
-            while ((System.currentTimeMillis / 1000) < (start_time + 1800)) {
+            while ((System.currentTimeMillis / 1000) < (start_time + 3600)) {
             }
             start_time = (System.currentTimeMillis / 1000)
             count = 0
@@ -222,6 +242,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
           }
 
         }
+
       }
     }
   }
@@ -260,7 +281,7 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
         }
         val id:String=((json_response \ "items")(i) \ "id").toString()
 
-        mongoDbConnector ! repoUploader(str,language,id)
+//        mongoDbConnector ! repoUploader(str,language,id)
 
 
         //        val id:String=((json_response \ "items")(i) \ "id").toString()
