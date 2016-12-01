@@ -4,7 +4,7 @@
 3] number of files in a project, average number of different languages used in a project
 4] different licenses for projects, which are very popular licensing schemes
 5] average duration of project, average contributions per month
-6] Graph of number of projects per language in the given year/month
+6] Graph of number of projects per language in the given year/month: done. Call getCollectionCount
 7] average number of contributors, per project
 8] highly rated/reviewed projects
 9] graph of total number of languages used in all the projects (language on x axis, and number of files in that language on y-axis)
