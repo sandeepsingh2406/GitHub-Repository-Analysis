@@ -12,6 +12,7 @@ import scala.io.Source
   */
 
 case class parseRepoJson(file: File)
+case class downloadUserJson(user:Set[String])
 
 
 
@@ -40,7 +41,9 @@ class initializerClass(){
   }
 }
 
-class downloaderActor(jsonParser: ActorRef)  extends Actor{
+class downloaderActor(jsonParser: ActorRef)  extends Actor {
+  var downloadedUsers: Set[String] = Set()
+
 
   /* this function is use to iterate through all folder and fetch files with the extensions */
   def recursiveListFiles(f: File): Array[File] = {
@@ -163,20 +166,56 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor{
         }
       }
     }
-      //this belwo case gets bypassed if we call "downloadrepo" directly
-    case "fileRepoProcessor" =>{
+    //this belwo case gets bypassed if we call "downloadrepo" directly
+    case "fileRepoProcessor" => {
       println("In fileRepoProcessor")
-      val files = recursiveListFiles(new File("../downloadedfiles1/java/"))
+      val files = recursiveListFiles(new File("../downloadedfiles1/"))
 
-//      val file=files(0)
-            for(file<-files)
-            {
-      jsonParser ! parseRepoJson(file)
+      //      val file=files(0)
+      for (file <- files) {
+        jsonParser ! parseRepoJson(file)
+      }
+      jsonParser ! "getUsersFromJson"
+
+
+    }
+
+    case downloadUserJson(users: Set[String]) => {
+
+      var count = 0
+      for (user <- users) {
+
+
+
+        if (!downloadedUsers.contains(user)) {
+
+
+          downloadedUsers = downloadedUsers + user
+
+          val url = "https://api.github.com/users/" + user
+
+          val connection = new URL(url).openConnection
+          connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
+          var response = Source.fromInputStream(connection.getInputStream).mkString
+
+          println(response)
+          //write to mongo db here
+
+          count = count + 1
+          if (count >= 4990) {
+            println("taking a rest from downloading user json")
+
+            var start_time = (System.currentTimeMillis / 1000)
+            while ((System.currentTimeMillis / 1000) < (start_time + 1800)) {
             }
-      jsonParser ! "getUsers"
+            start_time = (System.currentTimeMillis / 1000)
+            count = 0
 
 
+          }
 
+        }
+      }
     }
   }
 }
@@ -185,14 +224,16 @@ class downloaderActor(jsonParser: ActorRef)  extends Actor{
 class jsonParser extends Actor {
 
   var count = 0
-  val lst : java.util.Collection[String] = new java.util.ArrayList
+  var users: Set[String] = Set()
  def incrementAndPrint { count += 1; }//println(count) }
-  def addUser(user: String){lst add(user)}
+  def addUser(user: String){
+    users=users+user
+    }
   def receive = {
     case parseRepoJson(file) =>{
 
       //in this case i can get one item json and directly call another case of another actor that writes the json to mongodb
-      incrementAndPrint
+
 //      println(file.getAbsolutePath)
       val json_response = Json.parse(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath))))
       val language=file.getName.split("_")(0)
@@ -202,8 +243,13 @@ class jsonParser extends Actor {
 //      println((json_response\ "items").as[List[JsObject]].size)
       for(i <- 0 until (json_response\ "items").as[List[JsObject]].size) {
       val str:String=((json_response \ "items")(i)).toString()
-        val user: String=((json_response \ "items")(i) \ "owner" \ "login").toString()
-        addUser(user)
+
+
+        if(language.equals("java"))
+        {
+          val user: String=((json_response \ "items")(i) \ "owner" \ "login").toString()
+          addUser(user.replaceAll("\"",""))
+        }
 
 
 //        val id:String=((json_response \ "items")(i) \ "id").toString()
@@ -215,11 +261,9 @@ class jsonParser extends Actor {
     }
 
 
-  case "getUsers" =>{
-    println("lst.size= "+lst.size())
-    println("Set size= "+Set(lst.toArray : _*).size)
-
-
+  case "getUsersFromJson" =>{
+    println("Set size= "+users.size)
+    sender ! downloadUserJson(users)
 
   }
   }
