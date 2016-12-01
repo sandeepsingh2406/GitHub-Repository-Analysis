@@ -8,7 +8,7 @@ import scala.io.Source
 /**
   * Created by avp on 11/30/2016.
   */
-object DBConnection {
+object DBOperationAPIs {
 
   val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
   val mongoClient = MongoClient(mongoURI);
@@ -18,13 +18,22 @@ object DBConnection {
 
   def main(args: Array[String]): Unit = {
     val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-    insertRecord(collectionName, createDBObject(jsonRecordString));
+    insertDBObject(collectionName, createDBObject(jsonRecordString));
     findAll(collectionName);
 
   }
 
-  // insert given object in given collection
-  def insertRecord(collectionName:String, dbObject: DBObject): Unit ={
+  def insertFileJSON(collectionName:String, jsonFileName:String): Unit ={
+    insertStringJSON(collectionName, readFirstLineOfFile(jsonFileName));
+  }
+
+  def insertStringJSON(collectionName:String, jsonRecordString:String): Unit ={
+    insertDBObject(collectionName, createDBObject(jsonRecordString));
+  }
+
+  /* insert given object in given collection
+  * */
+  def insertDBObject(collectionName:String, dbObject: DBObject): Unit ={
     val collectionObject = db(collectionName);
     collectionObject.insert(dbObject);
   }
