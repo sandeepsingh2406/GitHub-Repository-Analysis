@@ -309,14 +309,14 @@ class mongoDbConnector  extends Actor {
     case repoUploader(jsonRepo: String, language: String, id: String) => {
       repocount=repocount+1
       if((repocount%50)==0)println("repo upload count: "+repocount)
-      DBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
+      MongoDBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
     }
 
     case userUploader(jsonUser: String,user: String) => {
       usercount=usercount+1
       if((usercount%50)==0)println("user upload count: "+usercount)
 
-      DBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
+      MongoDBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
 
     }
   }

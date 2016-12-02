@@ -7,7 +7,7 @@ import scala.io.Source
 /**
   * Created by avp on 11/30/2016.
   */
-object DBOperationAPIs {
+object MongoDBOperationAPIs {
 
 //  val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
   val mongoURI = MongoClientURI(ParameterConstants.mongoPrefix + "://" + ParameterConstants.userName + ":"

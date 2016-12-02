@@ -4,7 +4,7 @@ Doable immediately, 1st round:
 6] Graph of number of projects per language in the given year/month: done. Call getCollectionCount
 10] cluster users according to numebr of users and show count of each cluster (number of users having number of repos in that range), show pie chart
 11] subscribers count from repo json (not in all repos)
-
+- cluster of number of repos per user
 
 Doable after some more programming, data retrieval
 1] Average bytes of code per languages/project
@@ -17,7 +17,7 @@ Doable after some more programming, data retrieval
 4] different licenses for projects, which are very popular licensing schemes
 5] average duration of project, average contributions per month
 7] average number of contributors, per project
-8] highly rated/reviewed projects
+8] highly rated/reviewed projects (calculate popularity using subscribers, forks and watchers count)
 9] graph of total number of languages used in all the projects (language on x axis, and number of files in that language on y-axis)
 
 

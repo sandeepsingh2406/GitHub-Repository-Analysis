@@ -1,0 +1,32 @@
+userTable{
+userName: varchar
+id: int
+publicRepos: int
+numberOfFollowers: int
+numberOfFollowing: int
+numberOfSubscriptions: int
+}
+
+
+repoTable{
+repoName: varchar
+id: int
+ownerUserName: varchar
+ownerId: int
+cratedAt: date time
+updatedAt: date time
+size: int
+numberOfBytes: int
+numberOfLines: int
+numberOfCommits: int
+numberOfFiles: int
+watchersCount: int
+forksCount: int
+subscribersCount: int
+}
+
+projectLanguageTable{
+projectName: varchar
+language: varchar
+numberOfLines
+}
