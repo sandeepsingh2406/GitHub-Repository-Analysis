@@ -22,3 +22,14 @@ $ curl -wget "https://api.github.com/search/repositories?q=language:csharp&per_p
 https://api.github.com/search/repositories?q=language:csharp+created:2016-01-01..2016-01-05+size:%3E10000&per_page=100
 
 
+List languages for the specified repository. The value on the right of a language is the number of bytes of code written in that language.
+
+GET /repos/:owner/:repo/languages
+eg. https://api.github.com/repos/lixiangers/BadgeUtil/languages
+Response
+Status: 200 OK
+{
+  "C": 78769,
+  "Python": 7769
+}
+
