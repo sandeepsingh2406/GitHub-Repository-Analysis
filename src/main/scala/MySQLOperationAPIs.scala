@@ -9,8 +9,12 @@ import java.sql.{Connection,DriverManager}
 
 object MySQLOperationAPIs {
 
-  val url =
-  def main(args: Array[String]): Unit ={
+//  val url = "jdbc:mysql://localhost:8889/mysql";
+  val url = ParameterConstants.mysqlPrefix + "://" + ParameterConstants.mysqlHostIPAddress +
+  ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
+  var connection:Connection = DriverManager.getConnection(url, ParameterConstants.mysqlUserName, ParameterConstants.mysqlPassword);
 
+  def main(args: Array[String]): Unit ={
+    println("hello");
   }
 }

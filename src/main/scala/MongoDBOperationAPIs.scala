@@ -1,7 +1,8 @@
-import com.mongodb.DBObject
-import com.mongodb.casbah.{MongoClient, MongoClientURI}
+import com.mongodb.{BasicDBObject, DBCursor, DBObject}
+import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
 
+import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
 /**
@@ -25,13 +26,48 @@ object MongoDBOperationAPIs {
 
   def main(args: Array[String]): Unit = {
     val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-    println("parsed json string: " + jsonRecordString);
+//    println("parsed json string: " + jsonRecordString);
 //    insertDBObject(collectionName, createDBObject(jsonRecordString));
 //    findAll(ParameterConstants.defaultCollectionName);
-    println(getCollectionCount(ParameterConstants.cCollectionName));
+//    println(getCollectionCount(ParameterConstants.cCollectionName));
+//    getHTMLURL(ParameterConstants.javaCollectionName, 501);
 
   }
 
+  // get list of strings of html_url satisfying min fork count specified as parameter
+  /*def getHTMLURL(collectionName:String, minForkCount:Int): Unit = {
+//{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
+    val condition = "{ \"forks_count\": {$gt:" + minForkCount.toString + "} }, {html_url:1, _id:0}";
+    println("condition: " + condition);
+
+/*
+BasicDBObject query = new BasicDBObject();
+BasicDBObject field = new BasicDBObject();
+field.put("HomeTown", 1);
+DBCursor cursor = db.getCollection(collectionName).find(query,field);
+while (cursor.hasNext()) {
+    BasicDBObject obj = (BasicDBObject) cursor.next();
+    result.add(obj.getString("HomeTown"));
+}
+*/
+
+    val result = new ListBuffer[String]();
+    val innerCondition: BasicDBObject = new BasicDBObject();
+    innerCondition.put("$gt", minForkCount.asInstanceOf[Object]);
+
+    val mainCondition = new BasicDBObject();
+    mainCondition.put("forks_count", innerCondition);
+
+    val mongoCursor:MongoCursor = db(collectionName).find(mainCondition);
+    while(mongoCursor.hasNext){
+      val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
+      result += basicDBObject.getString("html_url");
+    }
+
+    print(result.toString());
+//    println("temp: " + temp.next() + ", class: " + temp.next().getClass());
+  }
+*/
   // returns total number of documents in given collection
   def getCollectionCount(collectonName: String): Int = {
     return db(collectionName).count();
