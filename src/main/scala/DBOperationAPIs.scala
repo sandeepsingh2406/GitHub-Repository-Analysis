@@ -24,7 +24,7 @@ object DBOperationAPIs {
     println("parsed json string: " + jsonRecordString);
 //    insertDBObject(collectionName, createDBObject(jsonRecordString));
 //    findAll(ParameterConstants.defaultCollectionName);
-//    println(getCollectionCount(ParameterConstants.cCollectionName));
+    println(getCollectionCount(ParameterConstants.cCollectionName));
   }
 
   // returns total number of documents in given collection
