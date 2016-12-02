@@ -1,0 +1,11 @@
+//JGIT to get # of commits
+http://stackoverflow.com/questions/27278328/use-jgit-to-get-the-git-commit-count
+http://stackoverflow.com/questions/23973284/using-jgit-to-count-the-number-of-commits-on-a-file
+
+Iterable<RevCommit> commits = git.log().call();
+int count = 0;
+for( RevCommit commit : commits ) {
+  count++;
+}
+
+https://github.com/centic9/jgit-cookbook
