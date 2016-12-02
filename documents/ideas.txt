@@ -28,6 +28,17 @@ Doable after some more programming, data retrieval
 Give us users
 
 
+------------------------------------------------
+
+Abhijay TODO:
+create userTable, repoTable
+check all repos in mongo if fork_count>4 then return string url of html_url from (input: collection name, output: list of html_url)
+2 methods for mysql
+    projectLanguageTable with 4 arguments
+    projectCommitsTabe with 3 arguments
+
+
+pull all details from mongodb and insert in mysql
 
 ------------------------------------------------
 
