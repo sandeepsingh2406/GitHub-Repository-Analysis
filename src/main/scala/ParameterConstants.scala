@@ -6,11 +6,10 @@ object ParameterConstants {
   val mongoPrefix = "mongodb";
   val userName = "admin";
   val password = "new_password";
-  val hostIPAddress = "104.197.28.49";
+  val mongoDBHostIPAddress = "104.197.28.49";
   val dbPortNumber = "27017";
   val sampleRepoJSONPath = "./documents/example_repo.json";
   val sampleUserJSONPath = "./documents/example_user.json";
-
   // connection database name is used only for connecting to remote mongodb instance, as I have created a used only for
   // this database.
   val connectionDBName = "admin";
@@ -24,4 +23,13 @@ object ParameterConstants {
   val javaCollectionName = "javaCollection";
   val pythonCollectionName = "pythonCollection";
   val goCollectionName = "goCollection";
+
+  // mysql related constants
+  val mysqlDriver = "com.mysql.jdbc.Driver";
+  val mysqlUserName = "root";
+  val mysqlPassword = "new_password";
+  val mysqlHostIPAddress = "104.155.94.91 ";
+  val mysqlDBPortNumber = "3306";
+  val mysqlDBName = "cs441project";
+  val mysqlPrefix = "jdbc:mysql";
 }

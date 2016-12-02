@@ -28,6 +28,11 @@ Doable after some more programming, data retrieval
 Give us users
 
 
+------------------------------------------------
+
+Abhijay TODO:
+create userTable, repoTable
+pull all details from mongodb and insert in mysql
 
 ------------------------------------------------
 

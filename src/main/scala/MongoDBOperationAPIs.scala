@@ -6,13 +6,17 @@ import scala.io.Source
 
 /**
   * Created by avp on 11/30/2016.
+  *
+  * ToDo
+  * Close db connection client
   */
+
 object MongoDBOperationAPIs {
 
-//  val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
-  val mongoURI = MongoClientURI(ParameterConstants.mongoPrefix + "://" + ParameterConstants.userName + ":"
-  + ParameterConstants.password + "@" + ParameterConstants.hostIPAddress + ":" + ParameterConstants.dbPortNumber +  "/"
-  + ParameterConstants.connectionDBName);
+  //  val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
+  val mongoURIString = ParameterConstants.mongoPrefix + "://" + ParameterConstants.userName + ":" + ParameterConstants.password +
+    "@" + ParameterConstants.mongoDBHostIPAddress + ":" + ParameterConstants.dbPortNumber +  "/" + ParameterConstants.connectionDBName;
+  val mongoURI = MongoClientURI(mongoURIString);
   val mongoClient = MongoClient(mongoURI);
   val db = mongoClient(ParameterConstants.usageDBName);
   val collectionName = ParameterConstants.defaultCollectionName;
@@ -25,6 +29,7 @@ object MongoDBOperationAPIs {
 //    insertDBObject(collectionName, createDBObject(jsonRecordString));
 //    findAll(ParameterConstants.defaultCollectionName);
     println(getCollectionCount(ParameterConstants.cCollectionName));
+
   }
 
   // returns total number of documents in given collection
