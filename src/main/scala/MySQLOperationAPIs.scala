@@ -5,7 +5,8 @@
   * close connection client
   */
 
-import java.sql.{Connection,DriverManager}
+import java.beans.Statement
+import java.sql.{Connection, DriverManager}
 
 object MySQLOperationAPIs {
 
@@ -13,8 +14,16 @@ object MySQLOperationAPIs {
   val url = ParameterConstants.mysqlPrefix + "://" + ParameterConstants.mysqlHostIPAddress +
   ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
   var connection:Connection = DriverManager.getConnection(url, ParameterConstants.mysqlUserName, ParameterConstants.mysqlPassword);
+  val statement = connection.createStatement;
 
   def main(args: Array[String]): Unit ={
     println("hello");
+  }
+
+  def testDBConnection(): Unit = {
+    val resultSet = statement.executeQuery("show tables;");
+    while (resultSet.next) {
+      println(resultSet.getString("Tables_in_cs441project"));
+    }
   }
 }
