@@ -30,27 +30,13 @@ object MongoDBOperationAPIs {
 //    insertDBObject(collectionName, createDBObject(jsonRecordString));
 //    findAll(ParameterConstants.defaultCollectionName);
 //    println(getCollectionCount(ParameterConstants.cCollectionName));
-//    getHTMLURL(ParameterConstants.javaCollectionName, 501);
+    println(getHTMLURL(ParameterConstants.javaCollectionName, 501).toString());
 
   }
 
   // get list of strings of html_url satisfying min fork count specified as parameter
-  /*def getHTMLURL(collectionName:String, minForkCount:Int): Unit = {
+  def getHTMLURL(collectionName:String, minForkCount:Int): ListBuffer[String] = {
 //{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
-    val condition = "{ \"forks_count\": {$gt:" + minForkCount.toString + "} }, {html_url:1, _id:0}";
-    println("condition: " + condition);
-
-/*
-BasicDBObject query = new BasicDBObject();
-BasicDBObject field = new BasicDBObject();
-field.put("HomeTown", 1);
-DBCursor cursor = db.getCollection(collectionName).find(query,field);
-while (cursor.hasNext()) {
-    BasicDBObject obj = (BasicDBObject) cursor.next();
-    result.add(obj.getString("HomeTown"));
-}
-*/
-
     val result = new ListBuffer[String]();
     val innerCondition: BasicDBObject = new BasicDBObject();
     innerCondition.put("$gt", minForkCount.asInstanceOf[Object]);
@@ -64,10 +50,9 @@ while (cursor.hasNext()) {
       result += basicDBObject.getString("html_url");
     }
 
-    print(result.toString());
-//    println("temp: " + temp.next() + ", class: " + temp.next().getClass());
+    return result;
   }
-*/
+
   // returns total number of documents in given collection
   def getCollectionCount(collectonName: String): Int = {
     return db(collectionName).count();
