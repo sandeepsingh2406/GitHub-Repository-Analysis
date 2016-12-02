@@ -33,3 +33,5 @@ repoName: varchar
 id: varchar
 numberOfCommits: int
 }
+
+#Might also want to add number of files
