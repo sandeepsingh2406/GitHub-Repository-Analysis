@@ -34,9 +34,11 @@ object MongoDBOperationAPIs {
 
   }
 
-  // get list of strings of html_url satisfying min fork count specified as parameter
-  def getHTMLURL(collectionName:String, minForkCount:Int): ListBuffer[String] = {
+  // get a map of repository id to html_url satisfying min fork count specified as parameter
+  def getHTMLURL(collectionName:String, minForkCount:Int): Map[String, String] = {
 //{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
+    var resultMap = Map[String, String]();
+
     val result = new ListBuffer[String]();
     val innerCondition: BasicDBObject = new BasicDBObject();
     innerCondition.put("$gt", minForkCount.asInstanceOf[Object]);
@@ -48,9 +50,10 @@ object MongoDBOperationAPIs {
     while(mongoCursor.hasNext){
       val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
       result += basicDBObject.getString("html_url");
+      resultMap += ( basicDBObject.getString("id") -> basicDBObject.getString("html_url"));
     }
 
-    return result;
+    return resultMap;
   }
 
   // returns total number of documents in given collection
