@@ -168,10 +168,10 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
         }
       }
     }
-    //this belwo case gets bypassed if we call "downloadrepo" directly
+    //this belwo case gets bypassed if we call "downloadrepo" directly and can used to read locally written repo json files and write to mongodb
     case "fileRepoProcessor" => {
       println("In fileRepoProcessor")
-      val files = recursiveListFiles(new File("../downloadedfiles1/java"))
+      val files = recursiveListFiles(new File("../downloadedfiles1/"))
 
       //            val file=files(0)
       for (file <- files) {
@@ -191,15 +191,21 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
       //      val user=users.head
 
-      val already_downloadedJSON=recursiveListFiles(new File("../userJsons"))
-      println("already_downloadedJSON: "+already_downloadedJSON(0))
-      println("..\\userJsons\\"+"0-elip"+".json")
-      for (user <- users) {
+//      val already_downloadedJSON=recursiveListFiles(new File("../userJsons"))
 
 
+      ////In case we want to read all user json present locally and write them to mongodb
+//      for (userJson <- already_downloadedJSON) {
+//        val userjson_str=Json.parse(new String(Files.readAllBytes(Paths.get(userJson.getAbsolutePath)))).toString()
+//        println(userjson_str)
+//        mongoDbConnector ! userUploader(userjson_str,userJson.getName())
 
-        if (!downloadedUsers.contains(user) &&
-          !already_downloadedJSON.contains(new File("..\\userJsons\\"+user+".json"))) {
+
+////to get user json through api calls
+              for (user <- users) {
+        if (!downloadedUsers.contains(user))
+//          &&           !already_downloadedJSON.contains(new File("..\\userJsons\\"+user+".json")))
+        {
 //          println("TRUE: "+user)
 //          println("user: " + user + ", user.size: " + users.size)
 
@@ -217,15 +223,18 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
             //add exception handling for user not found type exception and seperate for limit reached exception
             response="";
-          println("Exception: "+user)}
+          println("Exception: "+user)
+          }
 
 //
-//          //          println(response)
-          val file = new File("../userJsons/" + user+".json")
-          val bw = new BufferedWriter(new FileWriter(file))
-          bw.write(response)
-          bw.close()
-////          mongoDbConnector ! userUploader(response,user)
+//          ////to get user json and write locally
+//          val file = new File("../userJsons/" + user+".json")
+//          val bw = new BufferedWriter(new FileWriter(file))
+//          bw.write(response)
+//          bw.close()
+
+//        to write userjson to mongodb
+          mongoDbConnector ! userUploader(response,user)
 //
           count = count + 1
           if (count >= 4990)
@@ -281,9 +290,9 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
         }
         val id:String=((json_response \ "items")(i) \ "id").toString()
 
-//        mongoDbConnector ! repoUploader(str,language,id)
+        mongoDbConnector ! repoUploader(str,language,id)
 
-
+//In case we want to write all json into files locally
         //        val id:String=((json_response \ "items")(i) \ "id").toString()
         //        val file = new File("../repoFiles/" + language + "/" + language + "_" +id+".json")
         //        val bw = new BufferedWriter(new FileWriter(file))
@@ -291,7 +300,6 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
         //        bw.close()
       }
     }
-
 
     case "getUsersFromJson" =>{
       println("Set size= "+users.size)
