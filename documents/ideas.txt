@@ -8,7 +8,8 @@ Doable immediately, 1st round:
 
 Doable after some more programming, data retrieval
 1] Average bytes of code per languages/project
-
+- number of commits from jgit
+- number of files from jgit
 
 
 2] number of days required (pushed at - created in repo json) during commits, average loc per day/per commit
