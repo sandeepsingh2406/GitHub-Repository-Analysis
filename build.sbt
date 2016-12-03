@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.scalatest"  %% "scalatest"   % "2.2.4" % Test, //note 2.2.2 works too
   "org.mongodb" %% "casbah" % "3.1.1",
   "org.mongodb.scala" %% "mongo-scala-driver" % "1.2.1",
-  "mysql" % "mysql-connector-java" % "5.1.24",
+  "mysql" % "mysql-connector-java" % "5.1.40",
+//  "mysql" % "mysql-connector-java" % "6.0.2",
   "commons-io" % "commons-io" % "2.5"
 )
 
