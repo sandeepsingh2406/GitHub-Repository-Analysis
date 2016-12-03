@@ -1,8 +1,12 @@
 import java.io.{BufferedReader, File, FileReader}
+import java.net.URL
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
+import play.api.libs.json.{JsObject, Json}
+
+import scala.io.Source
 
 /**
   * Created by singsand on 12/2/2016.
@@ -10,6 +14,8 @@ import org.eclipse.jgit.api.Git
 case class getRepoMetadataJgit(id: String,htmlUrl: String)
 case class repoCommitsWriter(repoName: String,repoId: String,commit_count: Int)
 case class repoLanguageLOCWriter(repoName: String,repoId: String,language: String, lines:Long)
+case class intermediateCase(userDetails: Array[String])
+case class userDetailsWriter(userDetails: Array[String])
 
 
 object mongoDbToMySqlObject {
@@ -33,6 +39,8 @@ class mongoDbToMySql {
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
     mongoDbReaderActor ! "getListURL"
+    mongoDbReaderActor ! "getUsersJSON"
+
   }
 }
 
@@ -62,10 +70,47 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
     case "getUsersJSON" =>{
 
-//      val userDetailsList=MongoDBOperationAPIs.somemethod()
+      val userDetailsList=MongoDBOperationAPIs.getUserDetails()
+
+//      val userDetailsList=List(
+//  "libin1987,22090870,6,1,2,https://api.github.com/users/libin1987/subscriptions",
+//  "monstertony,20313408,5,4,3,https://api.github.com/users/monstertony/subscriptions")
+
+      //loginname,id,repos#,followers#,following#,subscription_url
+
+      for(temp<-userDetailsList)
+        {
+          val userDetails=temp.split(",")
+//          println(userDetails(5))
+          val connection = new URL(userDetails(5)).openConnection
+          connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
+          var response=""
+          try {
+            response = Source.fromInputStream(connection.getInputStream).mkString
+            if(response.replace("[","").replace("]","").isEmpty)
+            {
+              userDetails(5)="0"
+            }
+            else {
+              val json_response = Json.parse(response.toString)
+              userDetails(5)=json_response.as[List[JsObject]].size.toString
 
 
-//      getMetadataJgit.recursiveListFiles(new File("../userJsons"))
+            }
+            getMetadataJgit ! intermediateCase(userDetails)
+          }
+          catch{case e: Exception =>
+
+            //add exception handling for user not found type exception and seperate for limit reached exception
+            response="";
+            println("Exception: "+userDetails(0))
+          }
+
+
+
+        }
+
+      //      getMetadataJgit.recursiveListFiles(new File("../userJsons"))
     }
   }
 }
@@ -154,7 +199,13 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
       catch{case e: Exception => println("Exception: "+e)}
 
     }
-  }
+    case intermediateCase(userDetails: Array[String]) => {
+
+
+      mySqlWriterActor ! userDetailsWriter(userDetails)
+    }
+    }
+
 }
 
 class mySqlWriterActor extends Actor {
@@ -167,6 +218,11 @@ class mySqlWriterActor extends Actor {
 
     case repoLanguageLOCWriter(repoName: String,repoId: String,language: String, lines:Long) => {
       println(repoName+  " "+repoId+ " "+language+" "+lines)
+    }
+
+    case userDetailsWriter(userDetails: Array[String]) => {
+
+      println(userDetails.foreach(element=>print(element+"  ")))
     }
   }
 }
