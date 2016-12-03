@@ -45,18 +45,27 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
       for (language <- languages) {
 
         //make call to mongodb retriever method
-        //        val map=MongoDBOperationAPIs.getHTMLURL(language+"Collection",4)
+        val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",4)
 
-        var map = scala.collection.mutable.Map[String, String]()
-        map +=
-         ("1" -> "https://github.com/captainriku75/bash_like_shell")//"https://github.com/md100play/PodTube")
-        map+=
-          ("2" -> "https://github.com/captainriku75/simple_chat_program")//"https://github.com/alexrohleder96/caronas4colonia")
-
-        for ((id,htmlUrl) <- map) {
+//        val list: List[String] = List(
+//
+//                      "https://github.com/captainriku75/bash_like_shell,123",
+//                    "https://github.com/lixiangers/BadgeUtil,123"
+//        )
+        for (list_element <- repoDetailslist) {
+          val htmlUrl=list_element.split(",")(0)
+          val id=list_element.split(",")(1)
           getMetadataJgit ! getRepoMetadataJgit(id,htmlUrl)
         }
       }
+    }
+
+    case "getUsersJSON" =>{
+
+//      val userDetailsList=MongoDBOperationAPIs.somemethod()
+
+
+//      getMetadataJgit.recursiveListFiles(new File("../userJsons"))
     }
   }
 }
