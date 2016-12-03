@@ -107,6 +107,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
       //loginname,id,repos#,followers#,following#,subscription_url
 
+      var count=0
       for(temp<-userDetailsList)
         {
           val userDetails=temp.split(",")
@@ -133,6 +134,20 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
             //add exception handling for user not found type exception and seperate for limit reached exception
             response="";
             println("Exception: "+userDetails(0))
+          }
+
+          count = count + 1
+          if (count >= 4950)
+          {
+            println("taking a rest from downloading user json")
+
+            var start_time = (System.currentTimeMillis / 1000)
+            while ((System.currentTimeMillis / 1000) < (start_time + 3600)) {
+            }
+            start_time = (System.currentTimeMillis / 1000)
+            count = 0
+
+
           }
 
 
@@ -248,24 +263,37 @@ class mySqlWriterActor extends Actor {
   def receive = {
     case topRepoCommitsWriter(repoName: String,repoId: String,commit_count: Int,total_file_count: Int) => {
 
-      println(repoName+  " "+repoId+ " "+commit_count+" "+total_file_count)
+//      println(repoName+  " "+repoId+ " "+commit_count+" "+total_file_count)
+      MySQLOperationAPIs.insertTopRepoCommitsTable(repoName,repoId.toLong,commit_count,total_file_count)
     }
 
     case topRepoLanguageWriter(repoName: String,repoId: String,language: String, lines:Long, numfiles: Long) => {
-      println(repoName+  " "+repoId+ " "+language+" "+lines+" "+numfiles)
+//      println(repoName+  " "+repoId+ " "+language+" "+lines+" "+numfiles)
+
+      MySQLOperationAPIs.insertTopRepoLanguageTable(repoName,repoId.toLong,language,lines,numfiles.toInt)
+
     }
+
 
     case userDetailsWriter(userDetails: Array[String]) => {
 
-      println(userDetails.foreach(element=>print(element+"  ")))
+//      println(userDetails.foreach(element=>print(element+"  ")))
+      MySQLOperationAPIs.insertUserTable(userDetails(0),
+        userDetails(1).toLong,
+        userDetails(2).toInt,
+        userDetails(3).toInt,
+        userDetails(4).toInt,
+        userDetails(5).toInt)
 
 
     }
 
     case allLanguageRepoWriter(repoDetails: List[String]) => {
 
-      println(repoDetails.foreach(element=>print(element+"  ")))
+//      println(repoDetails.foreach(element=>print(element+"  ")))
 
+      MySQLOperationAPIs.insertAllLanguageRepoTable(,repoDetails(0),repoDetails(0).toLong,repoDetails(0),repoDetails(0).toLong,
+        repoDetails(0),repoDetails(0),repoDetails(0).toInt,repoDetails(0).toInt,repoDetails(0).toInt,repoDetails(0).toInt)
 
     }
   }
