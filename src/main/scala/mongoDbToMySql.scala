@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 import play.api.libs.json.{JsObject, Json}
 
+
 import scala.io.Source
 
 /**
@@ -41,8 +42,8 @@ class mongoDbToMySql {
 
     mongoDbReaderActor ! "getListURL"
 
-    mongoDbReaderActor ! "getRepoAllDetails"
-    mongoDbReaderActor ! "getUsersJSON"
+//    mongoDbReaderActor ! "getRepoAllDetails"
+//    mongoDbReaderActor ! "getUsersJSON"
 //
   }
 }
@@ -170,8 +171,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
     val currentFiles = f.listFiles
 
     val filtered_files = currentFiles.filter(f => """.*\.(java|py|go|php|scala|c|html|htm|cpp|js|cs)$""".r.findFirstIn(f.getName).isDefined)
-    filtered_files ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))
 
+    try {
+      filtered_files ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))
+    }
+    catch{case e:Throwable => return filtered_files}
     /* the documents indexed are only the code files with the below extensions*/
     //    currentFiles ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))
   }
