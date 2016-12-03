@@ -1,37 +1,39 @@
 userTable{
 userName: varchar
 id: varchar
-publicRepos: int
-numberOfFollowers: int
-numberOfFollowing: int
-numberOfSubscriptions: int
+publicReposCount: int
+followersCount: int
+followingCount: int
+subscriptionsCount: int
 }
 
 
-repoTable{
+allLanguageRepoTable{
 repoName: varchar
 id: varchar
 ownerUserName: varchar
 ownerId: int
-cratedAt: date time
+createdAt: date time
 updatedAt: date time
-//numberOfBytes: int
 watchersCount: int
 forksCount: int
 subscribersCount: int
 }
 
-projectLanguageTable{
+topRepoLanguageTable{
 repoName: varchar
 id: varchar
 language: varchar
 numberOfLines: int
+numberOfFiles: int
 }
 
-projectCommitsTabe{
+topRepoCommitsTable{
 repoName: varchar
 id: varchar
 numberOfCommits: int
+numberOfFiles: int
+
 }
 
 #Might also want to add number of files
