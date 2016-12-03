@@ -30,7 +30,9 @@ object MongoDBOperationAPIs {
     //    insertDBObject(collectionName, createDBObject(jsonRecordString));
     //    findAll(ParameterConstants.defaultCollectionName);
     //    println(getCollectionCount(ParameterConstants.cCollectionName));
-    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
+//    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
+//    println(getUserDetails()(0));
+
 
   }
 
@@ -48,6 +50,21 @@ object MongoDBOperationAPIs {
     while(mongoCursor.hasNext){
       val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
       result += basicDBObject.getString("html_url")+","+basicDBObject.getString("id");
+    }
+
+    return result;
+  }
+
+  // get list of strings of html_url satisfying min fork count specified as parameter
+  def getUserDetails(): ListBuffer[String] = {
+    //{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
+    val result = new ListBuffer[String]();
+
+    val mongoCursor:MongoCursor = db(ParameterConstants.usersCollectionName).find();
+    while(mongoCursor.hasNext){
+      val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
+      result += basicDBObject.getString("login")+","+basicDBObject.getString("id")+","+basicDBObject.getString("public_repos")+
+      ","+basicDBObject.getString("followers")+","+basicDBObject.getString("following")+","+basicDBObject.getString("subscriptions_url");
     }
 
     return result;
