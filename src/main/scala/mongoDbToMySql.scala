@@ -21,7 +21,7 @@ case class intermediateCaseForRepo(singleRepoAllDetails: List[String])
 
 object mongoDbToMySqlObject {
   def main(args: Array[String]): Unit = {
-    //    val inst: myClass = new myClass()
+    //    val inst: myClass = new myClass()999
     //    inst.method(new Array[String](5))
     val inst: mongoDbToMySql = new mongoDbToMySql()
     inst.method(new Array[String](5))

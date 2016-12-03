@@ -21,7 +21,7 @@ object MySQLOperationAPIs {
     Class.forName(ParameterConstants.mysqlDriver);
     connection = DriverManager.getConnection(url, ParameterConstants.mysqlUserName, ParameterConstants.mysqlPassword);
   } catch {
-    case e => println("Exception in insertTopRepoCommitsTable()");
+    case e:Throwable => println("Exception in getConnection()");
   }
 
   def main(args: Array[String]): Unit ={
@@ -45,6 +45,7 @@ object MySQLOperationAPIs {
     } catch {
       case e:Throwable => {
         println("Exception in insertUserTable()" );
+        e.printStackTrace();
       }
     }
 
@@ -65,6 +66,7 @@ object MySQLOperationAPIs {
     } catch {
       case e:Throwable => {
         println("Exception in insertAllLanguageRepoTable()" );
+        e.printStackTrace();
       }
     }
 /*
@@ -85,6 +87,7 @@ object MySQLOperationAPIs {
     } catch {
       case e:Throwable => {
         println("Exception in insertTopRepoLanguageTable()" );
+        e.printStackTrace();
       }
     }
     return result;
@@ -101,6 +104,7 @@ object MySQLOperationAPIs {
     } catch {
       case e:Throwable => {
         println("Exception in insertTopRepoCommitsTable()");
+        e.printStackTrace();
       }
     }
     return result;
