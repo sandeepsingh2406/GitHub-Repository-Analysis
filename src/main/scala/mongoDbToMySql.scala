@@ -12,11 +12,12 @@ import scala.io.Source
   * Created by singsand on 12/2/2016.
   */
 case class getRepoMetadataJgit(id: String,htmlUrl: String)
-case class repoCommitsWriter(repoName: String,repoId: String,commit_count: Int)
-case class repoLanguageLOCWriter(repoName: String,repoId: String,language: String, lines:Long)
+case class topRepoCommitsWriter(repoName: String,repoId: String,commit_count: Int,total_file_count: Int)
+case class topRepoLanguageWriter(repoName: String,repoId: String,language: String, lines:Long, numfile:Long)
 case class intermediateCase(userDetails: Array[String])
 case class userDetailsWriter(userDetails: Array[String])
-
+case class allLanguageRepoWriter(repoDetails: List[String])
+case class intermediateCaseForRepo(singleRepoAllDetails: List[String])
 
 object mongoDbToMySqlObject {
   def main(args: Array[String]): Unit = {
@@ -38,8 +39,9 @@ class mongoDbToMySql {
 
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
-    mongoDbReaderActor ! "getListURL"
-    mongoDbReaderActor ! "getUsersJSON"
+//    mongoDbReaderActor ! "getListURL"
+//    mongoDbReaderActor ! "getUsersJSON"
+    mongoDbReaderActor ! "getRepoAllDetails"
 
   }
 }
@@ -55,10 +57,10 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
         //make call to mongodb retriever method
         val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",4)
 
-//        val list: List[String] = List(
+//        val repoDetailslist: List[String] = List(
 //
-//                      "https://github.com/captainriku75/bash_like_shell,123",
-//                    "https://github.com/lixiangers/BadgeUtil,123"
+//                      "https://github.com/md100play/PodTube,123",
+//                    "https://github.com/alexrohleder96/caronas4colonia,345"
 //        )
         for (list_element <- repoDetailslist) {
           val htmlUrl=list_element.split(",")(0)
@@ -66,6 +68,33 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
           getMetadataJgit ! getRepoMetadataJgit(id,htmlUrl)
         }
       }
+    }
+
+    case "getRepoAllDetails" => {
+    println("In getRepoAllDetails")
+
+      val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
+      for (language <- languages) {
+        {
+
+
+          //make call to mongodb retriever method
+                  val repoAllDetailslist=MongoDBOperationAPIs.getRepoDetails(language+"Collection")
+
+//          val repoAllDetailslist: List[List[String]] = List(
+//            List("bash_like_shell", "61180730", "captainriku75", "19618265", "2016-06-15", "2016-06-15", "1", "2", "3","100"),
+//              List("abcde", "1234", "repoabcd", "3456", "2017-06-15", "2017-06-15", "2", "3", "4","200")
+//
+//          )
+          for(singleRepoAllDetails<-repoAllDetailslist)
+            {
+              getMetadataJgit ! intermediateCaseForRepo(singleRepoAllDetails)
+
+            }
+
+        }
+
+    }
     }
 
     case "getUsersJSON" =>{
@@ -136,6 +165,7 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
     case getRepoMetadataJgit(id: String,htmlUrl: String) => {
       //      println("In getRepoMetadataJgit")
       //      println(htmlUrl)
+      println(htmlUrl)
 
       val repoName=htmlUrl.split("/")(htmlUrl.split("/").length-1)
 
@@ -153,12 +183,12 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
       }
 
 
-      var language_loc_map = scala.collection.mutable.Map[String, Long]()
+      var language_loc_map = scala.collection.mutable.Map[String, List[Long]]()
 
       val list_files=recursiveListFiles(new File("../"++repoName))
-      val file_count=list_files.length
+      val total_file_count=list_files.length
 
-      mySqlWriterActor ! repoCommitsWriter(repoName,id,commit_count)
+      mySqlWriterActor ! topRepoCommitsWriter(repoName,id,commit_count,total_file_count)
 
       for(file<-list_files)
       {
@@ -179,17 +209,17 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
         if(!language_loc_map.contains(language))
           {
-            language_loc_map += (language -> lines)
+            language_loc_map += (language -> List(lines,1))
           }
         else
           {
-            language_loc_map(language)=language_loc_map(language)+lines
+            language_loc_map(language)=List(language_loc_map(language)(0)+lines,language_loc_map(language)(1)+1)
           }
 
       }
 
 
-      language_loc_map foreach {case (language, loc) => mySqlWriterActor ! repoLanguageLOCWriter(repoName,id,language, loc)}
+      language_loc_map foreach {case (language, list) => mySqlWriterActor ! topRepoLanguageWriter(repoName,id,language, list(0),list(1))}
 
       try {
         git.getRepository.close()
@@ -204,6 +234,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       mySqlWriterActor ! userDetailsWriter(userDetails)
     }
+
+    case intermediateCaseForRepo(singleRepoAllDetails: List[String])=>{
+
+      mySqlWriterActor !  allLanguageRepoWriter(singleRepoAllDetails)
+  }
     }
 
 }
@@ -211,18 +246,27 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 class mySqlWriterActor extends Actor {
 
   def receive = {
-    case repoCommitsWriter(repoName: String,repoId: String,commit_count: Int) => {
+    case topRepoCommitsWriter(repoName: String,repoId: String,commit_count: Int,total_file_count: Int) => {
 
-      println(repoName+  " "+repoId+ " "+commit_count)
+      println(repoName+  " "+repoId+ " "+commit_count+" "+total_file_count)
     }
 
-    case repoLanguageLOCWriter(repoName: String,repoId: String,language: String, lines:Long) => {
-      println(repoName+  " "+repoId+ " "+language+" "+lines)
+    case topRepoLanguageWriter(repoName: String,repoId: String,language: String, lines:Long, numfiles: Long) => {
+      println(repoName+  " "+repoId+ " "+language+" "+lines+" "+numfiles)
     }
 
     case userDetailsWriter(userDetails: Array[String]) => {
 
       println(userDetails.foreach(element=>print(element+"  ")))
+
+
+    }
+
+    case allLanguageRepoWriter(repoDetails: List[String]) => {
+
+      println(repoDetails.foreach(element=>print(element+"  ")))
+
+
     }
   }
 }

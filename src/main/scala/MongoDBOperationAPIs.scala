@@ -1,6 +1,7 @@
 import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
 import com.mongodb.{BasicDBObject, DBObject}
+import play.api.libs.json.Json
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -32,6 +33,7 @@ object MongoDBOperationAPIs {
     //    println(getCollectionCount(ParameterConstants.cCollectionName));
 //    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
 //    println(getUserDetails()(0));
+    println(getRepoDetails(ParameterConstants.cCollectionName))
 
 
   }
@@ -55,7 +57,7 @@ object MongoDBOperationAPIs {
     return result;
   }
 
-  // get list of strings of html_url satisfying min fork count specified as parameter
+  // get list of strings of all user details required from mongoDB
   def getUserDetails(): ListBuffer[String] = {
     //{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
     val result = new ListBuffer[String]();
@@ -69,6 +71,32 @@ object MongoDBOperationAPIs {
 
     return result;
   }
+
+
+  // get list of strings of all repo details required from mongoDB
+  def getRepoDetails(collectionName:String): ListBuffer[List[String]]= {
+
+    val result = new ListBuffer[List[String]]();
+
+    val mongoCursor:MongoCursor = db(collectionName).find();
+    while(mongoCursor.hasNext) {
+      val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
+      val owner_json = Json.parse(basicDBObject.getString("owner").toString)
+      val owner_login = ((owner_json \ "login")).toString().replaceAll("\"","")
+      val owner_id = ((owner_json \ "id")).toString()
+
+      try {
+        result += List(basicDBObject.getString("name"), basicDBObject.getString("id"), owner_login, owner_id,
+          basicDBObject.getString("created_at").split("T")(0), basicDBObject.getString("updated_at").split("T")(0),
+          basicDBObject.getString("watchers_count"), basicDBObject.getString("forks_count"), basicDBObject.getString("open_issues"),
+          basicDBObject.getString("size"))
+      }
+      catch{case e => result +=List("0","0","0","0","0","0","0","0","0","0") }
+    }
+
+    return result;
+  }
+
 
 
   // returns total number of documents in given collection
