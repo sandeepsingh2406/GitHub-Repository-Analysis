@@ -18,7 +18,7 @@ updatedAt: date time
 watchersCount: int
 forksCount: int
 open_issues: int
-size: int
+size: BIGINT
 }
 
 topRepoLanguageTable{

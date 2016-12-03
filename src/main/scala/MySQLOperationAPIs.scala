@@ -25,12 +25,38 @@ object MySQLOperationAPIs {
   }
 
   def main(args: Array[String]): Unit ={
-    println(insertTopRepoCommitsTable("sdsdgf", 123, 123, 245));
-    println(insertTopRepoLanguageTable("Adfasdg", 324545456, "java", 1232454, 12));
+//    println(insertTopRepoCommitsTable("sdsdgf", 123, 123, 245));
+//    println(insertTopRepoLanguageTable("Adfasdg", 324545456, "java", 1232454, 12));
+//    println(insertAllLanguageRepoTable("bash_like_shellafa", "6135180730".toLong, "captainriku75", "19618265".toLong, "2016-06-15", "2016-06-15",
+//      1, 2, 3, 100));
+
   }
 
+  // insert into allLanguageRepoTable
+  def insertAllLanguageRepoTable(repoName:String, repoID:Long, ownerUserName:String, ownerID:Long, createdAt:String,
+                                 updatedAt:String, watchersCount:Int, forksCount:Int, openIssues:Int, repoSize:Int): Int = {
+    var result = -1;
+    val query = "INSERT INTO `alllanguagerepotable`(`repoName`, `repoID`, `ownerUserName`, `ownerID`, `createdAt`, " +
+      "`updatedAt`, `watchersCount`, `forksCount`, `openIssue`, `repoSize`) VALUES (\"" + repoName + "\", " + repoID + ", \""+
+    ownerUserName + "\", " + ownerID + ", \"" + createdAt + "\", \"" + updatedAt + "\", " + watchersCount + ", " + forksCount +
+    ", " + openIssues + ", " + repoSize + ");";
+    try {
+      val statement = connection.createStatement();
+      result = statement.executeUpdate(query);
+    } catch {
+      case e => {
+        println("Exception in insertAllLanguageRepoTable()" );
+      }
+    }
+/*
+* INSERT INTO `alllanguagerepotable`(`repoName`, `repoID`, `ownerUserName`, `ownerID`, `createdAt`, `updatedAt`, `watchersCount`, `forksCount`, `subscibersCount`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9])
+* */
+
+    return result;
+  }
+
+  // insert query for topRepoLanguageTable
   def insertTopRepoLanguageTable(repoName:String, repoID:Long, language:String, numberOfLines:Long, numberOfFiles:Int): Int = {
-//    INSERT INTO `toprepolanguagetable`(`repoName`, `repoID`, `languge`, `numberOfLines`, `numberOfFiles`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5])
     var result = -1;
     val query = "INSERT INTO `toprepolanguagetable`(`repoName`, `repoID`, `language`, `numberOfLines`, `numberOfFiles`) VALUES (\"" +
     repoName + "\", " + repoID + ", \"" + language.toLowerCase() + "\", " + numberOfLines + ", " + numberOfFiles + ");";
