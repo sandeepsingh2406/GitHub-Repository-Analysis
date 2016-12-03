@@ -18,8 +18,14 @@ libraryDependencies ++= Seq(
   "commons-io" % "commons-io" % "2.5"
 )
 
-libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
+//libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
 
 
 scalacOptions += "-deprecation"
+
+resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
+
+libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit" % "[2.1,)"
+libraryDependencies += "commons-io" % "commons-io" % "2.5"
+
