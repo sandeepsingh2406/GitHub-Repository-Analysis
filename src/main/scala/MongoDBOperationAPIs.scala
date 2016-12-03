@@ -1,6 +1,6 @@
-import com.mongodb.{BasicDBObject, DBCursor, DBObject}
 import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
+import com.mongodb.{BasicDBObject, DBObject}
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -22,23 +22,21 @@ object MongoDBOperationAPIs {
   val db = mongoClient(ParameterConstants.usageDBName);
   val collectionName = ParameterConstants.defaultCollectionName;
   val sampleJSONPath = ParameterConstants.sampleUserJSONPath;
-//  val sampleJSONPath = ParameterConstants.sampleRepoJSONPath;
+  //  val sampleJSONPath = ParameterConstants.sampleRepoJSONPath;
 
   def main(args: Array[String]): Unit = {
-    val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-//    println("parsed json string: " + jsonRecordString);
-//    insertDBObject(collectionName, createDBObject(jsonRecordString));
-//    findAll(ParameterConstants.defaultCollectionName);
-//    println(getCollectionCount(ParameterConstants.cCollectionName));
-    println(getHTMLURL(ParameterConstants.javaCollectionName, 501).toString());
+    //    val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
+    //    println("parsed json string: " + jsonRecordString);
+    //    insertDBObject(collectionName, createDBObject(jsonRecordString));
+    //    findAll(ParameterConstants.defaultCollectionName);
+    //    println(getCollectionCount(ParameterConstants.cCollectionName));
+    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
 
   }
 
-  // get a map of repository id to html_url satisfying min fork count specified as parameter
-  def getHTMLURL(collectionName:String, minForkCount:Int): Map[String, String] = {
-//{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
-    var resultMap = Map[String, String]();
-
+  // get list of strings of html_url satisfying min fork count specified as parameter
+  def getHTMLURL(collectionName:String, minForkCount:Int): ListBuffer[String] = {
+    //{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
     val result = new ListBuffer[String]();
     val innerCondition: BasicDBObject = new BasicDBObject();
     innerCondition.put("$gt", minForkCount.asInstanceOf[Object]);
@@ -49,12 +47,12 @@ object MongoDBOperationAPIs {
     val mongoCursor:MongoCursor = db(collectionName).find(mainCondition);
     while(mongoCursor.hasNext){
       val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
-      result += basicDBObject.getString("html_url");
-      resultMap += ( basicDBObject.getString("id") -> basicDBObject.getString("html_url"));
+      result += basicDBObject.getString("html_url")+","+basicDBObject.getString("id");
     }
 
-    return resultMap;
+    return result;
   }
+
 
   // returns total number of documents in given collection
   def getCollectionCount(collectonName: String): Int = {
@@ -81,8 +79,8 @@ object MongoDBOperationAPIs {
 
   // save object by specifying unique id
   def saveDBObjectByID(id:String, collectionName:String, dBObject: DBObject): Unit = {
-//    db.movie.save({_id:"sdSd", "name":"test"});
-//    db(collectionName).save({"_id":});
+    //    db.movie.save({_id:"sdSd", "name":"test"});
+    //    db(collectionName).save({"_id":});
   }
 
   // take json string as input and return dbObject which can be inserted directly into MongoDB
