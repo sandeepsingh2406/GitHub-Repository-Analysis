@@ -8,6 +8,8 @@
 import java.beans.Statement
 import java.sql.{Connection, DriverManager}
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
+
 object MySQLOperationAPIs {
 
 //  val url = "jdbc:mysql://localhost:8889/mysql";
@@ -43,6 +45,9 @@ object MySQLOperationAPIs {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
     } catch {
+      case integrityException:MySQLIntegrityConstraintViolationException => {
+        println("Duplicate key found for user: " + userName);
+      }
       case e:Throwable => {
         println("Exception in insertUserTable()" );
         e.printStackTrace();
@@ -64,6 +69,9 @@ object MySQLOperationAPIs {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
     } catch {
+      case integrityException:MySQLIntegrityConstraintViolationException => {
+        println("Duplicate key found for repo: " + repoName);
+      }
       case e:Throwable => {
         println("Exception in insertAllLanguageRepoTable()" );
         e.printStackTrace();
@@ -85,6 +93,9 @@ object MySQLOperationAPIs {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
     } catch {
+      case integrityException:MySQLIntegrityConstraintViolationException => {
+        println("Duplicate key found for repo: " + repoName);
+      }
       case e:Throwable => {
         println("Exception in insertTopRepoLanguageTable()" );
         e.printStackTrace();
@@ -102,6 +113,9 @@ object MySQLOperationAPIs {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
     } catch {
+      case integrityException:MySQLIntegrityConstraintViolationException => {
+        println("Duplicate key found for repo: " + repoName);
+      }
       case e:Throwable => {
         println("Exception in insertTopRepoCommitsTable()");
         e.printStackTrace();

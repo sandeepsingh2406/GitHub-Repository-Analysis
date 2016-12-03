@@ -1,0 +1,573 @@
+In method
+getListURL
+[dbConnectorSystem-akka.actor.default-dispatcher-2] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[104.197.28.49:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+[dbConnectorSystem-akka.actor.default-dispatcher-2] INFO org.mongodb.driver.cluster - No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, serverDescriptions=[ServerDescription{address=104.197.28.49:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
+[cluster-ClusterId{value='58429666cad156040445f6f1', description='null'}-104.197.28.49:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:168}] to 104.197.28.49:27017
+[cluster-ClusterId{value='58429666cad156040445f6f1', description='null'}-104.197.28.49:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=104.197.28.49:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 2, 11]}, minWireVersion=0, maxWireVersion=4, maxDocumentSize=16777216, roundTripTimeNanos=13530076}
+[dbConnectorSystem-akka.actor.default-dispatcher-2] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:169}] to 104.197.28.49:27017
+https://github.com/HotBitmapGG/bilibili-android-client
+In getRepoAllDetails
+bilibili-android-client 60145667 443 234
+Sat Dec 03 03:57:00 CST 2016 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+Duplicate key found for repo: bilibili-android-client
+bilibili-android-client 60145667 java 49785 234
+Duplicate key found for repo: bilibili-android-client
+https://github.com/Hitomis/SortRichEditor
+[ERROR] [12/03/2016 03:57:00.952] [dbConnectorSystem-akka.actor.default-dispatcher-5] [akka://dbConnectorSystem/user/getMetadataJgit] Destination path "SortRichEditor" already exists and is not an empty directory
+org.eclipse.jgit.api.errors.JGitInternalException: Destination path "SortRichEditor" already exists and is not an empty directory
+	at org.eclipse.jgit.api.CloneCommand.init(CloneCommand.java:162)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:135)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+https://github.com/smuyyh/SprintNBA
+SprintNBA 60463203 213 441
+Duplicate key found for repo: SprintNBA
+SprintNBA 60463203 java 54392 441
+Duplicate key found for repo: SprintNBA
+https://github.com/CloudRail/cloudrail-si-java-sdk
+cloudrail-si-java-sdk 60188677 67 18
+Duplicate key found for repo: cloudrail-si-java-sdk
+cloudrail-si-java-sdk 60188677 java 1162 10
+Duplicate key found for repo: cloudrail-si-java-sdk
+cloudrail-si-java-sdk 60188677 javascript 4774 8
+Duplicate key found for repo: cloudrail-si-java-sdk
+https://github.com/flankerhqd/JAADAS
+JAADAS 60319699 30 4325
+Duplicate key found for repo: JAADAS
+JAADAS 60319699 scala 2539 30
+Duplicate key found for repo: JAADAS
+JAADAS 60319699 java 693307 4159
+Duplicate key found for repo: JAADAS
+JAADAS 60319699 html 9781 136
+Duplicate key found for repo: JAADAS
+https://github.com/huangfangyi/fangyuanshili
+https://github.com/happyheng/Sport_Android
+[ERROR] [12/03/2016 03:58:36.036] [dbConnectorSystem-akka.actor.default-dispatcher-4] [akka://dbConnectorSystem/user/getMetadataJgit] https://github.com/huangfangyi/fangyuanshili: cannot open git-upload-pack
+org.eclipse.jgit.api.errors.TransportException: https://github.com/huangfangyi/fangyuanshili: cannot open git-upload-pack
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/huangfangyi/fangyuanshili: cannot open git-upload-pack
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:527)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:290)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:136)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection time out: github.com
+	at org.eclipse.jgit.util.HttpSupport.response(HttpSupport.java:197)
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:465)
+	... 19 more
+
+https://github.com/ldn0x7dc/react-native-media-kit
+[ERROR] [12/03/2016 03:58:57.135] [dbConnectorSystem-akka.actor.default-dispatcher-3] [akka://dbConnectorSystem/user/getMetadataJgit] Connection timed out: connect
+org.eclipse.jgit.api.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:377)
+	at org.eclipse.jgit.transport.TransportHttp$SmartHttpFetchConnection.doFetch(TransportHttp.java:776)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:308)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:298)
+	at org.eclipse.jgit.transport.FetchProcess.fetchObjects(FetchProcess.java:245)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:161)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1148)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream0(HttpURLConnection.java:1283)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream(HttpURLConnection.java:1258)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getOutputStream(HttpsURLConnectionImpl.java:250)
+	at org.eclipse.jgit.transport.http.JDKHttpConnection.getOutputStream(JDKHttpConnection.java:162)
+	at org.eclipse.jgit.transport.TransportHttp$Service.sendRequest(TransportHttp.java:861)
+	at org.eclipse.jgit.transport.TransportHttp$MultiRequestService.execute(TransportHttp.java:969)
+	at org.eclipse.jgit.transport.TransportHttp$Service$HttpExecuteStream.read(TransportHttp.java:900)
+	at org.eclipse.jgit.util.io.UnionInputStream.read(UnionInputStream.java:145)
+	at org.eclipse.jgit.util.IO.readFully(IO.java:247)
+	at org.eclipse.jgit.transport.PacketLineIn.readLength(PacketLineIn.java:212)
+	at org.eclipse.jgit.transport.PacketLineIn.readString(PacketLineIn.java:142)
+	at org.eclipse.jgit.transport.PacketLineIn.readACK(PacketLineIn.java:106)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.negotiate(BasePackFetchConnection.java:667)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:363)
+	... 22 more
+
+react-native-media-kit 60341518 71 19
+Duplicate key found for repo: react-native-media-kit
+react-native-media-kit 60341518 java 1893 13
+Duplicate key found for repo: react-native-media-kit
+react-native-media-kit 60341518 javascript 566 6
+Duplicate key found for repo: react-native-media-kit
+https://github.com/bravekingzhang/CleanArch
+CleanArch 60156249 6 23
+Duplicate key found for repo: CleanArch
+CleanArch 60156249 java 966 23
+Duplicate key found for repo: CleanArch
+https://github.com/stay4it/Community
+Community 60188015 10 137
+Duplicate key found for repo: Community
+Community 60188015 java 9799 137
+Duplicate key found for repo: Community
+https://github.com/box/mojito
+mojito 60379785 69 607
+Duplicate key found for repo: mojito
+mojito 60379785 java 48011 524
+Duplicate key found for repo: mojito
+mojito 60379785 javascript 9013 82
+Duplicate key found for repo: mojito
+mojito 60379785 html 26 1
+Duplicate key found for repo: mojito
+https://github.com/quqing0930/AutoTraveler
+https://github.com/mesosphere/dcos-commons
+[ERROR] [12/03/2016 03:59:36.544] [dbConnectorSystem-akka.actor.default-dispatcher-5] [akka://dbConnectorSystem/user/getMetadataJgit] Connection timed out: connect
+org.eclipse.jgit.api.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:377)
+	at org.eclipse.jgit.transport.TransportHttp$SmartHttpFetchConnection.doFetch(TransportHttp.java:776)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:308)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:298)
+	at org.eclipse.jgit.transport.FetchProcess.fetchObjects(FetchProcess.java:245)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:161)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1148)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream0(HttpURLConnection.java:1283)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream(HttpURLConnection.java:1258)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getOutputStream(HttpsURLConnectionImpl.java:250)
+	at org.eclipse.jgit.transport.http.JDKHttpConnection.getOutputStream(JDKHttpConnection.java:162)
+	at org.eclipse.jgit.transport.TransportHttp$Service.sendRequest(TransportHttp.java:861)
+	at org.eclipse.jgit.transport.TransportHttp$MultiRequestService.execute(TransportHttp.java:969)
+	at org.eclipse.jgit.transport.TransportHttp$Service$HttpExecuteStream.read(TransportHttp.java:900)
+	at org.eclipse.jgit.util.io.UnionInputStream.read(UnionInputStream.java:145)
+	at org.eclipse.jgit.util.IO.readFully(IO.java:247)
+	at org.eclipse.jgit.transport.PacketLineIn.readLength(PacketLineIn.java:212)
+	at org.eclipse.jgit.transport.PacketLineIn.readString(PacketLineIn.java:142)
+	at org.eclipse.jgit.transport.PacketLineIn.readACK(PacketLineIn.java:106)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.negotiate(BasePackFetchConnection.java:667)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:363)
+	... 22 more
+
+dcos-commons 60286497 557 380
+Duplicate key found for repo: dcos-commons
+dcos-commons 60286497 go 706 6
+Duplicate key found for repo: dcos-commons
+dcos-commons 60286497 java 38094 352
+Duplicate key found for repo: dcos-commons
+dcos-commons 60286497 python 3565 22
+Duplicate key found for repo: dcos-commons
+https://github.com/kiall/android-tvheadend
+android-tvheadend 60466023 261 77
+android-tvheadend 60466023 java 8009 77
+https://github.com/81813780/Dribbbler
+Dribbbler 60395071 46 36
+Dribbbler 60395071 java 2257 36
+https://github.com/purpleposeidon/Factorization
+https://github.com/OnePlusOSS/android_frameworks_base
+[ERROR] [12/03/2016 04:00:11.781] [dbConnectorSystem-akka.actor.default-dispatcher-3] [akka://dbConnectorSystem/user/getMetadataJgit] Connection timed out: connect
+org.eclipse.jgit.api.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:377)
+	at org.eclipse.jgit.transport.TransportHttp$SmartHttpFetchConnection.doFetch(TransportHttp.java:776)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:308)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:298)
+	at org.eclipse.jgit.transport.FetchProcess.fetchObjects(FetchProcess.java:245)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:161)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1148)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream0(HttpURLConnection.java:1283)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream(HttpURLConnection.java:1258)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getOutputStream(HttpsURLConnectionImpl.java:250)
+	at org.eclipse.jgit.transport.http.JDKHttpConnection.getOutputStream(JDKHttpConnection.java:162)
+	at org.eclipse.jgit.transport.TransportHttp$Service.sendRequest(TransportHttp.java:861)
+	at org.eclipse.jgit.transport.TransportHttp$MultiRequestService.execute(TransportHttp.java:969)
+	at org.eclipse.jgit.transport.TransportHttp$Service$HttpExecuteStream.read(TransportHttp.java:900)
+	at org.eclipse.jgit.util.io.UnionInputStream.read(UnionInputStream.java:145)
+	at org.eclipse.jgit.util.IO.readFully(IO.java:247)
+	at org.eclipse.jgit.transport.PacketLineIn.readLength(PacketLineIn.java:212)
+	at org.eclipse.jgit.transport.PacketLineIn.readString(PacketLineIn.java:142)
+	at org.eclipse.jgit.transport.PacketLineIn.readACK(PacketLineIn.java:106)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.negotiate(BasePackFetchConnection.java:667)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:363)
+	... 22 more
+
+Exception: 122627018
+[cluster-ClusterId{value='58429666cad156040445f6f1', description='null'}-104.197.28.49:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:170}] to 104.197.28.49:27017
+Exception: Apparate
+Exception: Catalyst-Gamer
+Exception: cataniaj
+Exception: CCWI
+Exception: ccy1207
+Exception: ccyy30
+Exception: cczus
+Exception: cdbbnnyCode
+Exception: cdbritos
+android_frameworks_base 60332720 201116 8639
+android_frameworks_base 60332720 java 2556380 5734
+android_frameworks_base 60332720 csharp 4392 21
+android_frameworks_base 60332720 javascript 7545 10
+android_frameworks_base 60332720 html 1029891 2351
+android_frameworks_base 60332720 c 1442 11
+android_frameworks_base 60332720 cpp 229109 501
+android_frameworks_base 60332720 python 3654 11
+Exception: cdcdec
+https://github.com/funset/lvxin-pro
+lvxin-pro 60458909 24 3
+lvxin-pro 60458909 java 188 3
+https://github.com/khasang/helpdesk
+helpdesk 60473586 62 20
+helpdesk 60473586 java 812 18
+helpdesk 60473586 javascript 32 2
+https://github.com/gaje85/springexamples
+Exception: cdevoogd
+Exception: cditzen
+Exception: cdk
+Exception: CDL24
+Exception: cdmsoftware
+springexamples 60223405 2 112
+springexamples 60223405 java 4013 112
+https://github.com/UTSA-Reactive-Android-2016/kbaldor
+kbaldor 60212268 54 74
+kbaldor 60212268 java 14596 74
+https://github.com/SilenceDut/ExpandableLayout
+Exception: cdputera
+https://github.com/fullstackreact/react-native-firestack
+[ERROR] [12/03/2016 04:13:54.724] [dbConnectorSystem-akka.actor.default-dispatcher-3] [akka://dbConnectorSystem/user/getMetadataJgit] https://github.com/SilenceDut/ExpandableLayout: cannot open git-upload-pack
+org.eclipse.jgit.api.errors.TransportException: https://github.com/SilenceDut/ExpandableLayout: cannot open git-upload-pack
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/SilenceDut/ExpandableLayout: cannot open git-upload-pack
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:527)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:290)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:136)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection time out: github.com
+	at org.eclipse.jgit.util.HttpSupport.response(HttpSupport.java:197)
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:465)
+	... 19 more
+
+Exception: cdsciavolino
+Exception: cdszddcyl
+Exception: cdwgithub
+Exception: ce15301
+Exception: ceasarj
+Exception: ceasoncai
+Exception: ceauro
+react-native-firestack 60655868 394 32
+react-native-firestack 60655868 java 2692 10
+react-native-firestack 60655868 javascript 1992 22
+https://github.com/klinker24/Android-SlidingEmojiKeyboard
+Android-SlidingEmojiKeyboard 60697878 12 27
+Android-SlidingEmojiKeyboard 60697878 java 2339 27
+https://github.com/nextcloud/android
+Exception: Cecilwang
+Exception: ceduliocezar
+Exception: ceeck65
+Exception: cefeboru
+Exception: celdridge91190
+Exception: celentanos
+Exception: CelestinV
+Exception: CelineMalaussena
+Exception: Celioroberto
+Exception: celis21
+Exception: cembilgin
+Exception: cen1
+Exception: Cenbylin
+Exception: cencul
+Exception: cendelinova
+android 60561834 6187 277
+android 60561834 java 62106 271
+android 60561834 html 3526 5
+android 60561834 python 291 1
+https://github.com/wanliyang1990/WliveTV
+WliveTV 60546310 14 144
+WliveTV 60546310 java 23152 144
+https://github.com/dalong982242260/AndroidCalendar
+Exception: cengfengcode
+AndroidCalendar 60671721 19 3
+AndroidCalendar 60671721 java 59 3
+https://github.com/AlphaBoom/ClassifyView
+ClassifyView 60682238 47 34
+ClassifyView 60682238 java 4415 34
+https://github.com/melofred/FraudDetection-DataMicroservices
+FraudDetection-DataMicroservices 60737384 47 34
+FraudDetection-DataMicroservices 60737384 scala 223 2
+FraudDetection-DataMicroservices 60737384 java 1284 27
+FraudDetection-DataMicroservices 60737384 javascript 12 3
+FraudDetection-DataMicroservices 60737384 html 483 2
+https://github.com/gatheringhallstudios/MHGenDatabase
+Exception: censhi007
+Exception: centic9
+Exception: CentMeng
+Exception: CentralsoftTrain2016
+Exception: cenwei
+Exception: cenxiaoping
+Exception: CEPFU
+Exception: cephasax
+Exception: cepreusa
+Exception: Cerciber
+MHGenDatabase 60881315 183 280
+MHGenDatabase 60881315 java 33539 280
+https://github.com/caffeinalab/ti.goosh
+ti.goosh 60849090 100 6
+ti.goosh 60849090 java 829 5
+ti.goosh 60849090 javascript 24 1
+https://github.com/ccm-innovation/react-native-twilio-ip-messaging
+Exception: cerealkiller1918
+Exception: cermet
+Exception: CeruleanLee
+Exception: cesarabelfigueroa
+Exception: cesarbruno16
+https://github.com/jiefly/DiscView
+[ERROR] [12/03/2016 04:15:31.037] [dbConnectorSystem-akka.actor.default-dispatcher-4] [akka://dbConnectorSystem/user/getMetadataJgit] Connection timed out: connect
+org.eclipse.jgit.api.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: Connection timed out: connect
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:377)
+	at org.eclipse.jgit.transport.TransportHttp$SmartHttpFetchConnection.doFetch(TransportHttp.java:776)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:308)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.fetch(BasePackFetchConnection.java:298)
+	at org.eclipse.jgit.transport.FetchProcess.fetchObjects(FetchProcess.java:245)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:161)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1148)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream0(HttpURLConnection.java:1283)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream(HttpURLConnection.java:1258)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getOutputStream(HttpsURLConnectionImpl.java:250)
+	at org.eclipse.jgit.transport.http.JDKHttpConnection.getOutputStream(JDKHttpConnection.java:162)
+	at org.eclipse.jgit.transport.TransportHttp$Service.sendRequest(TransportHttp.java:861)
+	at org.eclipse.jgit.transport.TransportHttp$MultiRequestService.execute(TransportHttp.java:969)
+	at org.eclipse.jgit.transport.TransportHttp$Service$HttpExecuteStream.read(TransportHttp.java:900)
+	at org.eclipse.jgit.util.io.UnionInputStream.read(UnionInputStream.java:145)
+	at org.eclipse.jgit.util.IO.readFully(IO.java:247)
+	at org.eclipse.jgit.transport.PacketLineIn.readLength(PacketLineIn.java:212)
+	at org.eclipse.jgit.transport.PacketLineIn.readString(PacketLineIn.java:142)
+	at org.eclipse.jgit.transport.PacketLineIn.readACK(PacketLineIn.java:106)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.negotiate(BasePackFetchConnection.java:667)
+	at org.eclipse.jgit.transport.BasePackFetchConnection.doFetch(BasePackFetchConnection.java:363)
+	... 22 more
+
+Exception: cesarDC
+Exception: CesarJoel02
+Exception: cesarquadros
+Exception: Cesarsk
+Exception: cescott
+Exception: cesdouglas
+Exception: cestlavie1990
+Exception: ceyonur
+Exception: cf-platform-eng
+Exception: cf904d31
+Exception: cfanyyx
+Exception: CFengC
+Exception: cfggroup
+https://github.com/Focfa/ZhihuNews
+[ERROR] [12/03/2016 04:15:52.055] [dbConnectorSystem-akka.actor.default-dispatcher-6] [akka://dbConnectorSystem/user/getMetadataJgit] https://github.com/jiefly/DiscView: cannot open git-upload-pack
+org.eclipse.jgit.api.errors.TransportException: https://github.com/jiefly/DiscView: cannot open git-upload-pack
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:135)
+	at org.eclipse.jgit.api.CloneCommand.fetch(CloneCommand.java:203)
+	at org.eclipse.jgit.api.CloneCommand.call(CloneCommand.java:136)
+	at getMetadataJgit$$anonfun$receive$2.applyOrElse(mongoDbToMySql.scala:190)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:484)
+	at getMetadataJgit.aroundReceive(mongoDbToMySql.scala:162)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:526)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:495)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:257)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:224)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:234)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/jiefly/DiscView: cannot open git-upload-pack
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:527)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:290)
+	at org.eclipse.jgit.transport.FetchProcess.executeImp(FetchProcess.java:136)
+	at org.eclipse.jgit.transport.FetchProcess.execute(FetchProcess.java:122)
+	at org.eclipse.jgit.transport.Transport.fetch(Transport.java:1201)
+	at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:128)
+	... 14 more
+Caused by: java.net.ConnectException: Connection time out: github.com
+	at org.eclipse.jgit.util.HttpSupport.response(HttpSupport.java:197)
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:465)
+	... 19 more
+
+ZhihuNews 60848846 8 65
+ZhihuNews 60848846 java 5743 64
+ZhihuNews 60848846 javascript 2190 1
+https://github.com/mozilla/Jisort

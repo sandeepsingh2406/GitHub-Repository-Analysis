@@ -40,9 +40,10 @@ class mongoDbToMySql {
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
     mongoDbReaderActor ! "getListURL"
-//    mongoDbReaderActor ! "getUsersJSON"
-//    mongoDbReaderActor ! "getRepoAllDetails"
 
+    mongoDbReaderActor ! "getRepoAllDetails"
+    mongoDbReaderActor ! "getUsersJSON"
+//
   }
 }
 
@@ -113,7 +114,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
           val userDetails=temp.split(",")
 //          println(userDetails(5))
           val connection = new URL(userDetails(5)).openConnection
-          connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
+          connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("clouduic", "Test_123"))
           var response=""
           try {
             response = Source.fromInputStream(connection.getInputStream).mkString
