@@ -17,7 +17,6 @@ createdAt: date time
 updatedAt: date time
 watchersCount: int
 forksCount: int
-subscribersCount: int
 open_issues: int
 size: int
 }
