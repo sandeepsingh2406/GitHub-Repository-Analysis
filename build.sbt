@@ -4,7 +4,7 @@ version := "1.0"
 
 scalaVersion := "2.11.8"
 
-//mainClass in Compile := Some("chordMainMethod")
+//mainClass in Compile := Some("mongoDbToMySqlObject")
 
 libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "1.7.5",

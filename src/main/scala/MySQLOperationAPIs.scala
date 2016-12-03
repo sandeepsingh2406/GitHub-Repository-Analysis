@@ -5,7 +5,6 @@
   * close connection client
   */
 
-import java.beans.Statement
 import java.sql.{Connection, DriverManager}
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
@@ -123,6 +122,26 @@ object MySQLOperationAPIs {
     }
     return result;
   }
+
+  def checkRow(repoName:String): Boolean = {
+    val query = "SELECT * FROM `toprepocommitstable` WHERE repoName=\""+repoName+"\"";
+    var result = -1;
+    try {
+      val statement = connection.createStatement();
+      val rs = statement.executeQuery(query)
+      if(rs.next()){
+        return true
+      }
+      else
+        return false
+    } catch {
+      case e:Throwable => {
+        println("Exception in insertTopRepoCommitsTable()");
+      }
+    }
+    return false;
+  }
+
 
   def testDBConnection(): Unit = {
     val statement = connection.createStatement;

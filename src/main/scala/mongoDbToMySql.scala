@@ -56,7 +56,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
       for (language <- languages) {
 
         //make call to mongodb retriever method
-        val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",4)
+        val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",3)
 
 //        val repoDetailslist: List[String] = List(
 //
@@ -185,7 +185,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       val repoName=htmlUrl.split("/")(htmlUrl.split("/").length-1)
 
-      val git  = Git.cloneRepository()
+
+      if (!MySQLOperationAPIs.checkRow(repoName))
+      {
+
+        val git  = Git.cloneRepository()
         .setURI( htmlUrl ).setDirectory(new File("../"+repoName))
         .call();
 
@@ -244,6 +248,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       catch{case e: Exception => println("Exception: "+e)}
 
+
+      } else
+      {println("Already exists: "+repoName)
+      }
+
     }
     case intermediateCase(userDetails: Array[String]) => {
 
@@ -256,6 +265,7 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
       mySqlWriterActor !  allLanguageRepoWriter(singleRepoAllDetails)
   }
     }
+
 
 }
 
