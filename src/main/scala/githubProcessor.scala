@@ -37,9 +37,9 @@ class initializerClass(){
     val jsonParser = system.actorOf(Props(new jsonParser(mongoDbConnector)), name = "jsonParser")
     val downloaderActor = system.actorOf(Props(new downloaderActor(jsonParser,mongoDbConnector)), name = "downloaderActor")
 
-    //        downloaderActor ! "downloadRepo"
+            downloaderActor ! "downloadRepo"
 
-    downloaderActor ! "fileRepoProcessor"
+//    downloaderActor ! "fileRepoProcessor"
   }
 }
 
@@ -167,6 +167,8 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
         }
       }
+
+      jsonParser ! "getUsersFromJson"
     }
     //this belwo case gets bypassed if we call "downloadrepo" directly and can used to read locally written repo json files and write to mongodb
     case "fileRepoProcessor" => {
@@ -317,14 +319,17 @@ class mongoDbConnector  extends Actor {
     case repoUploader(jsonRepo: String, language: String, id: String) => {
       repocount=repocount+1
       if((repocount%50)==0)println("repo upload count: "+repocount)
-      MongoDBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
+//      MongoDBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
+      println("In repoUploader")
     }
 
     case userUploader(jsonUser: String,user: String) => {
       usercount=usercount+1
       if((usercount%50)==0)println("user upload count: "+usercount)
 
-      MongoDBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
+//      MongoDBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
+      println("In userUploader")
+
 
     }
   }
