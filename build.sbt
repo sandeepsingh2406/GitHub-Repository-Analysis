@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
 //  "mysql" % "mysql-connector-java" % "6.0.2",
   "commons-io" % "commons-io" % "2.5"
 )
+resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
 libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
