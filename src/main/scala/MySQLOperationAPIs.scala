@@ -13,6 +13,8 @@ object MySQLOperationAPIs {
 //  val url = "jdbc:mysql://localhost:8889/mysql";
   val url = ParameterConstants.mysqlPrefix + "://" + ParameterConstants.mysqlHostIPAddress +
   ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
+  println(url);
+  Class.forName(ParameterConstants.mysqlDriver)
   var connection:Connection = DriverManager.getConnection(url, ParameterConstants.mysqlUserName, ParameterConstants.mysqlPassword);
   val statement = connection.createStatement;
 
