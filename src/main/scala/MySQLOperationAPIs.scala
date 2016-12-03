@@ -29,7 +29,7 @@ object MySQLOperationAPIs {
 //    println(insertTopRepoLanguageTable("Adfasdg", 324545456, "java", 1232454, 12));
 //    println(insertAllLanguageRepoTable("bash_like_shellafa", "6135180730".toLong, "captainriku75", "19618265".toLong, "2016-06-15", "2016-06-15",
 //      1, 2, 3, 100));
-    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
+//    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
   }
 
   // insert into userTable
