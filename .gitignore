@@ -14,3 +14,5 @@ project/target/resolution-cache/
 .idea/scala_compiler.xml
 .idea/libraries/
 .idea/dictionaries/
+graphs/alllanguagerepotable.csv
+graphs/~$frequencyOfCommitsVsPopularity.xlsx
