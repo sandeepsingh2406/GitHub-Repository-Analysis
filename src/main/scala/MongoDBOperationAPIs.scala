@@ -2,8 +2,9 @@ import java.util
 
 import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
-import com.mongodb.{BasicDBObject, DBObject, Mongo}
+import com.mongodb.{BasicDBObject, DBObject}
 import play.api.libs.json.Json
+
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -37,7 +38,7 @@ object MongoDBOperationAPIs {
 //    println(getUserDetails()(0));
 //    println(getRepoDetails(ParameterConstants.goCollectionName))
     // get list of collections is given database and print count repos in that collection
-      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
+//      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
   }
 
   // get list of strings of html_url satisfying min fork count specified as parameter
@@ -101,21 +102,24 @@ object MongoDBOperationAPIs {
 
     val result = new ListBuffer[List[String]]();
 
-    val mongoCursor:MongoCursor = db(collectionName).find();
-    while(mongoCursor.hasNext) {
-      val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
-      val owner_json = Json.parse(basicDBObject.getString("owner").toString)
-      val owner_login = ((owner_json \ "login")).toString().replaceAll("\"","")
-      val owner_id = ((owner_json \ "id")).toString()
+    try {
+      val mongoCursor: MongoCursor = db(collectionName).find();
+      if(!mongoCursor.hasNext) result +=List("0","0","0","0","0","0","0","0","0","0")
+      while (mongoCursor.hasNext) {
+        val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
+        val owner_json = Json.parse(basicDBObject.getString("owner").toString)
+        val owner_login = ((owner_json \ "login")).toString().replaceAll("\"", "")
+        val owner_id = ((owner_json \ "id")).toString()
 
-      try {
+
         result += List(basicDBObject.getString("name"), basicDBObject.getString("id"), owner_login, owner_id,
           basicDBObject.getString("created_at").split("T")(0), basicDBObject.getString("updated_at").split("T")(0),
           basicDBObject.getString("watchers_count"), basicDBObject.getString("forks_count"), basicDBObject.getString("open_issues"),
           basicDBObject.getString("size"))
       }
-      catch{case e => result +=List("0","0","0","0","0","0","0","0","0","0") }
     }
+      catch{case e : Throwable=> result +=List("0","0","0","0","0","0","0","0","0","0") }
+
 
     return result;
   }
