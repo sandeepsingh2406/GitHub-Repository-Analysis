@@ -34,7 +34,7 @@ object MongoDBOperationAPIs {
     //    println(getCollectionCount(ParameterConstants.cCollectionName));
 //    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
 //    println(getUserDetails()(0));
-    println(getRepoDetails(ParameterConstants.cCollectionName))
+    println(getRepoDetails(ParameterConstants.goCollectionName))
 
 
   }

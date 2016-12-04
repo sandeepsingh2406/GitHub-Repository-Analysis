@@ -31,7 +31,7 @@ object ParameterConstants {
 //  val mysqlHostIPAddress = "localhost";
   val mysqlHostIPAddress = "173.194.248.93";
   val mysqlDBPortNumber = "3306";
-//  val mysqlDBName = "cs441project";
-  val mysqlDBName = "mysql";
+  val mysqlDBName = "cs441project";
+//  val mysqlDBName = "mysql";
   val mysqlPrefix = "jdbc:mysql";
 }

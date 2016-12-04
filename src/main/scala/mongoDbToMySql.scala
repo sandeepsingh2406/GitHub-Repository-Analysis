@@ -22,7 +22,7 @@ case class intermediateCaseForRepo(singleRepoAllDetails: List[String])
 
 object mongoDbToMySqlObject {
   def main(args: Array[String]): Unit = {
-    //    val inst: myClass = new myClass()999
+    //    val inst: myClass = new myClass()
     //    inst.method(new Array[String](5))
     val inst: mongoDbToMySql = new mongoDbToMySql()
     inst.method(new Array[String](5))
@@ -41,9 +41,9 @@ class mongoDbToMySql {
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
     mongoDbReaderActor ! "getListURL"
-
-//    mongoDbReaderActor ! "getRepoAllDetails"
-//    mongoDbReaderActor ! "getUsersJSON"
+//
+    mongoDbReaderActor ! "getRepoAllDetails"
+    mongoDbReaderActor ! "getUsersJSON"
 //
   }
 }
@@ -90,6 +90,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 //          )
           for(singleRepoAllDetails<-repoAllDetailslist)
             {
+              println("getRepoAllDetails->intermediateCaseForRepo")
               getMetadataJgit ! intermediateCaseForRepo(singleRepoAllDetails)
 
             }
@@ -189,6 +190,7 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       val repoName=htmlUrl.split("/")(htmlUrl.split("/").length-1)
 
+      println(MySQLOperationAPIs.checkRow(repoName))
 
       if (!MySQLOperationAPIs.checkRow(repoName))
       {
@@ -265,6 +267,8 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
     }
 
     case intermediateCaseForRepo(singleRepoAllDetails: List[String])=>{
+
+      println("intermediateCaseForRepo->allLanguageRepoWriter")
 
       mySqlWriterActor !  allLanguageRepoWriter(singleRepoAllDetails)
   }
