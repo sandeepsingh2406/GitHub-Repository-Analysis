@@ -22,3 +22,13 @@ Use of multiple Google Cloud Utilities:
 - Google Cloud Deployment Manager: To deploy MongoDB and MySQL solutions provided by Bitnami and other vendors
 - Google Cloud IAM and Admin: Used this to give full 'Owner' access for google cloud project to my teammate, Sandeep
 - Google Cloud Machine Learning: Thinking how to use this
+
+
+
+
+
+** Limitations
+
+- scala test runs only from some specified IPs (which we have added in the list of Google Cloud SQL), so if you plan to run it from your local IP,
+please provide that IP to us, we will add it to the trusted IPs
+-
