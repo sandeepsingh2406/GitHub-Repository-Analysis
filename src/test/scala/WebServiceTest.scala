@@ -1,4 +1,5 @@
 import org.scalatest.FunSuite
+import play.api.libs.json.{JsObject, Json}
 
 /**
   * Created by singsand on 12/4/2016.
@@ -25,22 +26,22 @@ class WebServiceTest extends FunSuite {
   println(s"Web service has been started in another thread.")
 
 
-//  test("Check message returned when web service homepage is called") {
-//
-//
-//    println("Now calling web service at http://127.0.0.1:8080 and checking response.")
-//
-//    var url = "http://127.0.0.1:8080/"
-//    var result = scala.io.Source.fromURL(url).mkString
-//    val Pattern = "<h1>Welcome to the Web Service</h1>".r
-//    val matched_result = Pattern.findFirstIn(result.toString).getOrElse("no match")
-//
-//    //Get response from web service
-//
-//    thread.interrupt()
-//
-//    assert(matched_result.equals("<h1>Welcome to the Web Service</h1>"))
-//  }
+  test("Check message returned when web service homepage is called") {
+
+
+    println("Now calling web service at http://127.0.0.1:8080 and checking response.")
+
+    var url = "http://127.0.0.1:8080/"
+    var result = scala.io.Source.fromURL(url).mkString
+    val Pattern = "<h1>Welcome to the Web Service</h1>".r
+    val matched_result = Pattern.findFirstIn(result.toString).getOrElse("no match")
+
+    //Get response from web service
+
+    thread.interrupt()
+
+    assert(matched_result.equals("<h1>Welcome to the Web Service</h1>"))
+  }
 
   test("Check response returned when web service is called with parameters topUsers=1")
   {
@@ -56,12 +57,17 @@ class WebServiceTest extends FunSuite {
 
 //    val Pattern = "ms</b><br><br><b>Result # [0-9]*".r
 //    val matched_result=Pattern.findFirstIn(result.toString).getOrElse("no match")
-    println(result)
-    //Match result to match pattern to check later
+
+
+    val json_response = Json.parse(result.toString)
 
     //Stop the web service
     thread.interrupt()
-//    assert(matched_result.equals("ms</b><br><br><b>Result # 1"))
+    assert(json_response.as[List[JsObject]].size.toString.equals("1"))
+    //Match result to match pattern to check later
+
+
+
 
   }
 
