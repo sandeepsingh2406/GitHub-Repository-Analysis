@@ -1,10 +1,18 @@
 ** Analysis, pattern finding
 
-Doable immediately, 1st round:
+Done:
+Distribution of languages in popular repositories (langugageDistribution.jpg)
 6] Graph of number of projects per language in the given year/month: done. Call getCollectionCount
-10] cluster users according to numebr of users and show count of each cluster (number of users having number of repos in that range), show pie chart
-11] subscribers count from repo json (not in all repos)
+
+
+Doable immediately, 1st round:
+10] cluster users according to number of users and show count of each cluster (number of users having number of repos in that range), show pie chart
+11] watchers count from repo json (not in all repos)
 - cluster of number of repos per user
+- most active users based on repo count
+- most popular users based on follower count
+- most popular repositories based on watchers count and forks count (total sum, or partial sum or some formula)
+- average number of commits per language
 
 Doable after some more programming, data retrieval
 1] Average bytes of code per languages/project
@@ -30,7 +38,12 @@ Give us users
 
 ------------------------------------------------
 
-Abhijay TODO:
+Abhijay
+* TODO:
+
+
+* DONE:
+
 create userTable, repoTable
 check all repos in mongo if fork_count>4 then return string url of html_url from (input: collection name, output: list of html_url)
 2 methods for mysql

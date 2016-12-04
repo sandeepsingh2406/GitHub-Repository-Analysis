@@ -5,13 +5,20 @@ This was very different from other projects where we did not have specified goal
 so we had to first brainstorm about what are possible ways to do analysis, do machine learning. We also had to study GitHub api
  and see what is the different information we were able to collect. Thanks to Cody for suggesting GitHub. Had he not mentioned about this
  we would have spent hours of research on finding useful information from BlackDuck (as we did in HW3)
-dificult to get data for all users for all repo
-we decided to go for users only of java proejcts sicne they were substantial in number
+difficult to get data for all users for all repo
+we decided to go for users only of java projects since they were substantial in number
 
 Progress:
 List of analysis, todos from ideas.txt and mention how much did we accomplish, mention that this is very
 interesting topic and further research can be continued
 
 Use of multiple Google Cloud Utilities:
+- Google Compute Engine: Initially we had created a Debian VM where we had installed MySQL and were planning to access it
+ remotely, but we were not able to connect it remotely. So we decided to use Google Cloud SQL
+- Google Cloud SQL: This instance stores all our relational databases of repositories and users
 - Google Cloud Storage: To store MySQL database dumps and other and store downloaded repository files
-- Google Cloud Networking 
+- Google Cloud Networking: To add firewall exception to access MongoDB VM, Cloud SQL instance from our program
+- Google Cloud Launcher:
+- Google Cloud Deployment Manager: To deploy MongoDB and MySQL solutions provided by Bitnami and other vendors
+- Google Cloud IAM and Admin: Used this to give full 'Owner' access for google cloud project to my teammate, Sandeep
+- Google Cloud Machine Learning: Thinking how to use this
