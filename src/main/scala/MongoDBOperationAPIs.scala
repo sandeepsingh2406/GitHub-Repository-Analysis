@@ -1,9 +1,10 @@
 import java.util
+
 import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
-import com.mongodb.{BasicDBObject, DBObject}
+import com.mongodb.{BasicDBObject, DBObject, Mongo}
 import play.api.libs.json.Json
-
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
@@ -27,16 +28,16 @@ object MongoDBOperationAPIs {
   //  val sampleJSONPath = ParameterConstants.sampleRepoJSONPath;
 
   def main(args: Array[String]): Unit = {
-    //    val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-    //    println("parsed json string: " + jsonRecordString);
-    //    insertDBObject(collectionName, createDBObject(jsonRecordString));
-    //    findAll(ParameterConstants.defaultCollectionName);
-    //    println(getCollectionCount(ParameterConstants.cCollectionName));
+//    val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
+//    println("parsed json string: " + jsonRecordString);
+//    insertDBObject(collectionName, createDBObject(jsonRecordString));
+//    findAll(ParameterConstants.defaultCollectionName);
+//    println(getCollectionCount(ParameterConstants.cCollectionName));
 //    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
 //    println(getUserDetails()(0));
-    println(getRepoDetails(ParameterConstants.goCollectionName))
-
-
+//    println(getRepoDetails(ParameterConstants.goCollectionName))
+    // get list of collections is given database and print count repos in that collection
+      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
   }
 
   // get list of strings of html_url satisfying min fork count specified as parameter
@@ -122,7 +123,7 @@ object MongoDBOperationAPIs {
 
 
   // returns total number of documents in given collection
-  def getCollectionCount(collectonName: String): Int = {
+  def getCollectionCount(collectionName: String): Int = {
     return db(collectionName).count();
   }
 
@@ -179,5 +180,11 @@ object MongoDBOperationAPIs {
       println("value: " + x);
       println(x.getClass)
     }
+  }
+
+  def getListOfCollections(databaseName:String): mutable.Set[String] = {
+    val db = mongoClient(databaseName);
+    val listOfCollectionNames = db.getCollectionNames();
+    return listOfCollectionNames;
   }
 }
