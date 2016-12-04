@@ -16,6 +16,10 @@ Hot projects: projects with smaill duration but popular
 ** Advanced machine learning / data mining tasks
 11] give recommendation to show similar repositories based on subscription
 
+recoomend user1  viewin a repository 2: other repo of owner of repo 2
+recoomendation: ..repo can be clustered according to languages, size, popularity(+-5)
+
+
 
 
 
