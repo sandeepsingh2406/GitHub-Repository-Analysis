@@ -19,6 +19,9 @@ Hot projects: projects with smaill duration but popular
 recoomend user1  viewin a repository 2: other repo of owner of repo 2
 recoomendation: ..repo can be clustered according to languages, size, popularity(+-5)
 
+open issues vs watchers count vs forks count
+user's subscription count vs public repo
+
 
 
 
