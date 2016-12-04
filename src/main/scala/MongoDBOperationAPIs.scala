@@ -1,3 +1,4 @@
+import java.util
 import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
 import com.mongodb.{BasicDBObject, DBObject}
@@ -42,13 +43,34 @@ object MongoDBOperationAPIs {
   def getHTMLURL(collectionName:String, minForkCount:Int): ListBuffer[String] = {
     //{ "forks_count": { $gt:501} }, {html_url:1, _id:0}
     val result = new ListBuffer[String]();
-    val innerCondition: BasicDBObject = new BasicDBObject();
-    innerCondition.put("$gt", minForkCount.asInstanceOf[Object]);
+    //    val innerCondition: BasicDBObject = new BasicDBObject();
+    //      innerCondition.put("$gt", new BasicDBObject("$gt", minForkCount);
 
-    val mainCondition = new BasicDBObject();
-    mainCondition.put("forks_count", innerCondition);
+    val  gtQuery  =new BasicDBObject() //new util.ArrayList[BasicDBObject];
+    gtQuery.put("forks_count", new BasicDBObject("$gt", minForkCount));
 
-    val mongoCursor:MongoCursor = db(collectionName).find(mainCondition);
+
+    var andQuery = new BasicDBObject();
+    var obj = new util.ArrayList[BasicDBObject]();
+    obj.add(new BasicDBObject("forks_count", new BasicDBObject("$gt", minForkCount)))
+    obj.add(new BasicDBObject("size", new BasicDBObject("$lt", 100000)))
+    andQuery.put("$and", obj);
+
+    //    obj.add(new BasicDBObject("name", "mkyong-2"));
+
+    //    val mainCondition = new BasicDBObject();
+    //    mainCondition.put("forks_count", innerCondition);
+    //
+    //
+    //    val innerCondition1: BasicDBObject = new BasicDBObject();
+    //    innerCondition1.put("$lt", 100000.asInstanceOf[Object]);
+    //
+
+
+    //    val mainCondition1 = new BasicDBObject();
+    //    mainCondition1.put("size", innerCondition);
+
+    val mongoCursor:MongoCursor = db(collectionName).find(andQuery);
     while(mongoCursor.hasNext){
       val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
       result += basicDBObject.getString("html_url")+","+basicDBObject.getString("id");

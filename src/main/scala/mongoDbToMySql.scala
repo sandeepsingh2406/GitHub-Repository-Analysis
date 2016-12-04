@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 import play.api.libs.json.{JsObject, Json}
 
+
 import scala.io.Source
 
 /**
@@ -41,8 +42,8 @@ class mongoDbToMySql {
 
     mongoDbReaderActor ! "getListURL"
 
-    mongoDbReaderActor ! "getRepoAllDetails"
-    mongoDbReaderActor ! "getUsersJSON"
+//    mongoDbReaderActor ! "getRepoAllDetails"
+//    mongoDbReaderActor ! "getUsersJSON"
 //
   }
 }
@@ -56,7 +57,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
       for (language <- languages) {
 
         //make call to mongodb retriever method
-        val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",4)
+        val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",3)
 
 //        val repoDetailslist: List[String] = List(
 //
@@ -170,8 +171,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
     val currentFiles = f.listFiles
 
     val filtered_files = currentFiles.filter(f => """.*\.(java|py|go|php|scala|c|html|htm|cpp|js|cs)$""".r.findFirstIn(f.getName).isDefined)
-    filtered_files ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))
 
+    try {
+      filtered_files ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))
+    }
+    catch{case e:Throwable => return filtered_files}
     /* the documents indexed are only the code files with the below extensions*/
     //    currentFiles ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))
   }
@@ -185,7 +189,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       val repoName=htmlUrl.split("/")(htmlUrl.split("/").length-1)
 
-      val git  = Git.cloneRepository()
+
+      if (!MySQLOperationAPIs.checkRow(repoName))
+      {
+
+        val git  = Git.cloneRepository()
         .setURI( htmlUrl ).setDirectory(new File("../"+repoName))
         .call();
 
@@ -244,6 +252,11 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       catch{case e: Exception => println("Exception: "+e)}
 
+
+      } else
+      {println("Already exists: "+repoName)
+      }
+
     }
     case intermediateCase(userDetails: Array[String]) => {
 
@@ -256,6 +269,7 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
       mySqlWriterActor !  allLanguageRepoWriter(singleRepoAllDetails)
   }
     }
+
 
 }
 

@@ -1,0 +1,6 @@
+java.lang.OutOfMemoryError: Java heap space
+    at getMetadataJgit$$anonfun$recursiveListFiles$2.apply(mongoDbToMySql.scala:173)
+
+
+    val filtered_files = currentFiles.filter(f => """.*\.(java|py|go|php|scala|c|html|htm|cpp|js|cs)$""".r.findFirstIn(f.getName).isDefined)
+    filtered_files ++ currentFiles.filter(_.isDirectory).flatMap(recursiveListFiles(_))

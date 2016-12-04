@@ -29,3 +29,11 @@ https://github.com/centic9/jgit-cookbook
 
     return result;
   }
+  
+  
+  Increasing java heap space
+
+
+In linux systems,set this
+
+export JVM_ARGS="-Xms1024m -Xmx1024m"
