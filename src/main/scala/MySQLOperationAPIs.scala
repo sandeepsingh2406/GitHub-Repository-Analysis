@@ -34,6 +34,8 @@ object MySQLOperationAPIs {
 //      1, 2, 3, 100));
 //    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
 //    testDBConnection();
+//    print(avgLocPerLanguage().foreach(item=>item.foreach(element=>println(element+" "))))
+
   }
 
   // insert into userTable
@@ -176,7 +178,7 @@ object MySQLOperationAPIs {
 
 
   def topRepo(count:String):  ListBuffer[ListBuffer[String]] = {
-    val query = "  select * from alllanguagerepotable order by(watchersCount+forksCount) desc limit 5;"
+    val query = "  select * from alllanguagerepotable order by(watchersCount+forksCount) desc limit "+count
     var results=new ListBuffer[ListBuffer[String]]();
     try {
       val statement = connection.createStatement();
@@ -210,6 +212,33 @@ object MySQLOperationAPIs {
     return results;
   }
 
+
+  def avgLocPerLanguage():  ListBuffer[ListBuffer[String]] = {
+    val query = " select language,sum(numberOfLines)/sum(numberOfFiles) as average_loc from toprepolanguagetable "+
+      "group by language order by average_loc desc"
+    var results=new ListBuffer[ListBuffer[String]]();
+    try {
+      val statement = connection.createStatement();
+      val rs = statement.executeQuery(query)
+
+      results+=ListBuffer[String]("language","average_loc")
+      while(rs.next()){
+
+        var templist=ListBuffer[String]()
+        for(j<-1 until 3)
+        {templist+=rs.getString(j)}
+
+        results += templist
+      }
+
+
+    } catch {
+      case e:Throwable => {
+        println("Exception in avgLocPerLanguage()"+e);
+      }
+    }
+    return results;
+  }
 
 
 

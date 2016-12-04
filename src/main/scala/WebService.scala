@@ -19,191 +19,311 @@ object WebService {
   }
 }
 
-  //This class creates web service and calls actors to process responses from web service
-  class WebService() {
-    def method(args: Array[String]): Unit = {
+//This class creates web service and calls actors to process responses from web service
+class WebService() {
+  def method(args: Array[String]): Unit = {
 
-      //Inititate an actor system
-      implicit val system = ActorSystem()
-      implicit val materializer = ActorMaterializer()
+    //Inititate an actor system
+    implicit val system = ActorSystem()
+    implicit val materializer = ActorMaterializer()
 
 
-      // needed for the future map/flatmap in the end
-      implicit val executionContext = system.dispatcher
+    // needed for the future map/flatmap in the end
+    implicit val executionContext = system.dispatcher
 
-      //Create a handler for when web service responds with just URL, that is the homepage
-      object Route1 {
-        val route =
-          path("") {
+    //Create a handler for when web service responds with just URL, that is the homepage
+    object Route1 {
+      val route =
+        path("") {
+          akka.http.scaladsl.server.Directives.get {
             akka.http.scaladsl.server.Directives.get {
-              akka.http.scaladsl.server.Directives.get {
-                complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Welcome to the Web Service</h1>"))
-            }
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Welcome to the Web Service</h1><br><br>Examples: <br><br>" +
+                "<a href=\"http://localhost:8080/?topUsers=5&sortBy=followersCount\">	http://localhost:8080/?topUsers=5&sortBy=followersCount</a><br><br>" +
+                "<a href=\"http://localhost:8080/?topUsers=5&sortBy=followingCount\">	http://localhost:8080/?topUsers=5&sortBy=followingCount</a><br><br>" +
+                "<a href=\"http://localhost:8080/?topUsers=5&sortBy=publicReposCount\">	http://localhost:8080/?topUsers=5&sortBy=publicReposCount</a><br><br>" +
+                "<a href=\"http://localhost:8080/?topUsers=5&sortBy=subscriptionsCount\">	http://localhost:8080/?topUsers=5&sortBy=subscriptionsCount</a><br><br>" +
+                "<a href=\"http://localhost:8080/?topRepo=10\">	http://localhost:8080/?topRepo=10</a><br><br>" +
+                "<a href=\"http://localhost:8080/avgLocPerLanguage\">	http://localhost:8080/avgLocPerLanguage</a><br><br>" +
+                "<a href=\"http://localhost:8080/?topLanguages=5\">	http://localhost:8080/?topLanguages=5</a><br><br>"
+              ))
             }
           }
-      }
-      object Route2 {
-        val route =
-          parameters('topUsers, 'sortBy ? "publicReposCount") { (topUsers,sortBy) =>
-            var count=""
-            if(topUsers==null) {count=10.toString}
-            else count=topUsers.toString
+        }
+    }
+    object Route2 {
+      val route =
+        parameters('topUsers, 'sortBy ? "publicReposCount") { (topUsers,sortBy) =>
+          var count=""
+          if(topUsers==null) {count=10.toString}
+          else count=topUsers.toString
 
 
-            val list=MySQLOperationAPIs.topUsers(count, sortBy)
-            if(list.size==1)
-              {complete("Sorry not results found!")}
-            else {
+          val list=MySQLOperationAPIs.topUsers(count, sortBy)
+          if(list.size==1)
+          {complete("Sorry not results found!")}
+          else {
 
-              var output=""
-              val head=list(0)
-              output+="[\n"
-              list.remove(0)
-              var i:Int=0
-              for(item<-list)
+            var output=""
+            val head=list(0)
+            output+="[\n"
+            list.remove(0)
+            var i:Int=0
+            for(item<-list)
+            {
+              i+=1
+
+              output+="  {\n"
+              var j:Int=0
+              for(element<-item)
               {
-                i+=1
 
-                output+="  {\n"
-                var j:Int=0
-                for(element<-item)
-                {
-
-                  output+="    \""+ head(j)+"\""
-                  j+=1
-                  output+=" : "
-                  output+="\""+element.toString+"\""
-                  if((j!=head.size)){output+=",\n"}
-                }
-
-                output+="\n  }"
-                if(i!=list.size) output+=",\n"
+                output+="    \""+ head(j)+"\""
+                j+=1
+                output+=" : "
+                output+="\""+element.toString+"\""
+                if((j!=head.size)){output+=",\n"}
               }
-              output+="\n]"
 
-              complete(output)
+              output+="\n  }"
+              if(i!=list.size) output+=",\n"
             }
+            output+="\n]"
+
+            complete(output)
+          }
 
 
 
 
-//            complete(count)
+          //            complete(count)
 
-          }}
+        }}
 
-      object Route3 {
-        val route =
-          parameters('topRepo) { (topRepo) =>
-            var count=""
-            if(topRepo==null) {count=10.toString}
-            else count=topRepo.toString
+    object Route3 {
+      val route =
+        parameters('topRepo) { (topRepo) =>
+          var count = ""
+          if (topRepo == null) {
+            count = 10.toString
+          }
+          else count = topRepo.toString
 
-            val list=MySQLOperationAPIs.topRepo(count)
+          val list = MySQLOperationAPIs.topRepo(count)
 
-            if(list.size==1)
-            {complete("Sorry not results found!")}
-            else {
+          if (list.size == 1) {
+            complete("Sorry not results found!")
+          }
+          else {
 
-              var output=""
-              val head=list(0)
-              output+="[\n"
-              list.remove(0)
-              var i:Int=0
-              for(item<-list)
-              {
-                i+=1
+            var output = ""
+            val head = list(0)
+            output += "[\n"
+            list.remove(0)
+            var i: Int = 0
+            for (item <- list) {
+              i += 1
 
-                output+="  {\n"
-                var j:Int=0
-                for(element<-item)
-                {
+              output += "  {\n"
+              var j: Int = 0
+              for (element <- item) {
 
-                  output+="    \""+ head(j)+"\""
-                  j+=1
-                  output+=" : "
-                  output+="\""+element.toString+"\""
-                  if((j!=head.size)){output+=",\n"}
+                output += "    \"" + head(j) + "\""
+                j += 1
+                output += " : "
+                output += "\"" + element.toString + "\""
+                if ((j != head.size)) {
+                  output += ",\n"
                 }
-
-                output+="\n  }"
-                if(i!=list.size) output+=",\n"
               }
-              output+="\n]"
 
-              complete(output)
+              output += "\n  }"
+              if (i != list.size) output += ",\n"
             }
+            output += "\n]"
 
-            object Route4 {
-              val route =
-                parameters('topUsers, 'sortBy ? "publicReposCount") { (topUsers,sortBy) =>
-                  var count=""
-                  if(topUsers==null) {count=10.toString}
-                  else count=topUsers.toString
+            complete(output)
+          }
+        }
+    }
 
 
-                  val list=MySQLOperationAPIs.topUsers(count, sortBy)
-                  if(list.size==1)
-                  {complete("Sorry not results found!")}
-                  else {
 
-                    var output=""
-                    val head=list(0)
-                    output+="[\n"
-                    list.remove(0)
-                    var i:Int=0
-                    for(item<-list)
-                    {
-                      i+=1
+    object Route4 {
+      val route =
+        parameters('topLanguages ) { (topLanguages) =>
+          var count = ""
+          if (topLanguages == null) {
+            count = 10.toString
+          }
+          else count = topLanguages.toString
 
-                      output+="  {\n"
-                      var j:Int=0
-                      for(element<-item)
-                      {
+          var map = scala.collection.mutable.Map[String, Int]()
+          val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
+          for (language <- languages) {
 
-                        output+="    \""+ head(j)+"\""
-                        j+=1
-                        output+=" : "
-                        output+="\""+element.toString+"\""
-                        if((j!=head.size)){output+=",\n"}
-                      }
+            map += (language -> MongoDBOperationAPIs.getCollectionCount(language + "Collection"))
 
-                      output+="\n  }"
-                      if(i!=list.size) output+=",\n"
+          }
+
+          var list = map.toList sortBy {_._2}
+
+          list=list.reverse
+          list=list.take(count.toInt)
+
+
+          var output = ""
+          val head = ("language","totalRepositories")
+
+
+          output += "[\n"
+
+          var i: Int = 0
+          for (item <- list) {
+            i += 1
+
+            output += "  {\n"
+
+            output += "    \"" + head._1 + "\""
+
+            output += " : "
+            output += "\"" + item._1 + "\""
+
+            output += ",\n"
+
+
+
+            output += "    \"" + head._2 + "\""
+
+            output += " : "
+            output += "\"" + item._2 + "\""
+
+
+
+            output += "\n  }"
+            if (i != list.size) output += ",\n"
+          }
+          output += "\n]"
+
+          complete(output)
+
+
+
+        }
+    }
+
+    object Route5 {
+      val route =
+        path("avgLocPerLanguage") {
+          akka.http.scaladsl.server.Directives.get {
+            akka.http.scaladsl.server.Directives.get {
+
+              val list = MySQLOperationAPIs.avgLocPerLanguage()
+
+              if (list.size == 1) {
+                complete("Sorry not results found!")
+              }
+              else {
+
+                var output = ""
+                val head = list(0)
+                output += "[\n"
+                list.remove(0)
+                var i: Int = 0
+                for (item <- list) {
+                  i += 1
+
+                  output += "  {\n"
+                  var j: Int = 0
+                  for (element <- item) {
+
+                    output += "    \"" + head(j) + "\""
+                    j += 1
+                    output += " : "
+                    output += "\"" + element.toString + "\""
+                    if ((j != head.size)) {
+                      output += ",\n"
                     }
-                    output+="\n]"
-
-                    complete(output)
                   }
 
+                  output += "\n  }"
+                  if (i != list.size) output += ",\n"
+                }
+                output += "\n]"
+
+                complete(output)
 
 
-
-                  //            complete(count)
-
-                }}
-
-
-
-            //            complete(count)
-
-          }}
-
-
-
-      //specify different handlers(called routes here) for our web service
-      object MainRouter {
-        val routes = Route2.route ~ Route3.route ~ Route1.route
-      }
-
-      //It starts an HTTP Server on 104.198.51.240 and port 8080 and replies to GET requests using routes/handler specified
-      val bindingFuture = Http().bindAndHandle(MainRouter.routes, "0.0.0.0", 8080)
-
-      println(s"Web Server online at http://localhost:8080/\nPress RETURN to stop...")
-      StdIn.readLine() // let it run until user presses return
-      bindingFuture
-        .flatMap(_.unbind()) // trigger unbinding from the port
-        .onComplete(_ => system.terminate()) // and shutdown when done
-
-
+              }
+            }
+          }
+        }
     }
+
+    //
+    //
+    //                  val list=MySQLOperationAPIs.topUsers(count, sortBy)
+    //                  if(list.size==1)
+    //                  {complete("Sorry not results found!")}
+    //                  else {
+    //
+    //                    var output=""
+    //                    val head=list(0)
+    //                    output+="[\n"
+    //                    list.remove(0)
+    //                    var i:Int=0
+    //                    for(item<-list)
+    //                    {
+    //                      i+=1
+    //
+    //                      output+="  {\n"
+    //                      var j:Int=0
+    //                      for(element<-item)
+    //                      {
+    //
+    //                        output+="    \""+ head(j)+"\""
+    //                        j+=1
+    //                        output+=" : "
+    //                        output+="\""+element.toString+"\""
+    //                        if((j!=head.size)){output+=",\n"}
+    //                      }
+    //
+    //                      output+="\n  }"
+    //                      if(i!=list.size) output+=",\n"
+    //                    }
+    //                    output+="\n]"
+    //
+    //                    complete(output)
+    //                  }
+
+
+
+
+    //            complete(count)
+
+
+
+
+
+    //            complete(count)
+
+
+
+
+
+    //specify different handlers(called routes here) for our web service
+    object MainRouter {
+      val routes = Route2.route ~ Route3.route ~  Route4.route  ~  Route5.route ~ Route1.route
+    }
+
+    //It starts an HTTP Server on 104.198.51.240 and port 8080 and replies to GET requests using routes/handler specified
+    val bindingFuture = Http().bindAndHandle(MainRouter.routes, "0.0.0.0", 8080)
+
+    println(s"Web Server online at http://localhost:8080/\nPress RETURN to stop...")
+    StdIn.readLine() // let it run until user presses return
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ => system.terminate()) // and shutdown when done
+
+
   }
+}
