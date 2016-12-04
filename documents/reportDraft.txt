@@ -11,3 +11,7 @@ we decided to go for users only of java proejcts sicne they were substantial in 
 Progress:
 List of analysis, todos from ideas.txt and mention how much did we accomplish, mention that this is very
 interesting topic and further research can be continued
+
+Use of multiple Google Cloud Utilities:
+- Google Cloud Storage: To store MySQL database dumps and other and store downloaded repository files
+- Google Cloud Networking 

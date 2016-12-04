@@ -22,6 +22,7 @@ object MySQLOperationAPIs {
   try{
     Class.forName(ParameterConstants.mysqlDriver);
     connection = DriverManager.getConnection(url, ParameterConstants.mysqlUserName, ParameterConstants.mysqlPassword);
+    println("Connection successful.");
   } catch {
     case e:Throwable => println("Exception in getConnection()");
   }
@@ -32,6 +33,7 @@ object MySQLOperationAPIs {
 //    println(insertAllLanguageRepoTable("bash_like_shellafa", "6135180730".toLong, "captainriku75", "19618265".toLong, "2016-06-15", "2016-06-15",
 //      1, 2, 3, 100));
 //    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
+//    testDBConnection();
   }
 
   // insert into userTable
@@ -127,8 +129,9 @@ object MySQLOperationAPIs {
   def testDBConnection(): Unit = {
     val statement = connection.createStatement;
     val resultSet = statement.executeQuery("show tables;");
+    println("Fetch successful");
     while (resultSet.next) {
-      println(resultSet.getString("Tables_in_cs441project"));
+      println(resultSet.getString("Tables_in_mysql"));
     }
   }
 }
