@@ -137,7 +137,7 @@ object MySQLOperationAPIs {
         return false
     } catch {
       case e:Throwable => {
-        println("Exception in insertTopRepoCommitsTable()");
+        println("Exception in checkRow()"+e);
       }
     }
     return false;
