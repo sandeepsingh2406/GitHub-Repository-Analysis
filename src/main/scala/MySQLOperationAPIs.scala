@@ -8,6 +8,8 @@ import java.sql.{Connection, DriverManager}
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
 
+import scala.collection.mutable.ListBuffer
+
 object MySQLOperationAPIs {
 
 //  val url = "jdbc:mysql://localhost:8889/mysql";
@@ -32,6 +34,8 @@ object MySQLOperationAPIs {
 //      1, 2, 3, 100));
 //    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
 //    testDBConnection();
+//    print(avgLocPerLanguage().foreach(item=>item.foreach(element=>println(element+" "))))
+
   }
 
   // insert into userTable
@@ -142,6 +146,100 @@ object MySQLOperationAPIs {
     }
     return false;
   }
+
+
+
+  def topUsers(count:String,sortBy:String):  ListBuffer[ListBuffer[String]] = {
+    val query = "select * from `usertable` order by "+sortBy+" desc limit "+count
+    println(query)
+    var results=new ListBuffer[ListBuffer[String]]();
+    try {
+      val statement = connection.createStatement();
+      val rs = statement.executeQuery(query)
+
+      results+=ListBuffer[String]("userName", "userID", "publicReposCount", "followersCount", "followingCount", "subscriptionsCount")
+      while(rs.next()){
+
+        var templist=ListBuffer[String]()
+        for(j<-1 until 7)
+          {templist+=rs.getString(j)}
+
+          results += templist
+      }
+
+
+    } catch {
+      case e:Throwable => {
+        println("Exception in topUsers()"+e);
+      }
+    }
+    return results;
+  }
+
+
+  def topRepo(count:String):  ListBuffer[ListBuffer[String]] = {
+    val query = "  select * from alllanguagerepotable order by(watchersCount+forksCount) desc limit "+count
+    var results=new ListBuffer[ListBuffer[String]]();
+    try {
+      val statement = connection.createStatement();
+      val rs = statement.executeQuery(query)
+
+      results+=ListBuffer[String]("repoName",
+        "repoID",
+        "ownerUserName",
+        "ownerID",
+        "createdAt",
+        "updatedAt",
+        "watchersCount",
+        "forksCount",
+        "openIssue",
+        "repoSize")
+      while(rs.next()){
+
+        var templist=ListBuffer[String]()
+        for(j<-1 until 11)
+        {templist+=rs.getString(j)}
+
+        results += templist
+      }
+
+
+    } catch {
+      case e:Throwable => {
+        println("Exception in topRepo()"+e);
+      }
+    }
+    return results;
+  }
+
+
+  def avgLocPerLanguage():  ListBuffer[ListBuffer[String]] = {
+    val query = " select language,sum(numberOfLines)/sum(numberOfFiles) as average_loc from toprepolanguagetable "+
+      "group by language order by average_loc desc"
+    var results=new ListBuffer[ListBuffer[String]]();
+    try {
+      val statement = connection.createStatement();
+      val rs = statement.executeQuery(query)
+
+      results+=ListBuffer[String]("language","average_loc")
+      while(rs.next()){
+
+        var templist=ListBuffer[String]()
+        for(j<-1 until 3)
+        {templist+=rs.getString(j)}
+
+        results += templist
+      }
+
+
+    } catch {
+      case e:Throwable => {
+        println("Exception in avgLocPerLanguage()"+e);
+      }
+    }
+    return results;
+  }
+
 
 
   def testDBConnection(): Unit = {
