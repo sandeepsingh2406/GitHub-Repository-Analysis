@@ -40,10 +40,10 @@ class mongoDbToMySql {
 
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
-    mongoDbReaderActor ! "getListURL"
+//    mongoDbReaderActor ! "getListURL"
 //
     mongoDbReaderActor ! "getRepoAllDetails"
-    mongoDbReaderActor ! "getUsersJSON"
+//    mongoDbReaderActor ! "getUsersJSON"
 //
   }
 }
