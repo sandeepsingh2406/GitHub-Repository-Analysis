@@ -43,20 +43,31 @@ class WebService() {
           akka.http.scaladsl.server.Directives.get {
             akka.http.scaladsl.server.Directives.get {
 
+              //output for homepage of web service
               logger.info("Request to web service homepage")
               complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Welcome to the Web Service</h1><br><br>Examples: <br><br>" +
+                "<u><strong>Note: If web service is created locally, use localhost in all urls, else use google cloud external ip when hosted in google cloud</u></strong><br><br>"+
                 "<a href=\"http://localhost:8080/?topUsers=5&sortBy=followersCount\">	http://localhost:8080/?topUsers=5&sortBy=followersCount</a><br><br>" +
                 "<a href=\"http://localhost:8080/?topUsers=5&sortBy=followingCount\">	http://localhost:8080/?topUsers=5&sortBy=followingCount</a><br><br>" +
                 "<a href=\"http://localhost:8080/?topUsers=5&sortBy=publicReposCount\">	http://localhost:8080/?topUsers=5&sortBy=publicReposCount</a><br><br>" +
                 "<a href=\"http://localhost:8080/?topUsers=5&sortBy=subscriptionsCount\">	http://localhost:8080/?topUsers=5&sortBy=subscriptionsCount</a><br><br>" +
                 "<a href=\"http://localhost:8080/?topRepo=10\">	http://localhost:8080/?topRepo=10</a><br><br>" +
                 "<a href=\"http://localhost:8080/avgLocPerLanguage\">	http://localhost:8080/avgLocPerLanguage</a><br><br>" +
-                "<a href=\"http://localhost:8080/?topLanguages=5\">	http://localhost:8080/?topLanguages=5</a><br><br>"
+                "<a href=\"http://localhost:8080/?topLanguages=5\">	http://localhost:8080/?topLanguages=5</a><br><br>"+
+                "<u><strong>Examples for Repo Recommendation:</strong></u><br><br> "
+                +"<a href=\"http://localhost:8080/?getRecommendation=sprintnba\">	http://localhost:8080/?getRecommendation=sprintnba</a><br><br>"
+                +"<a href=\"http://localhost:8080/?getRecommendation=deep_recommend_system\">	http://localhost:8080/?getRecommendation=deep_recommend_system</a><br><br>"
+
+                +"<a href=\"http://localhost:8080/?getRecommendation=emoji-mart\">	http://localhost:8080/?getRecommendation=emoji-mart</a><br><br>"
+
+
               ))
             }
           }
         }
     }
+
+    //route for seeing top users in github
     object Route2 {
       val route =
         parameters('topUsers, 'sortBy ? "publicReposCount") { (topUsers,sortBy) =>
@@ -73,6 +84,8 @@ class WebService() {
           {complete("Sorry no results found!")
 
           }
+
+            //if results are there then we display them in json format
           else {
 
             var output=""
@@ -85,6 +98,9 @@ class WebService() {
               i+=1
 
               output+="  {\n"
+
+              output += "    \"" + "url" + "\" : "+"\""+"https://github.com/"+item(0)+"\",\n"
+
               var j:Int=0
               for(element<-item)
               {
@@ -111,6 +127,7 @@ class WebService() {
 
         }}
 
+    //route for seeing top repos
     object Route3 {
       val route =
         parameters('topRepo) { (topRepo) =>
@@ -127,6 +144,9 @@ class WebService() {
           if (list.size == 1) {
             complete("Sorry no results found!")
           }
+
+          //if results are there then we display them in json format
+
           else {
 
             var output = ""
@@ -138,6 +158,8 @@ class WebService() {
               i += 1
 
               output += "  {\n"
+              output += "    \"" + "url" + "\" : "+"\""+"https://github.com/"+item(2)+"/"+item(0)+"\",\n"
+
               var j: Int = 0
               for (element <- item) {
 
@@ -161,7 +183,7 @@ class WebService() {
     }
 
 
-
+//route to see top languages as count specified by user
     object Route4 {
       val route =
         parameters('topLanguages ) { (topLanguages) =>
@@ -176,6 +198,7 @@ class WebService() {
 
           var map = scala.collection.mutable.Map[String, Int]()
 
+          //fetch results for all languages, then only display the count specified
           logger.info("Fetching results and displaying to user")
           val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
           for (language <- languages) {
@@ -230,6 +253,7 @@ class WebService() {
         }
     }
 
+    //route to show average lines of code per language
     object Route5 {
       val route =
         path("avgLocPerLanguage") {
@@ -248,6 +272,9 @@ class WebService() {
               if (list.size == 1) {
                 complete("Sorry no results found!")
               }
+
+              //if results are there then we display them in json format
+
               else {
 
                 var output = ""
@@ -285,52 +312,73 @@ class WebService() {
         }
     }
 
-    //
-    //
-    //                  val list=MySQLOperationAPIs.topUsers(count, sortBy)
-    //                  if(list.size==1)
-    //                  {complete("Sorry not results found!")}
-    //                  else {
-    //
-    //                    var output=""
-    //                    val head=list(0)
-    //                    output+="[\n"
-    //                    list.remove(0)
-    //                    var i:Int=0
-    //                    for(item<-list)
-    //                    {
-    //                      i+=1
-    //
-    //                      output+="  {\n"
-    //                      var j:Int=0
-    //                      for(element<-item)
-    //                      {
-    //
-    //                        output+="    \""+ head(j)+"\""
-    //                        j+=1
-    //                        output+=" : "
-    //                        output+="\""+element.toString+"\""
-    //                        if((j!=head.size)){output+=",\n"}
-    //                      }
-    //
-    //                      output+="\n  }"
-    //                      if(i!=list.size) output+=",\n"
-    //                    }
-    //                    output+="\n]"
-    //
-    //                    complete(output)
-    //                  }
+
+    //final route for giving recoomendation of similar repo to user on basis of repo entered
+    object Route6 {
+      val route =
+        parameters('getRecommendation, 'count ? "5") { (getRecommendation, count) =>
+          akka.http.scaladsl.server.Directives.get {
+            akka.http.scaladsl.server.Directives.get {
+
+              logger.info("Request to getRecommendation:" + getRecommendation)
+
+
+              logger.info("Fetching results from MySQL")
+              val list = MySQLOperationAPIs.getSimilarRepo(getRecommendation, count)
+              logger.info("Displaying results to user")
+              if (list.size == 1) {
+                complete("Sorry no results found!")
+
+              }
+
+              //if results are there then we display them in json format
+
+              else {
+
+                var output = ""
+                val head = list(0)
+                output += "[\n"
+                list.remove(0)
+                var i: Int = 0
+                for (item <- list) {
+                  i += 1
+
+
+
+                  output += "  {\n"
+
+                  output += "    \"" + "url" + "\" : "+"\""+"https://github.com/"+item(1)+"/"+item(0)+"\",\n"
+
+                  var j: Int = 0
+                  for (element <- item) {
+
+                    output += "    \"" + head(j) + "\""
+                    j += 1
+                    output += " : "
+                    output += "\"" + element.toString + "\""
+                    if ((j != head.size)) {
+                      output += ",\n"
+                    }
+                  }
+
+                  output += "\n  }"
+                  if (i != list.size) output += ",\n"
+                }
+                output += "\n]"
+
+                complete(output)
+              }
 
 
 
 
-    //            complete(count)
+
+            }
+          }
+        }
+    }
 
 
-
-
-
-    //            complete(count)
 
 
 
@@ -338,7 +386,7 @@ class WebService() {
 
     //specify different handlers(called routes here) for our web service
     object MainRouter {
-      val routes = Route2.route ~ Route3.route ~  Route4.route  ~  Route5.route ~ Route1.route
+      val routes = Route2.route ~ Route3.route ~  Route4.route  ~  Route5.route ~ Route6.route ~ Route1.route
     }
 
     logger.info("Initialing web service")

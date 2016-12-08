@@ -41,6 +41,7 @@ class mongoDbToMySql {
 
     logger.info("Creating actor system and different actors")
 
+    //create actor system and actors
 
     val system = ActorSystem("dbConnectorSystem")
     val mySqlWriterActor = system.actorOf(Props[mySqlWriterActor], name = "mySqlWriterActor")
@@ -48,6 +49,7 @@ class mongoDbToMySql {
 
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
+    //use all actors to transfer differernt kind of data from mongodb to mysql
     mongoDbReaderActor ! "getListURL"
 //
     mongoDbReaderActor ! "getRepoAllDetails"
@@ -131,6 +133,8 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
         {
           val userDetails=temp.split(",")
 //          println(userDetails(5))
+
+          //get user github url and make api call using it
           val connection = new URL(userDetails(5)).openConnection
           connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("clouduic", "Test_123"))
           var response=""
@@ -158,6 +162,8 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
           }
 
           count = count + 1
+
+          //to not cross the 5000 requests api call limit per hour
           if (count >= 4950)
           {
             println("taking a rest from downloading user json")
@@ -179,6 +185,9 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
     }
   }
 }
+
+
+//use jgit to get some metadata about repo
 class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
 
@@ -188,6 +197,8 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
   val language = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
   val language_extensions = List("java", "py", "go", "php", "scala", "c", "html","htm", "cpp", "js", "cs")
 
+
+  //below return will return all files in the current repo that are in the expected formats
 
   def recursiveListFiles(f: File): Array[File] = {
 
@@ -216,7 +227,7 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       if (!MySQLOperationAPIs.checkRow(repoName))
       {
-
+//use jgit to clone repo, then later delete it
         val git  = Git.cloneRepository()
         .setURI( htmlUrl ).setDirectory(new File("../"+repoName))
         .call();
@@ -238,6 +249,8 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       mySqlWriterActor ! topRepoCommitsWriter(repoName,id,commit_count,total_file_count)
 
+
+        //get lines and files count for files of difeferent languages in current repo
       for(file<-list_files)
       {
 
@@ -302,6 +315,7 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
 }
 
+//write rows to mysql to different tables using different cases
 class mySqlWriterActor extends Actor {
 
   def receive = {
