@@ -1,0 +1,7 @@
+http://localhost:8080/?topUsers=5&sortBy=followersCount
+http://localhost:8080/?topUsers=5&sortBy=followingCount
+http://localhost:8080/?topUsers=5&sortBy=publicReposCount
+http://localhost:8080/?topUsers=5&sortBy=subscriptionsCount
+http://localhost:8080/?topRepo=10
+http://localhost:8080/avgLocPerLanguage
+http://localhost:8080/?topLanguages=5
