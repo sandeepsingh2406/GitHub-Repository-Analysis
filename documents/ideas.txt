@@ -24,6 +24,11 @@ user's subscription count vs public repo
 
 
 
+# Query to get ownerId, repoId and popularity
+SELECT ar.ownerID, ar.repoID, (ar.forksCount + ar.watchersCount) as popularity
+FROM alllanguagerepotable as ar
+WHERE ar.repoID IN ( SELECT toprepolanguagetable.repoID FROM toprepolanguagetable WHERE LANGUAGE='java' )
+ORDER by (ar.forksCount + ar.watchersCount) DESC
 
 
 
