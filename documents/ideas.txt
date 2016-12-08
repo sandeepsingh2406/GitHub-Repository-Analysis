@@ -44,3 +44,18 @@ https://api.github.com/search/repositories?q=language:go+created:%3E2016-01-01+s
   "documentation_url": "https://developer.github.com/v3/search/"
 }
 
+
+
+
+		select distinct(t.repoName)
+		 from toprepolanguagetable t, alllanguagerepotable a,(select top.repoName as repoName,top.language as language,(ar.forksCount + ar.watchersCount) as popularity, ar.repoSize as repoSize 
+		from toprepolanguagetable top, alllanguagerepotable as ar 
+		where top.repoName = ar.repoName and ar.repoName="react-native-firestack") userRepo
+		where t.repoName=a.repoName
+		and t.repoName!=userRepo.repoName
+		and userRepo.language=t.language
+		and a.repoSize>= 0.75*userRepo.repoSize
+		and a.repoSize<= 1.25*userRepo.repoSize
+		and (a.forksCount + a.watchersCount)>= 0.75*userRepo.popularity
+		and (a.forksCount + a.watchersCount)<= 1.25*userRepo.popularity
+		limit 5
