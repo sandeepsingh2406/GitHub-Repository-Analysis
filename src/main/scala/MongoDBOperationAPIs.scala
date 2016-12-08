@@ -3,6 +3,7 @@ import java.util
 import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoCursor}
 import com.mongodb.util.JSON
 import com.mongodb.{BasicDBObject, DBObject}
+import grizzled.slf4j.Logger
 import play.api.libs.json.Json
 
 import scala.collection.mutable
@@ -17,6 +18,7 @@ import scala.io.Source
   */
 
 object MongoDBOperationAPIs {
+  val logger = Logger("MongoDBOperationAPIs")
 
   //  val mongoURI = MongoClientURI("mongodb://admin:new_password@104.197.28.49:27017/admin");
   val mongoURIString = ParameterConstants.mongoPrefix + "://" + ParameterConstants.userName + ":" + ParameterConstants.password +
@@ -36,7 +38,7 @@ object MongoDBOperationAPIs {
 //    println(getCollectionCount(ParameterConstants.cCollectionName));
 //    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
 //    println(getUserDetails()(0));
-//    println(getRepoDetails(ParameterConstants.goCollectionName))
+    println(getRepoDetails(ParameterConstants.goCollectionName))
     // get list of collections is given database and print count repos in that collection
 //      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
   }
@@ -104,7 +106,7 @@ object MongoDBOperationAPIs {
 
     try {
       val mongoCursor: MongoCursor = db(collectionName).find();
-      if(!mongoCursor.hasNext) result +=List("0","0","0","0","0","0","0","0","0","0")
+      if(!mongoCursor.hasNext) result +=List("0","0","0","0","00:00:00","00:00:00","0","0","0","0")
       while (mongoCursor.hasNext) {
         val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
         val owner_json = Json.parse(basicDBObject.getString("owner").toString)
@@ -118,7 +120,10 @@ object MongoDBOperationAPIs {
           basicDBObject.getString("size"))
       }
     }
-      catch{case e : Throwable=> result +=List("0","0","0","0","0","0","0","0","0","0") }
+      catch{
+
+        case e : Throwable=> result +=List("0","0","0","0","00:00:00","00:00:00","0","0","0","0")
+          logger.error("Exception in getRepoDetails(): using default result: "+e.getMessage)}
 
 
     return result;
@@ -169,7 +174,12 @@ object MongoDBOperationAPIs {
       line = source.getLines().next()
     }
     catch{
-      case e: Exception => {println("Exception while reading file. " + e.printStackTrace())}
+
+
+
+      case e: Exception => {println("Exception while reading file. " + e.printStackTrace())
+        logger.error("Exception in readFirstLineOfFile(): Exception while reading file"+e.getMessage)
+    }
     }
     return line;
   }
@@ -181,6 +191,8 @@ object MongoDBOperationAPIs {
     collectionObject.find();
 
     for(x <- collectionObject){
+
+
       println("value: " + x);
       println(x.getClass)
     }

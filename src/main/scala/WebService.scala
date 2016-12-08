@@ -5,6 +5,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 
 import scala.io.StdIn
+import grizzled.slf4j.Logger
+
 
 /**
   * Created by singsand on 12/3/2016.
@@ -23,6 +25,9 @@ object WebService {
 class WebService() {
   def method(args: Array[String]): Unit = {
 
+    //Initiate a logger
+    val logger = Logger("WebService Class")
+
     //Inititate an actor system
     implicit val system = ActorSystem()
     implicit val materializer = ActorMaterializer()
@@ -37,6 +42,8 @@ class WebService() {
         path("") {
           akka.http.scaladsl.server.Directives.get {
             akka.http.scaladsl.server.Directives.get {
+
+              logger.info("Request to web service homepage")
               complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Welcome to the Web Service</h1><br><br>Examples: <br><br>" +
                 "<a href=\"http://localhost:8080/?topUsers=5&sortBy=followersCount\">	http://localhost:8080/?topUsers=5&sortBy=followersCount</a><br><br>" +
                 "<a href=\"http://localhost:8080/?topUsers=5&sortBy=followingCount\">	http://localhost:8080/?topUsers=5&sortBy=followingCount</a><br><br>" +
@@ -57,10 +64,15 @@ class WebService() {
           if(topUsers==null) {count=10.toString}
           else count=topUsers.toString
 
+          logger.info("Request to see topUsers: "+topUsers+" sortedBy: "+sortBy)
 
+          logger.info("Fetching results from MySQL")
           val list=MySQLOperationAPIs.topUsers(count, sortBy)
+          logger.info("Displaying results to user")
           if(list.size==1)
-          {complete("Sorry not results found!")}
+          {complete("Sorry no results found!")
+
+          }
           else {
 
             var output=""
@@ -108,10 +120,12 @@ class WebService() {
           }
           else count = topRepo.toString
 
+          logger.info("Request to see topRepo: count: "+topRepo)
+          logger.info("Fetching Results and displaying to user")
           val list = MySQLOperationAPIs.topRepo(count)
 
           if (list.size == 1) {
-            complete("Sorry not results found!")
+            complete("Sorry no results found!")
           }
           else {
 
@@ -157,7 +171,12 @@ class WebService() {
           }
           else count = topLanguages.toString
 
+          logger.info("Request to see topLanguages: count: "+topLanguages)
+
+
           var map = scala.collection.mutable.Map[String, Int]()
+
+          logger.info("Fetching results and displaying to user")
           val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
           for (language <- languages) {
 
@@ -217,10 +236,17 @@ class WebService() {
           akka.http.scaladsl.server.Directives.get {
             akka.http.scaladsl.server.Directives.get {
 
+              logger.info("Request to see avgLocPerLanguage:")
+
+
               val list = MySQLOperationAPIs.avgLocPerLanguage()
 
+
+              logger.info("Fetching results and displaying to user")
+
+
               if (list.size == 1) {
-                complete("Sorry not results found!")
+                complete("Sorry no results found!")
               }
               else {
 
@@ -315,6 +341,7 @@ class WebService() {
       val routes = Route2.route ~ Route3.route ~  Route4.route  ~  Route5.route ~ Route1.route
     }
 
+    logger.info("Initialing web service")
     //It starts an HTTP Server on 104.198.51.240 and port 8080 and replies to GET requests using routes/handler specified
     val bindingFuture = Http().bindAndHandle(MainRouter.routes, "0.0.0.0", 8080)
 
@@ -323,6 +350,8 @@ class WebService() {
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port
       .onComplete(_ => system.terminate()) // and shutdown when done
+
+    logger.info("Web Service stopped")
 
 
   }

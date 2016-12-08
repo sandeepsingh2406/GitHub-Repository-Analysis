@@ -2,10 +2,10 @@ import java.io.{BufferedReader, File, FileReader}
 import java.net.URL
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import grizzled.slf4j.Logger
 import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 import play.api.libs.json.{JsObject, Json}
-
 
 import scala.io.Source
 
@@ -31,8 +31,16 @@ object mongoDbToMySqlObject {
 
 class mongoDbToMySql {
 
+  //Initiate a logger
+  val logger = Logger("mongoDbToMySql")
+
   def method(args: Array[String]): Unit = {
     println("In method")
+
+    logger.info("Initiating mongoDbToMySql class")
+
+    logger.info("Creating actor system and different actors")
+
 
     val system = ActorSystem("dbConnectorSystem")
     val mySqlWriterActor = system.actorOf(Props[mySqlWriterActor], name = "mySqlWriterActor")
@@ -40,19 +48,22 @@ class mongoDbToMySql {
 
     val mongoDbReaderActor = system.actorOf(Props(new mongoDbReaderActor(getMetadataJgit)), name = "mongoDbReaderActor")
 
-//    mongoDbReaderActor ! "getListURL"
+    mongoDbReaderActor ! "getListURL"
 //
     mongoDbReaderActor ! "getRepoAllDetails"
-//    mongoDbReaderActor ! "getUsersJSON"
+    mongoDbReaderActor ! "getUsersJSON"
 //
   }
 }
 
 class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
+  //Initiate a logger
+  val logger = Logger("mongoDbToMySql")
+
   def receive = {
     case "getListURL" => {
-      println("getListURL")
+      logger.info("In getListURL actor, will also attempt to store stuff to MySQL")
       val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
       for (language <- languages) {
 
@@ -73,7 +84,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
     }
 
     case "getRepoAllDetails" => {
-    println("In getRepoAllDetails")
+    logger.info("In getRepoAllDetails, will attempt to store data into mysql   ")
 
       val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
       for (language <- languages) {
@@ -82,6 +93,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
           //make call to mongodb retriever method
                   val repoAllDetailslist=MongoDBOperationAPIs.getRepoDetails(language+"Collection")
+          println("got response from mongodb with all repo details")
 
 //          val repoAllDetailslist: List[List[String]] = List(
 //            List("bash_like_shell", "61180730", "captainriku75", "19618265", "2016-06-15", "2016-06-15", "1", "2", "3","100"),
@@ -102,7 +114,11 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
     case "getUsersJSON" =>{
 
+      logger.info("In getUsersJson, will store user details into MySQL")
+
+
       val userDetailsList=MongoDBOperationAPIs.getUserDetails()
+      logger.info("Got response from mongodb with all user details")
 
 //      val userDetailsList=List(
 //  "libin1987,22090870,6,1,2,https://api.github.com/users/libin1987/subscriptions",
@@ -130,6 +146,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
 
             }
+            println("Calling intermediatecase")
             getMetadataJgit ! intermediateCase(userDetails)
           }
           catch{case e: Exception =>
@@ -137,6 +154,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
             //add exception handling for user not found type exception and seperate for limit reached exception
             response="";
             println("Exception: "+userDetails(0))
+              logger.error("Exception in getUsersJSON case in mongoDbReaderActor actor: "+e.getMessage)
           }
 
           count = count + 1
@@ -162,6 +180,10 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
   }
 }
 class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
+
+
+  //Initiate a logger
+  val logger = Logger("mongoDbToMySql")
 
   val language = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
   val language_extensions = List("java", "py", "go", "php", "scala", "c", "html","htm", "cpp", "js", "cs")
@@ -252,7 +274,10 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
         FileUtils.forceDelete(new File("../"+repoName));
       }
 
-      catch{case e: Exception => println("Exception: "+e)}
+      catch{case e: Exception => println("Exception: "+e)
+        logger.error("Exception in getRepoMetadataJgit case in getMetadataJgit actor: "+e.getMessage)
+
+      }
 
 
       } else

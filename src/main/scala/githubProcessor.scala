@@ -3,6 +3,7 @@ import java.net.URL
 import java.nio.file.{Files, Paths}
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import grizzled.slf4j.Logger
 import org.apache.commons.codec.binary.Base64
 import play.api.libs.json._
 
@@ -17,6 +18,19 @@ case class repoUploader(jsonResponse: String,  language: String,id: String)
 case class userUploader(jsonUser: String,user: String)
 
 
+object HttpBasicAuth {
+  val BASIC = "Basic";
+  val AUTHORIZATION = "Authorization";
+
+  def encodeCredentials(username: String, password: String): String = {
+    new String(Base64.encodeBase64String((username + ":" + password).getBytes));
+  };
+
+  def getHeader(username: String, password: String): String =
+    BASIC + " " + encodeCredentials(username, password);
+
+}
+
 //Object which creates instance of class contain the main code
 object githubProcessor {
   def main(args: Array[String]): Unit = {
@@ -27,11 +41,24 @@ object githubProcessor {
   }
 }
 
+
+
 class initializerClass(){
+
+
+
+
   def method(args: Array[String]): Unit = {
+    //Initiate a logger
+    val logger = Logger("githubProcessor")
+
+    logger.info("Initialing gitHubProcessor")
+
 
     val dir: File = new File("../userJsons");
     dir.mkdir()
+
+    logger.info("Creating different actors to download repo")
     val system = ActorSystem("ActorSystem")
     val mongoDbConnector = system.actorOf(Props[mongoDbConnector], name = "mongoDbConnector")
     val jsonParser = system.actorOf(Props(new jsonParser(mongoDbConnector)), name = "jsonParser")
@@ -39,12 +66,18 @@ class initializerClass(){
 
             downloaderActor ! "downloadRepo"
 
-//    downloaderActor ! "fileRepoProcessor"
+    //this below case gets bypassed if we call "downloadrepo" directly, below actor can used to read locally written repo json files and write to mongodb
+//ideally, it should be commented and not used, used only for testing purposes
+//        downloaderActor ! "fileRepoProcessor"
+
+
   }
 }
 
 class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends Actor {
   var downloadedUsers: Set[String] = Set()
+  //Initiate a logger
+  val logger = Logger("githubProcessor")
 
 
   /* this function is use to iterate through all folder and fetch files with the extensions */
@@ -62,7 +95,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
   def receive = {
 
     case "downloadRepo" => {
-      println("In downloadRepo")
+      logger.info("In downloadRepo actor, which downloads repo and uses other actors to write to mongodb")
       var response: String = ""
       val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
       val dir: File = new File("../downloadedfiles");
@@ -170,7 +203,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
       jsonParser ! "getUsersFromJson"
     }
-    //this belwo case gets bypassed if we call "downloadrepo" directly and can used to read locally written repo json files and write to mongodb
+    //this below case gets bypassed if we call "downloadrepo" directly, below actor can used to read locally written repo json files and write to mongodb
     case "fileRepoProcessor" => {
       println("In fileRepoProcessor")
       val files = recursiveListFiles(new File("../downloadedfiles1/"))
@@ -188,7 +221,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
       var count=0
 
-      println("In downloadUserJson")
+      logger.info("In downloadUserJson, it extracts user names from repo jsons, gets user details from github and writes to mongodb")
       var start_time = (System.currentTimeMillis / 1000)
 
       //      val user=users.head
@@ -225,6 +258,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
             //add exception handling for user not found type exception and seperate for limit reached exception
             response="";
+            logger.error("Exception in downloadUserJson case of downloaderActor: "+e.getMessage)
           println("Exception: "+user)
           }
 
@@ -319,7 +353,7 @@ class mongoDbConnector  extends Actor {
     case repoUploader(jsonRepo: String, language: String, id: String) => {
       repocount=repocount+1
       if((repocount%50)==0)println("repo upload count: "+repocount)
-//      MongoDBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
+      MongoDBOperationAPIs.insertStringJSON(language+ParameterConstants.collectionNameSuffix,jsonRepo)
       println("In repoUploader")
     }
 
@@ -327,7 +361,7 @@ class mongoDbConnector  extends Actor {
       usercount=usercount+1
       if((usercount%50)==0)println("user upload count: "+usercount)
 
-//      MongoDBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
+      MongoDBOperationAPIs.insertStringJSON(ParameterConstants.usersCollectionName,jsonUser)
       println("In userUploader")
 
 
@@ -470,15 +504,3 @@ class mongoDbConnector  extends Actor {
 //}
 
 
-object HttpBasicAuth {
-  val BASIC = "Basic";
-  val AUTHORIZATION = "Authorization";
-
-  def encodeCredentials(username: String, password: String): String = {
-    new String(Base64.encodeBase64String((username + ":" + password).getBytes));
-  };
-
-  def getHeader(username: String, password: String): String =
-    BASIC + " " + encodeCredentials(username, password);
-
-}

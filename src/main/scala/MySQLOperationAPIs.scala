@@ -7,12 +7,16 @@
 import java.sql.{Connection, DriverManager}
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
+import grizzled.slf4j.Logger
 
 import scala.collection.mutable.ListBuffer
 
 object MySQLOperationAPIs {
 
-//  val url = "jdbc:mysql://localhost:8889/mysql";
+  val logger = Logger("MySQLOperationAPIs")
+
+
+  //  val url = "jdbc:mysql://localhost:8889/mysql";
   val url = ParameterConstants.mysqlPrefix + "://" + ParameterConstants.mysqlHostIPAddress +
   ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
   //      ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
@@ -25,7 +29,11 @@ object MySQLOperationAPIs {
     println("Connection successful.");
   } catch {
     case e:Throwable => println("Exception in getConnection()");
+      logger.error("Exception in getConnection(): "+e.getMessage)
+
   }
+
+
 
   def main(args: Array[String]): Unit ={
 //    println(insertTopRepoCommitsTable("sdsdgf", 123, 123, 245));
@@ -51,10 +59,13 @@ object MySQLOperationAPIs {
     } catch {
       case integrityException:MySQLIntegrityConstraintViolationException => {
         println("Duplicate key found for user: " + userName);
+
       }
       case e:Throwable => {
         println("Exception in insertUserTable()" );
         e.printStackTrace();
+        logger.error("Exception in insertUserTable(): "+e.getMessage)
+
       }
     }
 
@@ -79,6 +90,9 @@ object MySQLOperationAPIs {
       case e:Throwable => {
         println("Exception in insertAllLanguageRepoTable()" );
         e.printStackTrace();
+        logger.error("Exception in insertAllLanguageRepoTable(): "+e.getMessage)
+
+
       }
     }
 /*
@@ -103,6 +117,7 @@ object MySQLOperationAPIs {
       case e:Throwable => {
         println("Exception in insertTopRepoLanguageTable()" );
         e.printStackTrace();
+
       }
     }
     return result;
