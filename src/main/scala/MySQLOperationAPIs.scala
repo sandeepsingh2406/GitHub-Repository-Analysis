@@ -41,7 +41,7 @@ object MySQLOperationAPIs {
 //    println(insertAllLanguageRepoTable("bash_like_shellafa", "6135180730".toLong, "captainriku75", "19618265".toLong, "2016-06-15", "2016-06-15",
 //      1, 2, 3, 100));
 //    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
-//    testDBConnection();
+    testDBConnection();
 //    print(avgLocPerLanguage().foreach(item=>item.foreach(element=>println(element+" "))))
 
   }
@@ -262,7 +262,7 @@ object MySQLOperationAPIs {
     val resultSet = statement.executeQuery("show tables;");
     println("Fetch successful");
     while (resultSet.next) {
-      println(resultSet.getString("Tables_in_mysql"));
+      println(resultSet.getString("Tables_in_" + ParameterConstants.usageDBName));
     }
   }
 }
