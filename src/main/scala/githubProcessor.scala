@@ -18,6 +18,7 @@ case class repoUploader(jsonResponse: String,  language: String,id: String)
 case class userUploader(jsonUser: String,user: String)
 
 
+//Authorization for github api calls
 object HttpBasicAuth {
   val BASIC = "Basic";
   val AUTHORIZATION = "Authorization";
@@ -59,6 +60,8 @@ class initializerClass(){
     dir.mkdir()
 
     logger.info("Creating different actors to download repo")
+
+    //create our actor system and actors
     val system = ActorSystem("ActorSystem")
     val mongoDbConnector = system.actorOf(Props[mongoDbConnector], name = "mongoDbConnector")
     val jsonParser = system.actorOf(Props(new jsonParser(mongoDbConnector)), name = "jsonParser")
@@ -68,7 +71,8 @@ class initializerClass(){
 
     //this below case gets bypassed if we call "downloadrepo" directly, below actor can used to read locally written repo json files and write to mongodb
 //ideally, it should be commented and not used, used only for testing purposes
-//        downloaderActor ! "fileRepoProcessor"
+
+    //        downloaderActor ! "fileRepoProcessor"
 
 
   }
@@ -118,7 +122,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
 
 
-
+//we get repo for one month, divide the search queries for every 5 days, to get a good amount of results, as only 100 results are returned in one search query
         for (tempdateint <- dates) {
           val nextdateint = tempdateint + 4
           if (tempdateint < 10) {
@@ -138,20 +142,20 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
           var pagenum: Int = 1
 
-
-          url = "https://api.github.com/search/repositories?q=language:" + language + "+" + "created:2016-06-" +
-            tempdatestring + "..2016-06-" + nextdatestring + "+size:%3E10000"
+//our search query api call for getting Nov, 2016 github projects
+          url = "https://api.github.com/search/repositories?q=language:" + language + "+" + "created:2016-11-" +
+            tempdatestring + "..2016-11-" + nextdatestring + "+size:%3E10000"
           //            println(url)
           val connection = new URL(url).openConnection
           connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("ssingh72cs441", "441cloud"))
           response = Source.fromInputStream(connection.getInputStream).mkString
           val json_response = Json.parse(response.toString)
           val total_hits = Integer.parseInt(((json_response \ "total_count")).toString())
-
+//parsing the json response above
 
           iteration = iteration + 1
 
-
+//since github api limits the number of queries per minute, if limit is crossed, we wait for a minute to make any api calls
           if (iteration >= 31) {
             println("taking a rest")
 
@@ -163,7 +167,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
           }
 
 
-
+//only 10 pages can be viewed in the search api call
           while ((pagenum < 11) && (pagenum <= ((total_hits / 100).toInt) + 1)) {
 
             url = "https://api.github.com/search/repositories?q=language:" + language + "+" + "created:2016-06-" +
@@ -176,7 +180,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 
             iteration = iteration + 1
 
-
+//download all results to this temporary directory, which is then used later to get all json for all results
             val file = new File("../downloadedfiles/" + language + "/" + language + "_" + "2016-06-" +
               tempdatestring + "_2016-06-" + nextdatestring + "_page" + pagenum + ".json")
             val bw = new BufferedWriter(new FileWriter(file))
@@ -184,6 +188,8 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
             bw.close()
             jsonParser ! parseRepoJson(file)
 
+
+            //since github api limits the number of queries per minute, if limit is crossed, we wait for a minute to make any api calls
 
             if (iteration >= 31) {
               println("taking a rest")
@@ -294,7 +300,7 @@ class downloaderActor(jsonParser: ActorRef,mongoDbConnector: ActorRef)  extends 
 }
 
 
-
+//above downloader actor calls below jsonparser actor to parse the json response and process it
 class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
 
   var count = 0
@@ -318,7 +324,7 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
       for(i <- 0 until (json_response\ "items").as[List[JsObject]].size) {
         val str:String=((json_response \ "items")(i)).toString()
 
-
+//get all owners of java based repos
         if(language.equals("java"))
         {
           val user: String=((json_response \ "items")(i) \ "owner" \ "login").toString()
@@ -327,6 +333,7 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
         val id:String=((json_response \ "items")(i) \ "id").toString()
 
         mongoDbConnector ! repoUploader(str,language,id)
+//use the  third actor to upload repos to mongo db
 
 //In case we want to write all json into files locally
         //        val id:String=((json_response \ "items")(i) \ "id").toString()
@@ -337,6 +344,7 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
       }
     }
 
+      //get user names and suer firt actor to download details of these users through api calls to github
     case "getUsersFromJson" =>{
       println("Set size= "+users.size)
       sender ! downloadUserJson(users)
@@ -345,11 +353,14 @@ class jsonParser(mongoDbConnector: ActorRef)  extends Actor {
   }
 }
 
+
+//below actors writes json to monogodb in appropriate collections
 class mongoDbConnector  extends Actor {
   var usercount = 0
   var repocount = 0
   def receive = {
 
+    //to upload repo json
     case repoUploader(jsonRepo: String, language: String, id: String) => {
       repocount=repocount+1
       if((repocount%50)==0)println("repo upload count: "+repocount)
@@ -357,6 +368,7 @@ class mongoDbConnector  extends Actor {
       println("In repoUploader")
     }
 
+      //to upload user json
     case userUploader(jsonUser: String,user: String) => {
       usercount=usercount+1
       if((usercount%50)==0)println("user upload count: "+usercount)
@@ -369,6 +381,7 @@ class mongoDbConnector  extends Actor {
   }
 }
 
+//classs used for testing purposes, without actors to test functionality
 //class myClass() {
 //
 //

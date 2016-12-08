@@ -8,6 +8,7 @@ class MongoDBOperationAPIsTest extends FunSuite {
   test("Check response returned when mongoDB is queried with incorrect collection name")
   {
 
+    //call method to check response
 //println(MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist")(0))
 assert(    MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist").size==1)
     assert( MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist")(0)(0).equals("0"))

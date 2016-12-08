@@ -1,0 +1,24 @@
+2016/12/08 00:40:09-975 [INFO] WebService Class - Initialing web service
+2016/12/08 00:40:49-981 [INFO] WebService Class - Request to web service homepage
+2016/12/08 00:40:56-408 [INFO] WebService Class - Request to see topRepo: count: 10
+2016/12/08 00:40:56-411 [INFO] WebService Class - Fetching Results and displaying to user
+2016/12/08 00:42:29-490 [INFO] WebService Class - Request to see topUsers: 5 sortedBy: subscriptionsCount
+2016/12/08 00:42:29-493 [INFO] WebService Class - Fetching results from MySQL
+2016/12/08 00:42:29-523 [INFO] WebService Class - Displaying results to user
+2016/12/08 00:42:55-659 [INFO] WebService Class - Request to see topUsers: 5 sortedBy: followingCount
+2016/12/08 00:42:55-659 [INFO] WebService Class - Fetching results from MySQL
+2016/12/08 00:42:55-914 [INFO] WebService Class - Displaying results to user
+2016/12/08 00:43:53-2 [INFO] WebService Class - Request to see avgLocPerLanguage:
+2016/12/08 00:43:53-29 [INFO] WebService Class - Fetching results and displaying to user
+2016/12/08 00:44:20-823 [INFO] WebService Class - Request to getRecommendation:sprintnba
+2016/12/08 00:44:20-825 [INFO] WebService Class - Fetching results from MySQL
+2016/12/08 00:44:21-148 [INFO] WebService Class - Displaying results to user
+2016/12/08 00:44:24-828 [INFO] WebService Class - Request to getRecommendation:deep_recommend_system
+2016/12/08 00:44:24-828 [INFO] WebService Class - Fetching results from MySQL
+2016/12/08 00:44:25-516 [INFO] WebService Class - Displaying results to user
+2016/12/08 00:45:57-964 [INFO] WebService Class - Request to web service homepage
+2016/12/08 00:46:22-751 [INFO] WebService Class - Request to see topRepo: count: 10
+2016/12/08 00:46:22-751 [INFO] WebService Class - Fetching Results and displaying to user
+2016/12/08 00:46:41-312 [INFO] WebService Class - Request to getRecommendation:emoji-mart
+2016/12/08 00:46:41-315 [INFO] WebService Class - Fetching results from MySQL
+2016/12/08 00:46:42-842 [INFO] WebService Class - Displaying results to user
