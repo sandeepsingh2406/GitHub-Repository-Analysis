@@ -18,7 +18,7 @@ object MySQLOperationAPIs {
 
   //  val url = "jdbc:mysql://localhost:8889/mysql";
   val url = ParameterConstants.mysqlPrefix + "://" + ParameterConstants.mysqlHostIPAddress +
-  ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
+    ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
   //      ":" + ParameterConstants.mysqlDBPortNumber + "/" + ParameterConstants.mysqlDBName;
   //      "/" + ParameterConstants.mysqlDBName;
 
@@ -36,14 +36,14 @@ object MySQLOperationAPIs {
 
 
   def main(args: Array[String]): Unit ={
-//    println(insertTopRepoCommitsTable("sdsdgf", 123, 123, 245));
-//    println(insertTopRepoLanguageTable("Adfasdg", 324545456, "java", 1232454, 12));
-//    println(insertAllLanguageRepoTable("bash_like_shellafa", "6135180730".toLong, "captainriku75", "19618265".toLong, "2016-06-15", "2016-06-15",
-//      1, 2, 3, 100));
-//    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
+    //    println(insertTopRepoCommitsTable("sdsdgf", 123, 123, 245));
+    //    println(insertTopRepoLanguageTable("Adfasdg", 324545456, "java", 1232454, 12));
+    //    println(insertAllLanguageRepoTable("bash_like_shellafa", "6135180730".toLong, "captainriku75", "19618265".toLong, "2016-06-15", "2016-06-15",
+    //      1, 2, 3, 100));
+    //    println(insertUserTable("dg234dfag", 123556, 35, 78, 71, 7));
     testDBConnection();
-//    print(avgLocPerLanguage().foreach(item=>item.foreach(element=>println(element+" "))))
-//    print(getSimilarRepo("SprintNBA","5"))
+    //    print(avgLocPerLanguage().foreach(item=>item.foreach(element=>println(element+" "))))
+    //    print(getSimilarRepo("SprintNBA","5"))
 
   }
 
@@ -53,7 +53,7 @@ object MySQLOperationAPIs {
     var result = -1;
     val query = "INSERT INTO `usertable`(`userName`, `userID`, `publicReposCount`, `followersCount`, `followingCount`, " +
       "`subscriptionsCount`) VALUES (\"" + userName + "\", " + userID + ", " + publicReposCount + ", " +
-    followersCount + ", " + followingCount + ", " + subscriptionsCount + ");";
+      followersCount + ", " + followingCount + ", " + subscriptionsCount + ");";
     try {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
@@ -79,8 +79,8 @@ object MySQLOperationAPIs {
     var result = -1;
     val query = "INSERT INTO `alllanguagerepotable`(`repoName`, `repoID`, `ownerUserName`, `ownerID`, `createdAt`, " +
       "`updatedAt`, `watchersCount`, `forksCount`, `openIssue`, `repoSize`) VALUES (\"" + repoName + "\", " + repoID + ", \""+
-    ownerUserName + "\", " + ownerID + ", \"" + createdAt + "\", \"" + updatedAt + "\", " + watchersCount + ", " + forksCount +
-    ", " + openIssues + ", " + repoSize + ");";
+      ownerUserName + "\", " + ownerID + ", \"" + createdAt + "\", \"" + updatedAt + "\", " + watchersCount + ", " + forksCount +
+      ", " + openIssues + ", " + repoSize + ");";
     try {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
@@ -96,9 +96,9 @@ object MySQLOperationAPIs {
 
       }
     }
-/*
-* INSERT INTO `alllanguagerepotable`(`repoName`, `repoID`, `ownerUserName`, `ownerID`, `createdAt`, `updatedAt`, `watchersCount`, `forksCount`, `subscibersCount`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9])
-* */
+    /*
+    * INSERT INTO `alllanguagerepotable`(`repoName`, `repoID`, `ownerUserName`, `ownerID`, `createdAt`, `updatedAt`, `watchersCount`, `forksCount`, `subscibersCount`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9])
+    * */
 
     return result;
   }
@@ -107,7 +107,7 @@ object MySQLOperationAPIs {
   def insertTopRepoLanguageTable(repoName:String, repoID:Long, language:String, numberOfLines:Long, numberOfFiles:Int): Int = {
     var result = -1;
     val query = "INSERT INTO `toprepolanguagetable`(`repoName`, `repoID`, `language`, `numberOfLines`, `numberOfFiles`) VALUES (\"" +
-    repoName + "\", " + repoID + ", \"" + language.toLowerCase() + "\", " + numberOfLines + ", " + numberOfFiles + ");";
+      repoName + "\", " + repoID + ", \"" + language.toLowerCase() + "\", " + numberOfLines + ", " + numberOfFiles + ");";
     try {
       val statement = connection.createStatement();
       result = statement.executeUpdate(query);
@@ -166,7 +166,7 @@ object MySQLOperationAPIs {
   }
 
 
-//get top users according to input criteria via argument
+  //get top users according to input criteria via argument
   def topUsers(count:String,sortBy:String):  ListBuffer[ListBuffer[String]] = {
     val query = "select * from `usertable` order by "+sortBy+" desc limit "+count
     println(query)
@@ -180,9 +180,9 @@ object MySQLOperationAPIs {
 
         var templist=ListBuffer[String]()
         for(j<-1 until 7)
-          {templist+=rs.getString(j)}
+        {templist+=rs.getString(j)}
 
-          results += templist
+        results += templist
       }
 
 
@@ -194,7 +194,7 @@ object MySQLOperationAPIs {
     return results;
   }
 
-//get top repositories sorted by popularity, which a function of watchers and forks count
+  //get top repositories sorted by popularity, which a function of watchers and forks count
   def topRepo(count:String):  ListBuffer[ListBuffer[String]] = {
     val query = "  select * from alllanguagerepotable order by(watchersCount+forksCount) desc limit "+count
     var results=new ListBuffer[ListBuffer[String]]();
@@ -230,7 +230,7 @@ object MySQLOperationAPIs {
     return results;
   }
 
-//get average lines of code of all languages we have data for in mysql
+  //get average lines of code of all languages we have data for in mysql
   def avgLocPerLanguage():  ListBuffer[ListBuffer[String]] = {
     val query = " select language,sum(numberOfLines)/sum(numberOfFiles) as average_loc from toprepolanguagetable "+
       "group by language order by average_loc desc"

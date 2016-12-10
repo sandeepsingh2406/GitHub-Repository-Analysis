@@ -85,7 +85,7 @@ class WebService() {
 
           }
 
-            //if results are there then we display them in json format
+          //if results are there then we display them in json format
           else {
 
             var output=""
@@ -183,7 +183,7 @@ class WebService() {
     }
 
 
-//route to see top languages as count specified by user
+    //route to see top languages as count specified by user
     object Route4 {
       val route =
         parameters('topLanguages ) { (topLanguages) =>

@@ -51,10 +51,10 @@ class mongoDbToMySql {
 
     //use all actors to transfer differernt kind of data from mongodb to mysql
     mongoDbReaderActor ! "getListURL"
-//
+    //
     mongoDbReaderActor ! "getRepoAllDetails"
     mongoDbReaderActor ! "getUsersJSON"
-//
+    //
   }
 }
 
@@ -72,11 +72,11 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
         //make call to mongodb retriever method
         val repoDetailslist=MongoDBOperationAPIs.getHTMLURL(language+"Collection",3)
 
-//        val repoDetailslist: List[String] = List(
-//
-//                      "https://github.com/md100play/PodTube,123",
-//                    "https://github.com/alexrohleder96/caronas4colonia,345"
-//        )
+        //        val repoDetailslist: List[String] = List(
+        //
+        //                      "https://github.com/md100play/PodTube,123",
+        //                    "https://github.com/alexrohleder96/caronas4colonia,345"
+        //        )
         for (list_element <- repoDetailslist) {
           val htmlUrl=list_element.split(",")(0)
           val id=list_element.split(",")(1)
@@ -86,7 +86,7 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
     }
 
     case "getRepoAllDetails" => {
-    logger.info("In getRepoAllDetails, will attempt to store data into mysql   ")
+      logger.info("In getRepoAllDetails, will attempt to store data into mysql   ")
 
       val languages = List("java", "python", "go", "php", "scala", "c", "html", "cpp", "javascript", "csharp")
       for (language <- languages) {
@@ -94,24 +94,24 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
 
 
           //make call to mongodb retriever method
-                  val repoAllDetailslist=MongoDBOperationAPIs.getRepoDetails(language+"Collection")
+          val repoAllDetailslist=MongoDBOperationAPIs.getRepoDetails(language+"Collection")
           println("got response from mongodb with all repo details")
 
-//          val repoAllDetailslist: List[List[String]] = List(
-//            List("bash_like_shell", "61180730", "captainriku75", "19618265", "2016-06-15", "2016-06-15", "1", "2", "3","100"),
-//              List("abcde", "1234", "repoabcd", "3456", "2017-06-15", "2017-06-15", "2", "3", "4","200")
-//
-//          )
+          //          val repoAllDetailslist: List[List[String]] = List(
+          //            List("bash_like_shell", "61180730", "captainriku75", "19618265", "2016-06-15", "2016-06-15", "1", "2", "3","100"),
+          //              List("abcde", "1234", "repoabcd", "3456", "2017-06-15", "2017-06-15", "2", "3", "4","200")
+          //
+          //          )
           for(singleRepoAllDetails<-repoAllDetailslist)
-            {
-              println("getRepoAllDetails->intermediateCaseForRepo")
-              getMetadataJgit ! intermediateCaseForRepo(singleRepoAllDetails)
+          {
+            println("getRepoAllDetails->intermediateCaseForRepo")
+            getMetadataJgit ! intermediateCaseForRepo(singleRepoAllDetails)
 
-            }
+          }
 
         }
 
-    }
+      }
     }
 
     case "getUsersJSON" =>{
@@ -122,64 +122,64 @@ class mongoDbReaderActor(getMetadataJgit: ActorRef)  extends Actor {
       val userDetailsList=MongoDBOperationAPIs.getUserDetails()
       logger.info("Got response from mongodb with all user details")
 
-//      val userDetailsList=List(
-//  "libin1987,22090870,6,1,2,https://api.github.com/users/libin1987/subscriptions",
-//  "monstertony,20313408,5,4,3,https://api.github.com/users/monstertony/subscriptions")
+      //      val userDetailsList=List(
+      //  "libin1987,22090870,6,1,2,https://api.github.com/users/libin1987/subscriptions",
+      //  "monstertony,20313408,5,4,3,https://api.github.com/users/monstertony/subscriptions")
 
       //loginname,id,repos#,followers#,following#,subscription_url
 
       var count=0
       for(temp<-userDetailsList)
-        {
-          val userDetails=temp.split(",")
-//          println(userDetails(5))
+      {
+        val userDetails=temp.split(",")
+        //          println(userDetails(5))
 
-          //get user github url and make api call using it
-          val connection = new URL(userDetails(5)).openConnection
-          connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("clouduic", "Test_123"))
-          var response=""
-          try {
-            response = Source.fromInputStream(connection.getInputStream).mkString
-            if(response.replace("[","").replace("]","").isEmpty)
-            {
-              userDetails(5)="0"
-            }
-            else {
-              val json_response = Json.parse(response.toString)
-              userDetails(5)=json_response.as[List[JsObject]].size.toString
-
-
-            }
-            println("Calling intermediatecase")
-            getMetadataJgit ! intermediateCase(userDetails)
-          }
-          catch{case e: Exception =>
-
-            //add exception handling for user not found type exception and seperate for limit reached exception
-            response="";
-            println("Exception: "+userDetails(0))
-              logger.error("Exception in getUsersJSON case in mongoDbReaderActor actor: "+e.getMessage)
-          }
-
-          count = count + 1
-
-          //to not cross the 5000 requests api call limit per hour
-          if (count >= 4950)
+        //get user github url and make api call using it
+        val connection = new URL(userDetails(5)).openConnection
+        connection.setRequestProperty(HttpBasicAuth.AUTHORIZATION, HttpBasicAuth.getHeader("clouduic", "Test_123"))
+        var response=""
+        try {
+          response = Source.fromInputStream(connection.getInputStream).mkString
+          if(response.replace("[","").replace("]","").isEmpty)
           {
-            println("taking a rest from downloading user json")
-
-            var start_time = (System.currentTimeMillis / 1000)
-            while ((System.currentTimeMillis / 1000) < (start_time + 3600)) {
-            }
-            start_time = (System.currentTimeMillis / 1000)
-            count = 0
+            userDetails(5)="0"
+          }
+          else {
+            val json_response = Json.parse(response.toString)
+            userDetails(5)=json_response.as[List[JsObject]].size.toString
 
 
           }
+          println("Calling intermediatecase")
+          getMetadataJgit ! intermediateCase(userDetails)
+        }
+        catch{case e: Exception =>
 
+          //add exception handling for user not found type exception and seperate for limit reached exception
+          response="";
+          println("Exception: "+userDetails(0))
+          logger.error("Exception in getUsersJSON case in mongoDbReaderActor actor: "+e.getMessage)
+        }
+
+        count = count + 1
+
+        //to not cross the 5000 requests api call limit per hour
+        if (count >= 4950)
+        {
+          println("taking a rest from downloading user json")
+
+          var start_time = (System.currentTimeMillis / 1000)
+          while ((System.currentTimeMillis / 1000) < (start_time + 3600)) {
+          }
+          start_time = (System.currentTimeMillis / 1000)
+          count = 0
 
 
         }
+
+
+
+      }
 
       //      getMetadataJgit.recursiveListFiles(new File("../userJsons"))
     }
@@ -227,70 +227,70 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
 
       if (!MySQLOperationAPIs.checkRow(repoName))
       {
-//use jgit to clone repo, then later delete it
+        //use jgit to clone repo, then later delete it
         val git  = Git.cloneRepository()
-        .setURI( htmlUrl ).setDirectory(new File("../"+repoName))
-        .call();
+          .setURI( htmlUrl ).setDirectory(new File("../"+repoName))
+          .call();
 
-      val commits  = git.log().call();
-      val iter=commits.iterator()
-      var commit_count = 0;
-      while(iter.hasNext)
-      {
-        iter.next()
-        commit_count=commit_count+1
-      }
+        val commits  = git.log().call();
+        val iter=commits.iterator()
+        var commit_count = 0;
+        while(iter.hasNext)
+        {
+          iter.next()
+          commit_count=commit_count+1
+        }
 
 
-      var language_loc_map = scala.collection.mutable.Map[String, List[Long]]()
+        var language_loc_map = scala.collection.mutable.Map[String, List[Long]]()
 
-      val list_files=recursiveListFiles(new File("../"++repoName))
-      val total_file_count=list_files.length
+        val list_files=recursiveListFiles(new File("../"++repoName))
+        val total_file_count=list_files.length
 
-      mySqlWriterActor ! topRepoCommitsWriter(repoName,id,commit_count,total_file_count)
+        mySqlWriterActor ! topRepoCommitsWriter(repoName,id,commit_count,total_file_count)
 
 
         //get lines and files count for files of difeferent languages in current repo
-      for(file<-list_files)
-      {
+        for(file<-list_files)
+        {
 
-        val filename=file.getName
-        val file_extension= filename.split("\\.")(filename.split("\\.").length-1)
-        var language=""
-        if(file_extension.equals("cs"))language="csharp"
-        else if( file_extension.equals("htm"))language="html"
-        else if( file_extension.equals("js"))language="javascript"
-        else if( file_extension.equals("py"))language="python"
-        else language=file_extension
+          val filename=file.getName
+          val file_extension= filename.split("\\.")(filename.split("\\.").length-1)
+          var language=""
+          if(file_extension.equals("cs"))language="csharp"
+          else if( file_extension.equals("htm"))language="html"
+          else if( file_extension.equals("js"))language="javascript"
+          else if( file_extension.equals("py"))language="python"
+          else language=file_extension
 
-        val reader = new BufferedReader(new FileReader(file));
-        var lines :Long= 0;
-        while (reader.readLine() != null) {lines=lines+1}
-        reader.close();
+          val reader = new BufferedReader(new FileReader(file));
+          var lines :Long= 0;
+          while (reader.readLine() != null) {lines=lines+1}
+          reader.close();
 
-        if(!language_loc_map.contains(language))
+          if(!language_loc_map.contains(language))
           {
             language_loc_map += (language -> List(lines,1))
           }
-        else
+          else
           {
             language_loc_map(language)=List(language_loc_map(language)(0)+lines,language_loc_map(language)(1)+1)
           }
 
-      }
+        }
 
 
-      language_loc_map foreach {case (language, list) => mySqlWriterActor ! topRepoLanguageWriter(repoName,id,language, list(0),list(1))}
+        language_loc_map foreach {case (language, list) => mySqlWriterActor ! topRepoLanguageWriter(repoName,id,language, list(0),list(1))}
 
-      try {
-        git.getRepository.close()
-        FileUtils.forceDelete(new File("../"+repoName));
-      }
+        try {
+          git.getRepository.close()
+          FileUtils.forceDelete(new File("../"+repoName));
+        }
 
-      catch{case e: Exception => println("Exception: "+e)
-        logger.error("Exception in getRepoMetadataJgit case in getMetadataJgit actor: "+e.getMessage)
+        catch{case e: Exception => println("Exception: "+e)
+          logger.error("Exception in getRepoMetadataJgit case in getMetadataJgit actor: "+e.getMessage)
 
-      }
+        }
 
 
       } else
@@ -309,8 +309,8 @@ class getMetadataJgit(mySqlWriterActor: ActorRef)  extends Actor {
       println("intermediateCaseForRepo->allLanguageRepoWriter")
 
       mySqlWriterActor !  allLanguageRepoWriter(singleRepoAllDetails)
-  }
     }
+  }
 
 
 }

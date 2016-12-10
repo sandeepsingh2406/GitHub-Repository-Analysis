@@ -28,10 +28,10 @@ object ParameterConstants {
   val mysqlDriver = "com.mysql.jdbc.Driver";
   val mysqlUserName = "abhijay";
   val mysqlPassword = "new_password";
-//  val mysqlHostIPAddress = "localhost";
+  //  val mysqlHostIPAddress = "localhost";
   val mysqlHostIPAddress = "173.194.248.93";
   val mysqlDBPortNumber = "3306";
   val mysqlDBName = "cs441project";
-//  val mysqlDBName = "mysql";
+  //  val mysqlDBName = "mysql";
   val mysqlPrefix = "jdbc:mysql";
 }
