@@ -49,7 +49,7 @@ We have used RapidMiner to find the patterns from downloaded data. RapidMiner ca
 *
 
 
-**GithubProcessor**.scala: This is the first class file that should be run when trying to setup the entire project and databases. (If databases have already been loaded, WebService.scala can be run directly)
+1. **GithubProcessor.scala**: This is the first class file that should be run when trying to setup the entire project and databases. (If databases have already been loaded, WebService.scala can be run directly)
 
 
 An object named githubProcessor has been created which instantiates our main class, named “initializerClass”. We create 3 actors here: downloaderActor, jsonParser and mongoDbConnector.
@@ -74,7 +74,7 @@ After processing of the JSON strings this actor jsonParser gives a message back 
 **HttpBasicAuth**: This class is used by other actors to make the GitHub API calls with authentication. GitHub allows a higher limit for authenticated API calls, so this comes in very handy whenever we make multiple API calls to GitHub.
 
 
-2.	**MongoDbToMySql**.scala: This class uses the Akka actor system to read data from MongoDB, download some extra metadata, and write the filtered information to MySQL. This class should be executed after MongoDB has been populated by GithubProcessor.scala.
+2.	**MongoDbToMySql.scala**: This class uses the Akka actor system to read data from MongoDB, download some extra metadata, and write the filtered information to MySQL. This class should be executed after MongoDB has been populated by GithubProcessor.scala.
 
 
 Different behaviours in the actor “mongoDbReaderActor” are sent messages, which initiate the process of extracting information from MongoDB.
@@ -95,16 +95,18 @@ Different cases have been created in the actor to receive different kinds of dat
 There are separate methods defined in MySQLOperationAPIs.scala which make API calls to MySQL to insert rows into different tables. These methods are used by this actor to write into the database.
 
 
-3. **MongoDBOperationAPIs**.scala(EXPAND, ABHIJAY)
+3.	**MongoDBOperationAPIs.scala**
+This file contains MongoDB Scala driver connector. It connects to remote MongoDB virtual machine hosted in Google Cloud and contains APIs to perform various MongoDB operations such as insert, add, query data from database.
+
+4.	**MySQLOperationAPIs.scala**
+This file contains MySQL Scala driver connector. It connects to Google Cloud SQL and contains APIs to perform various MySQL operations such as insert, add, query data to database.
+
+5.	**ParameterConstants.scala**
+Contains various constant parameters used in all programs such database hostname, database name, driver name, collection names in case of MongoDB etc.
 
 
-4. **MySQLOperationAPIs**.scala(EXPAND, ABHIJAY)
 
-
-**ParameterConstants**.scala (Abhijay)
-
-
-5. **WebService**.scala
+6. **WebService**.scala
 
 
 The web service(created using Akka HTTP) listens for REST calls to produce different types of analytical results based on the information in the MySQL database.
@@ -240,3 +242,6 @@ All load test reports and graphs can be found in documents/Load_Test_Reports_Scr
 -----------------------------------------------------------------------------------
 
 References: present in "documents/references.txt"
+1.	OpenHub repository API https://www.openhub.net/projects/45001.xml?api_key=c3943bda503b24b9ed76ba00add525ecd330720aa437f82fa3bc4cbeab330b7b
+2.	GitHub API
+https://api.github.com
