@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
-//libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
+libraryDependencies += "commons-codec" % "commons-codec" % "1.9"
 
 
 scalacOptions += "-deprecation"

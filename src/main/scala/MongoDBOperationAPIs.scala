@@ -38,7 +38,8 @@ object MongoDBOperationAPIs {
 //    println(getCollectionCount(ParameterConstants.cCollectionName));
 //    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
 //    println(getUserDetails()(0));
-    println(getRepoDetails(ParameterConstants.goCollectionName))
+//    println(getRepoDetails(ParameterConstants.goCollectionName))
+    println(getListOfCollections(ParameterConstants.usageDBName));
     // get list of collections is given database and print count repos in that collection
 //      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
   }
