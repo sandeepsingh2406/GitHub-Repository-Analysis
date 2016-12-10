@@ -1,6 +1,6 @@
-**This repo contains the Final project i.e. **GitHub Repository Analysis**
+This repo contains the Final project i.e. **GitHub Repository Analysis**
 
-Project Members are: Abhijay Patne , Sandeep Singh**
+Project Members are: **Abhijay Patne , Sandeep Singh**
 
 ---------------------------------------------------------------------
 **Highlights and features of the application:
