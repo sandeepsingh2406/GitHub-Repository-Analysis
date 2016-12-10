@@ -1,5 +1,2 @@
-2016/12/09 20:27:40-545 [INFO] org.mongodb.driver.cluster - Cluster created with settings {hosts=[104.197.28.49:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-2016/12/09 20:27:40-922 [INFO] org.mongodb.driver.cluster - No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, serverDescriptions=[ServerDescription{address=104.197.28.49:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
-2016/12/09 20:27:41-121 [INFO] org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:8}] to 104.197.28.49:27017
-2016/12/09 20:27:41-137 [INFO] org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=104.197.28.49:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 2, 11]}, minWireVersion=0, maxWireVersion=4, maxDocumentSize=16777216, roundTripTimeNanos=13480457}
-2016/12/09 20:27:41-270 [INFO] org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:9}] to 104.197.28.49:27017
+2016/12/10 02:57:18-108 [INFO] WebService Class - Initialing web service
+2016/12/10 02:58:06-706 [INFO] WebService Class - Request to web service homepage
