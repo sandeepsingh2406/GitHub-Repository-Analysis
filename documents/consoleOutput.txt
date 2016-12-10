@@ -1,6 +1,0 @@
-Connection successful.
-Fetch successful
-alllanguagerepotable
-toprepocommitstable
-toprepolanguagetable
-usertable
