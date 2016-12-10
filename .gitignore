@@ -8,6 +8,7 @@ target/resolution-cache/
 target/streams/runtime/managedClasspath/$global/streams/export
 project/target/streams/
 target/streams/
+target/
 project/target/resolution-cache/
 .idea/libraries/SBT__org_scala_lang_scala_library_2_12_0_jar.xml
 .idea/modules/abhijaysandeepfinalprojectcs441-build.iml
