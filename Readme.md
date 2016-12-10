@@ -3,7 +3,6 @@
 Project Members are: Abhijay Patne , Sandeep Singh**
 
 ---------------------------------------------------------------------
-
 **Highlights and features of the application:
 **
 Use of multiple Google Cloud tools
@@ -132,9 +131,11 @@ Note: While running the scala programs for the first time, IntelliJ might show t
 
 1.      Copy build.sbt, and /src/main/ to a folder in your google cloud VM. Run using SBT(From within the folder):
 
-2.      Run the commands: 
-                                sbt compile
-    				sbt run
+2.      Run the commands:        
+               
+               sbt compile
+   
+               sbt run
 
 **Note**: In our build.sbt we have specified the mainClass as WebService.scala. To run other classes specify them here in build.sbt and replace WebService.scala
 
