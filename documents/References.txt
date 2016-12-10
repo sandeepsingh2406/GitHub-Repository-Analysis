@@ -1,1 +1,33 @@
 References
+
+1.	UIC Logo: http://logos.uic.edu/DOWNLOAD.CGI?document=COL.ENG.CSCI.LOCKB.SM.RED.PNG
+
+2.	OpenHub repository API https://www.openhub.net/projects/45001.xml?api_key=c3943bda503b24b9ed76ba00add525ecd330720aa437f82fa3bc4cbeab330b7b
+
+
+3.	GitHub API
+https://api.github.com
+
+4.	Jgit API
+
+https://github.com/centic9/jgit-cookbook/blob/master/src/main/java/org/dstadler/jgit/porcelain/CloneRemoteRepository.java
+
+5.	Akka HTTP & Akka Actors
+
+http://doc.akka.io
+
+6.	Scala Resource: 
+
+http://alvinalexander.com/scala/
+
+7.	Stackoverflow
+
+http://stackoverflow.com/
+
+8.	Akka Resource:
+
+ https://www.toptal.com/scala/concurrency-and-fault-tolerance-made-easy-an-intro-to-akka
+
+9.	SLF4J: 
+
+7http://alvinalexander.com/scala/how-to-log-output-file-grizzled-slf4j-scala-simplelogger.properties
