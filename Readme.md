@@ -231,5 +231,7 @@ http://104.197.28.49:9200/?topLanguages=8
 Each load test was performed for 3 minutes and the number of virtual users (load) varying as per the maximum number of virtual users for that load test. 
 
 All load test reports and graphs can be found in documents/Load_Test_Reports_Screenshots
+
 -----------------------------------------------------------------------------------
+
 References: present in "documents/references.txt"
