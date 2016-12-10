@@ -185,5 +185,46 @@ The user enters a repository name, and we try to recommend some similar reposito
                  http://localhost:8080/?getRecommendation=emoji-mart
 
 ------------------------------------------------------------------------------------
+**Application testing **
 
+**Scala test classes (/src/test/scala/):**
+
+*
+Unit Testing (Using ScalaTest)
+*
+
+MongoDBOperationAPIsTest.scala: This test is a unit test for testing methods in MongoDBOperationAPIs.scala. MongoDBOperationAPIs.scala is a class used to stream Json data to MongoDB. So, this tests checks whether a random incorrect name entered for a collection exists in MongoDB. The response is then checked for passing this test case.
+
+
+MySQLOperationAPIsTest.scala: This test is a unit test for testing methods in MySQLOperationAPIs.scala. MySQLOperationAPIs.scala is a class used to stream write data to MySQL. In this test case, we use methods in MySQLOperationAPIs class to insert some random data into a table which stores repository details, and later check whether the table returns results for the inserted data. We also check using another method in MySQLOperationAPIs, whether a random incorrect table name is found in the same table in our MySQL database.
+Accordingly, responses are matched against predefined values to pass these  cases.
+
+
+Integration Testing (Using ScalaTest)
+WebServiceTest.scala: This test case initiates the web service and makes rest calls to the web service and check its response. If the response matches, these test cases pass. Apart from checking the response for calling the web service response, we also check the response when the service is called with some specific parameters. When such a rest call is made, the web service queries the MySQL database and fetches the response. This response is received by the test case which matches it against predefined values to pass this test case. 
+
+
+Note: While running the scala test programs for the first time, IntelliJ might show the error, "Module not defined". You can go to Run->Edit Configurations->Use classpath and SDK of module and specify the module there. And then rerun the test program.
+
+
+Note: Sometimes IntelliJ automatically changes the test library for running the test cases. That might cause syntactical errors in our test programs. You can respecify the test library by removing the scala test library specified in build.sbt, and then putting it back again. The following scalatest library has been used:
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % Test
+
+
+Performance Testing: Load Tests (Using SoapUI)
+
+
+The load testing is performed using LoadUI NG of SOAPUI with varying virtual users ranging from 5 to 25. Each load test contains 5 different REST API calls:
+
+
+http://104.197.28.49:9200
+http://104.197.28.49:9200/?topUsers=15&sortBy=followersCount
+http://104.197.28.49:9200/?topRepo=12
+http://104.197.28.49:9200/avgLocPerLanguage
+http://104.197.28.49:9200/?topLanguages=8
+
+
+Each load test was performed for 3 minutes and the number of virtual users (load) varying as per the maximum number of virtual users for that load test. 
+All load test reports and graphs can be found in documents/Load_Test_Reports_Screenshots
+-----------------------------------------------------------------------------------
 References: present in "documents/references.txt"
