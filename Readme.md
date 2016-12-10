@@ -54,7 +54,7 @@ Firstly, this classes passed a message to the actor downloaderActor which downlo
 **Actors**
 downloaderActor This actor downloads the repo details for github repositories specified by language, created date, and lower limit for size. All github queries that we have used have been mentioned later.
 
-	The repo details are retrieved in the form of JSON strings which are stored in files locally. Instead of downloading these locally, we can also process them on the fly. Since github has a restriction on the number of API calls we can make in one minute(for some API calls these limits are also per hour), our actor goes to sleep until the next minute start so that we do not encounter a “limit exceeded” response from the GitHub API call.
+The repo details are retrieved in the form of JSON strings which are stored in files locally. Instead of downloading these locally, we can also process them on the fly. Since github has a restriction on the number of API calls we can make in one minute(for some API calls these limits are also per hour), our actor goes to sleep until the next minute start so that we do not encounter a “limit exceeded” response from the GitHub API call.
 
 Next, a message is passed to the second actor “jsonParser“ which parses the downloaded JSON strings.
 After processing of the JSON strings this actor jsonParser gives a message back to downloadActor, which downloads the user details through GitHub API calls. These user names are extracted by the jsonParser actor described below.
