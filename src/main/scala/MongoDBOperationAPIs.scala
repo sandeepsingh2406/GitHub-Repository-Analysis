@@ -31,17 +31,17 @@ object MongoDBOperationAPIs {
   //  val sampleJSONPath = ParameterConstants.sampleRepoJSONPath;
 
   def main(args: Array[String]): Unit = {
-//    val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
-//    println("parsed json string: " + jsonRecordString);
-//    insertDBObject(collectionName, createDBObject(jsonRecordString));
-//    findAll(ParameterConstants.defaultCollectionName);
-//    println(getCollectionCount(ParameterConstants.cCollectionName));
-//    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
-//    println(getUserDetails()(0));
-//    println(getRepoDetails(ParameterConstants.goCollectionName))
+    //    val jsonRecordString = readFirstLineOfFile(sampleJSONPath);
+    //    println("parsed json string: " + jsonRecordString);
+    //    insertDBObject(collectionName, createDBObject(jsonRecordString));
+    //    findAll(ParameterConstants.defaultCollectionName);
+    //    println(getCollectionCount(ParameterConstants.cCollectionName));
+    //    println(getHTMLURL(ParameterConstants.cCollectionName, 4).toString());
+    //    println(getUserDetails()(0));
+    //    println(getRepoDetails(ParameterConstants.goCollectionName))
     println(getListOfCollections(ParameterConstants.usageDBName));
     // get list of collections is given database and print count repos in that collection
-//      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
+    //      getListOfCollections(ParameterConstants.usageDBName).foreach(collection => println(collection + ":" + getCollectionCount(collection)));
   }
 
   // get list of strings of html_url satisfying min fork count specified as parameter
@@ -93,7 +93,7 @@ object MongoDBOperationAPIs {
     while(mongoCursor.hasNext){
       val basicDBObject = mongoCursor.next().asInstanceOf[BasicDBObject];
       result += basicDBObject.getString("login")+","+basicDBObject.getString("id")+","+basicDBObject.getString("public_repos")+
-      ","+basicDBObject.getString("followers")+","+basicDBObject.getString("following")+","+basicDBObject.getString("subscriptions_url");
+        ","+basicDBObject.getString("followers")+","+basicDBObject.getString("following")+","+basicDBObject.getString("subscriptions_url");
     }
 
     return result;
@@ -121,10 +121,10 @@ object MongoDBOperationAPIs {
           basicDBObject.getString("size"))
       }
     }
-      catch{
+    catch{
 
-        case e : Throwable=> result +=List("0","0","0","0","00:00:00","00:00:00","0","0","0","0")
-          logger.error("Exception in getRepoDetails(): using default result: "+e.getMessage)}
+      case e : Throwable=> result +=List("0","0","0","0","00:00:00","00:00:00","0","0","0","0")
+        logger.error("Exception in getRepoDetails(): using default result: "+e.getMessage)}
 
 
     return result;
@@ -180,7 +180,7 @@ object MongoDBOperationAPIs {
 
       case e: Exception => {println("Exception while reading file. " + e.printStackTrace())
         logger.error("Exception in readFirstLineOfFile(): Exception while reading file"+e.getMessage)
-    }
+      }
     }
     return line;
   }

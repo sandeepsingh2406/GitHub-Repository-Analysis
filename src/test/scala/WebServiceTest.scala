@@ -12,7 +12,7 @@ class WebServiceTest extends FunSuite {
   val thread = new Thread(new Runnable {
     def run() {
 
-      //Creating object of SearchEngine1 class to start the web service
+      //Creating object of WebService class to start the web service
       val inst: WebService = new WebService()
       inst.method(new Array[String](5))
     }
@@ -55,8 +55,8 @@ class WebServiceTest extends FunSuite {
     var result = scala.io.Source.fromURL(url).mkString
     //Get response from web service
 
-//    val Pattern = "ms</b><br><br><b>Result # [0-9]*".r
-//    val matched_result=Pattern.findFirstIn(result.toString).getOrElse("no match")
+    //    val Pattern = "ms</b><br><br><b>Result # [0-9]*".r
+    //    val matched_result=Pattern.findFirstIn(result.toString).getOrElse("no match")
 
 
     val json_response = Json.parse(result.toString)

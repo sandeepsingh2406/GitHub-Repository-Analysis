@@ -9,8 +9,8 @@ class MongoDBOperationAPIsTest extends FunSuite {
   {
 
     //call method to check response
-//println(MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist")(0))
-assert(    MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist").size==1)
+    //println(MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist")(0))
+    assert(    MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist").size==1)
     assert( MongoDBOperationAPIs.getRepoDetails("randomNameToCheckItDoesntExist")(0)(0).equals("0"))
   }
 
