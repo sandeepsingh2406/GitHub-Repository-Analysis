@@ -10,7 +10,10 @@ Use of multiple Google Cloud tools
 
 Recommender system for Repositories
 
-Web Service hosted in cloud(give IP address)
+Web Service hosted in cloud(http://104.197.28.49:8080/)
+
+Note: The WebService fetches the data from a Google Cloud SQL instance. We have configured the database instance to go to standby mode after 12 hours of inactivity. So, if you don't get any response that means the database is in standby mode, in this case please contact us to start the database instance. We can't afford to keep the instance running 24 * 7 * 365
+
 
 Implemented in Scala for extra bonus :)
 
