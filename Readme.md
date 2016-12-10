@@ -2,6 +2,7 @@ This repo contains the Final project i.e. **GitHub Repository Analysis**
 
 Project Members are: **Abhijay Patne , Sandeep Singh**
 
+Our project report is included in 'report' directory of the repository
 ---------------------------------------------------------------------
 **Highlights and features of the application:
 **
