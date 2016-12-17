@@ -11,7 +11,7 @@ Use of multiple Google Cloud tools
 
 Recommender system for Repositories
 
-Web Service hosted in cloud(http://104.197.28.49:8080/)
+Web Service hosted in cloud
 
 Note: The WebService fetches the data from a Google Cloud SQL instance. We have configured the database instance to go to standby mode after 12 hours of inactivity. So, if you don't get any response that means the database is in standby mode, in this case please contact us to start the database instance. We can't afford to keep the instance running 24 * 7 * 365
 
@@ -224,15 +224,15 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % Test
 The load testing is performed using LoadUI NG of SOAPUI with varying virtual users ranging from 5 to 25. Each load test contains 5 different REST API calls:
 
 
-http://104.197.28.49:9200
+http://google-cloud-ip:9200
 
-http://104.197.28.49:9200/?topUsers=15&sortBy=followersCount
+http://google-cloud-ip:9200/?topUsers=15&sortBy=followersCount
 
-http://104.197.28.49:9200/?topRepo=12
+http://google-cloud-ip:9200/?topRepo=12
 
-http://104.197.28.49:9200/avgLocPerLanguage
+http://google-cloud-ip:9200/avgLocPerLanguage
 
-http://104.197.28.49:9200/?topLanguages=8
+http://google-cloud-ip:9200/?topLanguages=8
 
 
 Each load test was performed for 3 minutes and the number of virtual users (load) varying as per the maximum number of virtual users for that load test. 
